@@ -1,0 +1,49 @@
+2026-01-25T22:30:43: Here's the report: 
+
+
+ Error in ./src/routes/feasibilityStudyRoutes.ts :
+YAMLSyntaxError: All collection items must start at the same column at line 1, column 1:
+
+/api/feasibility-studies:
+^^^^^^^^^^^^^^^^^^^^^^^^^…
+
+YAMLSemanticError: Nested mappings are not allowed in compact mappings at line 26, column 140:
+
+…(updateFeasibilityStudySchema), (req: AuthenticatedRequest, res, next) => feas…
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^…
+
+YAMLSemanticError: Implicit map keys need to be on a single line at line 26, column 140:
+
+…(updateFeasibilityStudySchema), (req: AuthenticatedRequest, res, next) => feas…
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^…
+,Error in ./src/routes/feasibilityStudyRoutes.ts :
+YAMLSyntaxError: All collection items must start at the same column at line 1, column 1:
+
+/api/feasibility-studies/{id}:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^…
+
+YAMLSemanticError: Nested mappings are not allowed in compact mappings at line 25, column 79:
+
+…date(feasibilityStudyIdSchema), (req: AuthenticatedRequest, res, next) => feas…
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^…
+
+YAMLSemanticError: Implicit map keys need to be on a single line at line 25, column 79:
+
+…date(feasibilityStudyIdSchema), (req: AuthenticatedRequest, res, next) => feas…
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^…
+
+YAMLSemanticError: Nested mappings are not allowed in compact mappings at line 27, column 23:
+
+                type: string
+                      ^^^^^^…
+
+YAMLSemanticError: Implicit map keys need to be on a single line at line 27, column 23:
+
+                type: string
+                      ^^^^^^…
+,Error in ./src/routes/stripeRoutes.ts :
+YAMLSemanticError: Nested mappings are not allowed in compact mappings at line 30, column 24:
+
+              example: Webhook Error: Invalid signature
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+

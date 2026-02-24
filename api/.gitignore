@@ -1,0 +1,20 @@
+
+/node_modules
+
+.env
+/.env.local
+.vercel
+.env*.local
+# Ignore documentation and report files
+PROJECT_REPORT.md
+SWAGGER_TESTING_GUIDE.md
+MONGODB_URGENT_FIX.md
+MONGODB_CONNECTION_FIX.md
+FIXES_SUMMARY.md
+DOCUMENTATION_SUGGESTIONS.md
+API_TEST_EXAMPLES.md
+AUTHENTICATION_GUIDE.md
+PROJECT_REPORT.html
+stripe.html
+
+/build

@@ -1,0 +1,9 @@
+2026-01-25T22:30:43: Not all input has been taken into account at your final specification.
+2026-01-25T22:30:43: 🔗 Attempting to connect to MongoDB...
+2026-01-25T22:30:43: 🔗 Initializing database connection...
+2026-01-25T22:30:43: 📚 Swagger documentation available at: http://localhost:8080/api-docs
+2026-01-25T22:30:43: 🌐 API endpoints available for testing
+
+2026-01-25T22:30:43: Server running in production mode on port 8080
+2026-01-25T22:30:45: 🔗 MongoDB connection established
+2026-01-25T22:30:45: ✅ Connected to MongoDB: mongodb+srv://***:***@cluster0.s2l2lu7.mongodb.net/business-arabic

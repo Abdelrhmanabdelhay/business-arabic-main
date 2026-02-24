@@ -1,0 +1,51 @@
+// styles/blocknote.css
+:root {
+  --editor-rtl: rtl;
+}
+
+.bn-container {
+  direction: var(--editor-rtl) !important;
+  background: transparent !important;
+}
+
+.bn-editor {
+  text-align: right !important;
+  padding: 1rem !important;
+}
+
+.bn-toolbar {
+  direction: var(--editor-rtl) !important;
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(10px) !important;
+  border-color: var(--nextui-border-color) !important;
+}
+
+.bn-toolbar-button {
+  padding: 0.5rem !important;
+}
+
+.bn-menu {
+  direction: var(--editor-rtl) !important;
+}
+
+.bn-menu-item {
+  text-align: right !important;
+}
+
+/* Custom scrollbar */
+.bn-editor::-webkit-scrollbar {
+  width: 6px;
+}
+
+.bn-editor::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.bn-editor::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.bn-editor::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}

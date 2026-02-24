@@ -1,0 +1,8 @@
+.bn-container[data-theming-css-demo][data-color-scheme="dark"] {
+  --bn-colors-editor-text: #333;
+  --bn-colors-editor-background: transparent;
+  --bn-colors-side-menu: #90caef79;
+}
+.bn-container[data-theming-css-demo][data-color-scheme="light"] {
+  --bn-colors-editor-background: transparent;
+}

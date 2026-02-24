@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.uni-container {
+  @apply container mx-auto max-w-7xl pt-16 px-6 flex-grow;
+}
