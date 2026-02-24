@@ -1,6 +1,5 @@
 export const dynamic = "force-dynamic";
 
-"use client";
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
