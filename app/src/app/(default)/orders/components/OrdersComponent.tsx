@@ -194,7 +194,6 @@ export default function OrdersComponent() {
         filterValue={filterValue}
         selectedKeys={selectedKeys}
         onPageChange={handlePageChange}
-        onSortChange={handleSortChange}
         onSelectionChange={handleSelectionChange}
         onSearchChange={setFilterValue}
         loading={isLoading}
