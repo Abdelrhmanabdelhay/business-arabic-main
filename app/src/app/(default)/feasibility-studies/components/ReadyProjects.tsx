@@ -1,4 +1,5 @@
-export const dynamic = "force-dynamic";
+
+"use client";
 import { useEffect, useState, useMemo } from "react";
 import { Card } from "@nextui-org/card";
 import { Image } from "@nextui-org/image";

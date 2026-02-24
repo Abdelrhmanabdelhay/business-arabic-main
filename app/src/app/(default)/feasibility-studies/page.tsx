@@ -1,5 +1,6 @@
 import React from 'react'
 import ReadyProjects from './components/ReadyProjects'
+export const dynamic = "force-dynamic";
 
 function ReadyProjectsPage() {
     return (
