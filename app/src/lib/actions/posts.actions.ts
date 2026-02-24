@@ -79,7 +79,7 @@ const EditPostMutation = ({ id }: { id: string }) => {
     isSuccess,
   } = usePatchMutation(`${firstLvl}/${id}`, {
     onSuccess: (newData: BlogPost) => {
-      queryClient.setQueryData([`${firstLvl}/${newData._id}`, null], newData);
+      queryClient.setQueryData([`${firstLvl}/${newData.id}`, null], newData);
 
       queryClient.refetchQueries({
         predicate: (query) => (query.queryKey[0] as string).startsWith("/blog?"),
