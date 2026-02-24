@@ -1,12 +1,12 @@
-import React from "react";
-import ProjectIdeasPage from "./components/ProjectIdeasPage";
+// import React from "react";
+// import ProjectIdeasPage from "./components/ProjectIdeasPage";
 
-function page() {
-  return (
-    <div>
-      <ProjectIdeasPage />
-    </div>
-  );
-}
+// function page() {
+//   return (
+//     <div>
+//       <ProjectIdeasPage />
+//     </div>
+//   );
+// }
 
-export default page;
+// export default page;
