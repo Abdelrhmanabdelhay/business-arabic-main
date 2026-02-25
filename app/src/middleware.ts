@@ -12,7 +12,7 @@ if (!tokenValue) {
 
 try {
   const decoded = jwt.verify(tokenValue, process.env.JWT_SECRET!) as any
-
+console.log("Decoded JWT:", decoded)
   if (decoded.role !== "admin") {
     return NextResponse.redirect(new URL('/signIn', request.url))
   }
