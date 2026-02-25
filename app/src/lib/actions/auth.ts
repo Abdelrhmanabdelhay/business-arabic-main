@@ -14,8 +14,8 @@ export const setSecureCookie = (name: string, value: string, expirationDays: num
   setCookie(null, name, value, {
     maxAge: expirationDays * 24 * 60 * 60,
     path: "/",
-    secure: process.env.NODE_ENV !== "development",
-    sameSite: "strict",
+  secure: true,
+  sameSite: "lax", // بدل 
   });
 };
 
