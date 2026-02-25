@@ -1,7 +1,7 @@
 import { API_URL } from "@/constants/constants";
 import axios from "axios";
 import { parseCookies } from "nookies";
-import { useUserStore } from "@/stores/useUserStore";
+import { useUserStore } from "@/lib/stores/useUserStore";
 
 export const axiosInstance = axios.create({
   baseURL: `${API_URL}`,
