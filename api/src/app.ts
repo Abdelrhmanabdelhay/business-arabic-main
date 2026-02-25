@@ -19,11 +19,9 @@ import contactRoutes from "./routes/contactRoute";
 import { stripeWebHook } from "./utils/stripe";
 
 import AppError from "./utils/appError";
-import dotenv from "dotenv";
-dotenv.config();
+
 const app = express();
-console.log("JWT:", process.env.JWT_SECRET);
-// Setup Swagger documentation
+
 setupSwagger(app);
 
 
