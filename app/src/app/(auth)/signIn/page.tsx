@@ -40,7 +40,7 @@ export default function SignInPage() {
 
       setUser(response.user);
       setToken(response.token);
-      console.log(response.token);
+      
       setCookie(null, "token", response.token, {
   path: "/",
   maxAge: 60 * 60 * 24 * 7, // 7 days (optional but recommended)
