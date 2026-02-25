@@ -10,12 +10,12 @@ interface AuthResponse {
   token: string;
 }
 
-export const setSecureCookie = (name: string, value: string, expirationDays: number = 30) => {
+export const setSecureCookie = (name: string, value: string, expirationDays = 30) => {
   setCookie(null, name, value, {
     maxAge: expirationDays * 24 * 60 * 60,
     path: "/",
-  secure: true,
-  sameSite: "lax", // بدل 
+    secure: false, // مهم
+    sameSite: "lax",
   });
 };
 
@@ -61,8 +61,8 @@ const Logout = async () => {
     authCookies.forEach((cookieName) => {
       destroyCookie(null, cookieName, {
         path: "/",
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+  secure: true,
+  sameSite: "lax", // بدل 
       });
     });
 
