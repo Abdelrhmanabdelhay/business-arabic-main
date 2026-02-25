@@ -3,7 +3,7 @@ import axios from "axios";
 import { parseCookies } from "nookies";
 
 export const axiosInstance = axios.create({
-  baseURL: `${API_URL}/api`,
+  baseURL: `${API_URL}`,
   headers: {
     "Content-Type": "application/json",
   },
