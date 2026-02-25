@@ -15,7 +15,7 @@ import { DeleteUserMutation, GetUsers } from "@/lib/actions/users.actions";
 import { useUserStore } from "@/lib/stores/useUserStore";
 
 export default function UsersComponent() {
-  const { user, token, isAuthenticated } = useUserStore()
+  const { user, token } = useUserStore()
   const router = useRouter();
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
