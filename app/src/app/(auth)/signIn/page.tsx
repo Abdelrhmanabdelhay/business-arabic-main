@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SignInMutation } from "@/lib/actions/auth";
 import { useUserStore } from "@/lib/stores/useUserStore";
+import { setCookie } from "nookies";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -39,6 +40,11 @@ export default function SignInPage() {
 
       setUser(response.user);
       setToken(response.token);
+      setCookie(null, "token", response.token, {
+  path: "/",
+  maxAge: 60 * 60 * 24 * 7, // 7 days (optional but recommended)
+});
+
       router.push(response.user.role === "user" ? "/" : "/dashboard");
     } catch (error: any) {
       console.log({error})
