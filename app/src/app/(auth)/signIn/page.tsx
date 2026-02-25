@@ -35,24 +35,27 @@ export default function SignInPage() {
   });
 
   const onSubmit = async (data: LoginInput) => {
-    try {
-      const response = await signIn(data);
+     try {
+    const response = await signIn(data);
 
-      setUser(response.user);
-      setToken(response.token);
-      
-      setCookie(null, "token", response.token, {
-  path: "/",
-  maxAge: 60 * 60 * 24 * 7, // 7 days (optional but recommended)
-});
+    setUser(response.user);
+    setToken(response.token);
 
-      router.push(response.user.role === "user" ? "/" : "/dashboard");
-    } catch (error: any) {
-      console.log({error})
-      setError("root", {
-        message: error.response?.data?.message || "حدث خطأ أثناء إنشاء الحساب",
-      });
-    }
+    // Save token
+    setCookie(null, "token", response.token, {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+
+    // Save user credentials
+    setCookie(null, "CRED", JSON.stringify(response.user), {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+
+  } catch (error) {
+    console.error(error);
+  }
   };
 
   return (
