@@ -40,15 +40,19 @@ app.use(morganMiddleware);
 // );
 
 // Parse request bodies for all other routes
-app.use(
-  "/api/stripe/webhook",
-  express.raw({ type: "application/json" })
-);
+// app.use(
+//   "/api/stripe/webhook",
+//   express.raw({ type: "application/json" })
+// );
 
 // Normal body parsers
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
+app.use((req, res, next) => {
+  if (req.originalUrl === "/api/stripe/webhook") {
+    return next(); // ⛔ skip json parsing
+  }
+  express.json()(req, res, next);
+});app.use(express.urlencoded({ extended: true }));
+app.use("/api/stripe", stripeRoutes);
 // Root route
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({
@@ -93,7 +97,6 @@ app.use("/api/ideas", compression(), ideasRoutes);
 app.use("/api/projects", compression(), projectsRoutes);
 app.use("/api/feasibility-studies", compression(), feasibilityStudyRoutes);
 app.use("/api/plans", planRouter);
-app.use("/api/stripe", stripeRoutes);
 app.use("/api/contact", contactRoutes);
 
 

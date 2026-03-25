@@ -252,5 +252,112 @@ const info = await transporter.sendMail({
   } catch (error) {
     return { success: false };
   }
+
+
+
+
+  
 };
 
+export const sendResetPasswordEmail = async (
+  name: string,
+  email: string,
+  message: string,
+) => {
+  try {
+    await transporter.sendMail({
+      from: `"Business Arabic" <${process.env.RECEIVER_EMAIL}>`,
+      to: email,
+      subject: `Password Reset Request from ${name}`,
+      html: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Password Reset</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f1f5f9;padding:40px 16px;">
+    <tr>
+      <td align="center">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;">
+          
+          <!-- HEADER -->
+          <tr>
+            <td style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 60%,#0f2d52 100%);padding:36px 40px;border-radius:20px 20px 0 0;">
+              <table width="100%">
+                <tr>
+                  <td width="64">
+                    <img src="cid:businessLogo" alt="Business Arabic Logo"
+                      style="width:56px;height:56px;border-radius:14px;border:2px solid rgba(255,255,255,0.2);object-fit:cover;display:block;" />
+                  </td>
+                  <td style="padding-left:16px;vertical-align:middle;">
+                    <p style="margin:0 0 4px;font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);">
+                      Business Arabic
+                    </p>
+                    <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;line-height:1.25;">
+                      Password Reset Request
+                    </h1>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- BODY -->
+          <tr>
+            <td style="background:#ffffff;border-radius:0 0 20px 20px;padding:36px 40px;box-shadow:0 4px 32px rgba(0,0,0,0.08);">
+
+              <p style="margin:0 0 24px;font-size:15px;color:#475569;line-height:1.7;">
+                Hello <strong>${name}</strong>,<br/>
+                You requested a password reset. Please see your reset link and follow the instructions below.
+              </p>
+
+              <!-- User Message -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">
+                <tr>
+                  <td style="background:#fffbeb;border:1px solid #fde68a;border-radius:14px;padding:16px;">
+                    <p style="margin:0;font-size:14px;color:#44403c;line-height:1.7;">
+                      ${message}
+                    </p>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin:0;font-size:13px;color:#64748b;line-height:1.5;">
+                If you didn't request a password reset, you can safely ignore this email. The link will expire in 15 min.
+              </p>
+
+              <p style="margin:24px 0 0;font-size:12px;color:#cbd5e1;text-align:center;">
+                Sent on ${new Date().toLocaleDateString("en-US", { weekday:"long", year:"numeric", month:"long", day:"numeric" })}
+                &nbsp;·&nbsp;
+                ${new Date().toLocaleTimeString("en-US", { hour:"2-digit", minute:"2-digit", timeZoneName:"short" })}
+              </p>
+
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
+      `,
+      attachments: [
+        {
+          filename: 'logo.png',
+          path: path.join(__dirname, "../assets/logo.png"),
+          cid: 'businessLogo',
+        },
+      ],
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Reset email error:", error);
+    return { success: false };
+  }
+};

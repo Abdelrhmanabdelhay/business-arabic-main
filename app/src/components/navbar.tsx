@@ -20,7 +20,7 @@ import { Logout } from "@/lib/actions/auth";
 import { parseCookies } from "nookies";
 import { FaFacebookF, FaTwitter } from "react-icons/fa";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/dropdown";
-
+import { useUserStore } from "@/lib/stores/useUserStore";
 interface NavLinkProps {
   href: string;
   children: React.ReactNode;
@@ -45,38 +45,31 @@ const NavLink = ({ href, children, className = "", onClick }: NavLinkProps) => {
 
 interface NavbarProps {
   onSearch?: (value: string) => void;
+  navItems?: { href: string; label: string }[];
+  dropdownItems?: any[];
 }
 
-export const Navbar = ({ onSearch }: NavbarProps) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+export const Navbar = ({ onSearch, navItems, dropdownItems }: NavbarProps) => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+const { user, isAuthenticated, hasHydrated } = useUserStore();
   const [searchValue, setSearchValue] = useState("");
   const router = useRouter();
   const pathname = usePathname();
 
 const isFeasibilityPage = pathname === "/feasibility-studies";
 
-  useEffect(() => {
-    const cookies = parseCookies();
-    const userCred = cookies.CRED;
-    if (userCred) {
-      try {
-        const userData = JSON.parse(userCred);
-        setUser(userData);
-      } catch (error) {
-        console.error("Error parsing user data:", error);
-      }
-    }
-  }, []);
+const logout = useUserStore((state) => state.logout);
 
-  const handleLogout = async () => {
-    await Logout();
-    setUser(null);
-    router.push("/"); // redirect after logout
-  };
+const handleLogout = async () => {
+  await Logout();
+  logout();
+  router.push("/");
+};
 
-  const handleNavigation = (path: string) => router.push(path);
-
+const handleNavigation = (path?: string) => {
+  if (!path) return; 
+  router.push(path);
+};
   const handleSearch = (value: string) => {
     setSearchValue(value);
     if (pathname === "/feasibility-studies") {
@@ -95,7 +88,7 @@ const isFeasibilityPage = pathname === "/feasibility-studies";
     { key: "orders", label: "الطلبات", href: "/my-orders" },
     { key: "logout", label: "تسجيل الخروج", action: handleLogout },
   ];
-
+if (!hasHydrated) return null;
   return (
     <NextUINavbar
       maxWidth="xl"
@@ -112,7 +105,7 @@ const isFeasibilityPage = pathname === "/feasibility-studies";
           </button>
         </NavbarBrand>
         <div className="hidden lg:flex gap-12 items-center mr-8">
-          {siteConfig.navItems.map((item) => (
+          {(navItems || siteConfig.navItems).map((item) => (
             <NavbarItem key={item.href}>
               <NavLink href={item.href}>{item.label}</NavLink>
             </NavbarItem>
@@ -155,7 +148,7 @@ const isFeasibilityPage = pathname === "/feasibility-studies";
         </a>
       </div>
     </div>
-) : user ? (
+) : isAuthenticated  ? (
   <Dropdown
     placement="bottom-end"
     classNames={{
@@ -173,19 +166,19 @@ const isFeasibilityPage = pathname === "/feasibility-studies";
           as="button"
           className="transition-transform"
           color="primary"
-          name={user.fullName}
+          name={user?.fullName}
           size="sm"
-          src={user.avatar}
+          src={user?.avatar}
         />
         <span className="text-[#1a1a1a] text-[15px]">
-          {user.fullName}
+          {user?.fullName}
         </span>
       </Button>
     </DropdownTrigger>
 
     <DropdownMenu
       aria-label="User menu"
-      items={userDropdownItems}
+      items={dropdownItems || userDropdownItems}
       className="text-right"
       itemClasses={{
         base: "gap-4",
@@ -199,9 +192,13 @@ const isFeasibilityPage = pathname === "/feasibility-studies";
           className={`${
             item.key === "logout" ? "text-danger" : ""
           } text-right`}
-          onClick={
-            item.action || (() => handleNavigation(item.href))
-          }
+          onClick={() => {
+            if (item.action) {
+              item.action();
+            } else if (item.href) {
+              handleNavigation(item.href);
+            }
+          }}
         >
           {item.label}
         </DropdownItem>
@@ -242,14 +239,6 @@ const isFeasibilityPage = pathname === "/feasibility-studies";
                 تسجيل الدخول
               </Button>
 
-                    <Button
-                className="text-[15px] bg-[#3366FF] hover:bg-[#2952CC] w-full"
-                radius="full"
-                onClick={() => handleNavigation('/signup')}
-              >
-                إنشاء حساب
-              </Button>
-
     </div>
   )}
 </NavbarItem>
@@ -282,15 +271,20 @@ const isFeasibilityPage = pathname === "/feasibility-studies";
             />
           ) : user ? (
             <div className="flex flex-col gap-2">
-              {userDropdownItems.map((item) => (
+              {(dropdownItems || userDropdownItems).map((item) => (
                 <Button
                   key={item.key}
                   variant="light"
                   className={`justify-start text-[15px] ${
                     item.key === "logout" ? "text-danger" : "text-[#1a1a1a]"
                   }`}
-                  onClick={item.action || (() => handleNavigation(item.href))}
-                >
+onClick={() => {
+  if (item.action) {
+    item.action();
+  } else if (item.href) {
+    handleNavigation(item.href);
+  }
+}}                >
                   {item.label}
                 </Button>
               ))}

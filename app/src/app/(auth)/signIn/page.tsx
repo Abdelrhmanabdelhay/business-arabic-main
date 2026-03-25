@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Card } from "@nextui-org/card";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
@@ -19,7 +19,7 @@ export default function SignInPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const { signIn, isPending } = SignInMutation();
-  const { setUser, setToken } = useUserStore()
+  const { setUser, setToken ,isAuthenticated,hasHydrated } = useUserStore()
   const {
     control,
     handleSubmit,
@@ -32,15 +32,24 @@ export default function SignInPage() {
       password: "",
     },
   });
+useEffect(() => {
+  if (hasHydrated && isAuthenticated) {
+    const user = useUserStore.getState().user;
 
+    if (user?.role === "user") {
+      router.replace("/profileu"); 
+    } else {
+      router.replace("/dashboard"); 
+    }
+  }
+}, [hasHydrated, isAuthenticated]);
   const onSubmit = async (data: LoginInput) => {
     try {
       const response = await signIn(data);
-
-      setUser(response.user);
       setToken(response.token);
+      setUser(response.user);
       
-      router.push(response.user.role === "user" ? "/" : "/dashboard");
+      router.push(response.user.role === "user" ? "/profileu" : "/dashboard");
     } catch (error: any) {
       console.log({error})
       setError("root", {
@@ -48,7 +57,19 @@ export default function SignInPage() {
       });
     }
   };
+if (!hasHydrated) return null;
 
+if (isAuthenticated) {
+  const user = useUserStore.getState().user;
+
+  if (user?.role === "user") {
+    router.replace("/profileuu");
+  } else {
+    router.replace("/dashboard");
+  }
+
+  return null;
+}
   return (
     <div className="min-h-screen relative">
       {/* Animated background */}
@@ -168,9 +189,9 @@ export default function SignInPage() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
                 className="text-center text-sm text-default-500">
-                ليس لديك حساب؟{" "}
-                <Link href="/signup" className="text-primary-600 font-semibold hover:underline">
-                  يمكنك انشاء حساب الآن
+                نسيت كلمة المرور؟{" "}
+                <Link href="/forgot-password" className="text-primary-600 font-semibold hover:underline">
+                  يمكنك الضغط هنا لاستعادة حساب الآن
                 </Link>
               </motion.p>
             </form>

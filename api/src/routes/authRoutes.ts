@@ -169,4 +169,8 @@ router.post("/signin",   (req, res, next) => {
     next();
   },validate(signInSchema), AuthController.signIn);
 
+
+  router.post("/forgot-password", AuthController.forgotPassword);
+  router.post("/reset-password/:token", AuthController.resetPassword);
+
 export default router;

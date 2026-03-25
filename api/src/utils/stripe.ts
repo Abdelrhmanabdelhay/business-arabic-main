@@ -3,7 +3,7 @@ const stripe = require("stripe")(config.stripe.SECRET_KEY);
 import { Request, Response } from "express";
 import payment from "../models/payment";
 import { sendContactEmail } from "./nodemailer";
-
+import toast from "react-hot-toast";
 import Stripe from "stripe";
 /**
  * Creates a Stripe Checkout session for a one-time payment.
@@ -16,18 +16,21 @@ import Stripe from "stripe";
 
 import { AuthenticatedRequest } from "../middlewares/auth";
 import createPaymentNumber from "./createPayNamber";
+import User from "../models/User";
 
 const createCheckoutSession = async (req: AuthenticatedRequest, res: Response) => {
   const domain = req.headers.origin;
   const userId = req.params?.id || req?.user?.id;
-  const { serviceId, serviceType, name, description, image, price } =
+  const { serviceId, serviceType, name, description, image, price ,plan ,userData } =
     req.body;
+const isSignupFlow = !!userData;
 
-  if (!serviceId || !serviceType) {
-    return res
-      .status(400)
-      .json({ error: "serviceId and serviceType required" });
-  }
+if (!isSignupFlow && (!serviceId || !serviceType)) {
+  return res
+    .status(400)
+    .json({ error: "serviceId and serviceType required" });
+}
+
 
   // Price is expected as SAR (original amount), not cents
   const numPrice = Number(price);
@@ -42,7 +45,7 @@ const createCheckoutSession = async (req: AuthenticatedRequest, res: Response) =
         product_data: {
           name,
           description,
-          images: [image],
+          images:(image ? { images: [image] } : {}),
         },
         unit_amount: Math.round(numPrice * 100), // Convert SAR to fils (cents)
       },
@@ -50,7 +53,23 @@ const createCheckoutSession = async (req: AuthenticatedRequest, res: Response) =
       quantity: 1,
     },
   ];
+let metadata: any = {};
+if (isSignupFlow) {
 
+  metadata = {
+    fullName: userData.fullName,
+    email: userData.email,
+    password: userData.password,
+    plan: plan,
+    type: "signup",
+  };
+} else {
+  metadata = {
+    userId,
+    serviceId,
+    type: "service_payment",
+  };
+}
   try {
     const session = await stripe.checkout.sessions.create({
       line_items,
@@ -58,26 +77,27 @@ const createCheckoutSession = async (req: AuthenticatedRequest, res: Response) =
       mode: "payment",
       success_url: `${domain}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${domain}/canceled`,
+      metadata
+  
     });
 
-    if (!userId || !serviceId) {
-      return res.status(400).json({ error: "userId and serviceId are required for payment creation" });
-    }
-    if (typeof userId !== "string" || typeof serviceId !== "string") {
-      return res.status(400).json({ error: "userId and serviceId must be valid strings for payment creation" });
-    }
-    
-    // Store original SAR price, not cents
-    await payment.create({
-      payNumber: createPaymentNumber(userId, serviceId),
-      userId,
-      serviceId,
-      serviceType,
-      amount: Math.round(numPrice), 
-      stripeSessionId: session.id,
-      status: "pending",
+if (!isSignupFlow) {
+  if (!userId || !serviceId) {
+    return res.status(400).json({
+      error: "userId and serviceId are required for payment creation",
     });
+  }
 
+  await payment.create({
+    payNumber: createPaymentNumber(userId, serviceId),
+    userId,
+    serviceId,
+    serviceType,
+    amount: Math.round(numPrice),
+    stripeSessionId: session.id,
+    status: "pending",
+  });
+}
     // Return the session URL instead of redirecting
     res.status(200).json({
       url: session.url,
@@ -90,7 +110,7 @@ const createCheckoutSession = async (req: AuthenticatedRequest, res: Response) =
       .json({ error: error, message: "Failed to create checkout session" });
   }
 };
-
+console.log("🔥 HIT WEBHOOK ROUTE");
 const stripeWebHook = async (req: Request, res: Response) => {
   const sig = req.headers["stripe-signature"] as string;
   const endpointSecret = config.stripe.WEBHOOK_SECRET;
@@ -119,8 +139,18 @@ const stripeWebHook = async (req: Request, res: Response) => {
     switch (event.type) {
       // ✅ PAYMENT SUCCESS
       case "checkout.session.completed": {
-        const session = event.data.object as Stripe.Checkout.Session;
-
+    const session = event.data.object;
+  const type = session.metadata?.type;
+  const fullName = session.metadata?.fullName;
+  const email = session.metadata?.email;
+  const password = session.metadata?.password;
+  const plan = session.metadata?.plan;
+  console.log("Session metadata:", session.metadata);
+    if (type === "signup") {
+      console.log("👤 Creating user account for:", email);
+      await User.create({ fullName, email, password: password, plan });
+      toast.success(`User account created for ${email}`);
+    }
         await payment.findOneAndUpdate(
           { stripeSessionId: session.id },
           {
@@ -401,7 +431,7 @@ const createSubscriptionCheckoutSession = async (
       userId,
       serviceId,
       serviceType,
-      amount: Math.round(numPrice), // Store original SAR price, not cents
+      amount: Math.round(numPrice), 
       stripeSessionId: session.id,
       status: "pending",
     });

@@ -11,6 +11,9 @@ export interface IUser extends Document {
   role: "user" | "admin";
   createdAt: Date;
   updatedAt: Date;
+  resetPasswordToken?: string;
+resetPasswordExpires?: Date;
+plan?: string;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -20,6 +23,9 @@ const userSchema = new mongoose.Schema<IUser>(
     password: { type: String, required: true },
     fullName: { type: String, required: true },
     role: { type: String, enum: ["user", "admin"], default: "user" },
+    resetPasswordToken: { type: String },
+    resetPasswordExpires: { type: Date },
+    plan: { type: String }
   },
   { timestamps: true }
 );

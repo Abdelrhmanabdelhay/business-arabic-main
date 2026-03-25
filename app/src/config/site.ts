@@ -12,7 +12,10 @@ export const siteConfig = {
       label: "دراسات جدوى",
       href: "/feasibility-studies",
     },
-
+    {
+      label: "نادي أفكار مشاريع",
+      href: "/club",
+    },
     {
       label: "المدونة",
       href: "/blog",

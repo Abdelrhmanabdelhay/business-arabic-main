@@ -9,12 +9,17 @@ interface UserState {
     user: User | null
     isAuthenticated: boolean
     token: string | null
+    hasHydrated: boolean // 👈 مهم جدا
     // Actions
     setUser: (user: User) => void
     setToken: (token: string) => void
     updateProfile: (updates: Partial<User>) => void
     logout: () => void
+        setHasHydrated: (state: boolean) => void
+
 }
+
+let isLoggingOut = false
 
 export const useUserStore = create<UserState>()(
     persist(
@@ -22,12 +27,13 @@ export const useUserStore = create<UserState>()(
             user: null,
             isAuthenticated: false,
             token: null,
+            hasHydrated: false,
 
-            setUser: (user) =>
-                set({
-                    user,
-                    isAuthenticated: true
-                }),
+                setUser: (user) =>
+                    set((state) => ({
+                        user,
+                        isAuthenticated: !!state.token
+                    })),
 
             setToken: (token) =>
                 set({
@@ -40,21 +46,35 @@ export const useUserStore = create<UserState>()(
                     user: state.user ? { ...state.user, ...updates } : null
                 })),
 
-            logout: () =>
-                set({
-                    user: null,
-                    token: null,
-                    isAuthenticated: false
-                }),
+                logout: () => {
+                    isLoggingOut = true
+                    useUserStore.persist.clearStorage()
+                    set({
+                        user: null,
+                        token: null,
+                        isAuthenticated: false
+                    })
+                },
+            setHasHydrated: (state) =>
+                set({ hasHydrated: state }),
         }),
         {
             name: 'user-storage',
             storage: createJSONStorage(() => localStorage),
-            partialize: (state) => ({
-                user: state.user,
-                token: state.token,
-                isAuthenticated: state.isAuthenticated
-            })
+
+onRehydrateStorage: () => (state) => {
+    if (state) {
+        state.setHasHydrated(true)
+    }
+},
+partialize: (state) => {
+    if (isLoggingOut) return {} as any 
+    return {
+        user: state.user,
+        token: state.token,
+        isAuthenticated: state.isAuthenticated
+    }
+}
         }
     )
 )

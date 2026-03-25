@@ -136,25 +136,24 @@ export default function ReadyProjects() {
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
                     alt={project.name}
-                    className="object-cover w-full h-full transform transition-transform duration-500 group-hover:scale-110"
+                    className="object-cover w-full h-full transform transition-transform  group-hover:scale-110"
                     src={project.image}
                     removeWrapper
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Button
-                      color="primary"
-                      variant="shadow"
-                      size="lg"
-                      radius="full"
-                      className="font-medium text-black hover:translate-y-1 transition-transform duration-300 z-50"
-                      endContent={<FiArrowLeft className="text-xl" />}
-                      onPress={() =>
-                        router.push(`/feasibility-studies/${project.id}`)
-                      }
-                    >
-                      عرض التفاصيل
-                    </Button>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent opacity-0 group-hover:opacity-100 transition-opacity " />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <Button
+                color="primary"
+                variant="solid"
+                size="lg"
+                radius="full"
+              className="font-medium bg-white text-primary-800 py-2 px-4 rounded-full shadow-lg hover:scale-105 transition-all z-50"  endContent={<FiArrowLeft className="text-xl" />}
+                onPress={() =>
+                  router.push(`/feasibility-studies/${project.id}`)
+                }
+              >
+                عرض التفاصيل
+              </Button>
                   </div>
                 </div>
 
@@ -187,7 +186,11 @@ export default function ReadyProjects() {
                       size="sm"
                       radius="full"
                       className="font-medium"
+                                      onPress={() =>
+                  router.push(`/feasibility-studies/${project.id}`)
+                }
                     >
+                      
                       طلب دراسة الجدوى
                     </Button>
                   </div>

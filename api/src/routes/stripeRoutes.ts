@@ -42,7 +42,9 @@ const router = Router();
  *                   example: Webhook Error - Invalid signature
  */
 // Post webhook for Stripe events
-router.post("/webhook",
+router.post(
+  "/webhook",
+  express.raw({ type: "application/json" }), // ✅ هنا الصح
   stripeWebHook
 );
 
@@ -162,7 +164,7 @@ router.post("/webhook",
  *         $ref: '#/components/responses/BadRequest'
  */
 
-router.post('/create-checkout-session', authenticate, handleCreateCheckoutSession);
+router.post('/create-checkout-session', handleCreateCheckoutSession);
 
 // POST /create-test-checkout-session
 router.post('/create-test-checkout-session', authenticate, handleCreateTestCheckoutSession);
