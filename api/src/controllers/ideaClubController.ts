@@ -8,7 +8,7 @@ export class IdeaClubController {
     try {
       const { file } = req;
       const createIdeaClubDto: CreateIdeaClubDto = req.body;
-      const ideaContent = await JSON.parse(createIdeaClubDto.content);
+      const ideaContent = createIdeaClubDto.content;
       let image;
       if (file) {
         image = await imageService.uploadImage(file);

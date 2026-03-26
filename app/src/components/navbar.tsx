@@ -21,6 +21,7 @@ import { parseCookies } from "nookies";
 import { FaFacebookF, FaTwitter } from "react-icons/fa";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/dropdown";
 import { useUserStore } from "@/lib/stores/useUserStore";
+import { UserNavbar } from "./UserNavbar";
 interface NavLinkProps {
   href: string;
   children: React.ReactNode;
@@ -89,6 +90,8 @@ const handleNavigation = (path?: string) => {
     { key: "logout", label: "تسجيل الخروج", action: handleLogout },
   ];
 if (!hasHydrated) return null;
+
+
   return (
     <NextUINavbar
       maxWidth="xl"

@@ -81,9 +81,22 @@ export class IdeaClubService {
       name: idea.name,
       description: idea.description,
       category: idea.category,
-      content: idea.content,
-      createdAt: idea.createdAt,
-      updatedAt: idea.updatedAt,
+ content: idea.content.map((item) => {
+      if (item && typeof item === "object" && !Array.isArray(item)) {
+        const values = Object.values(item as Record<string, any>);
+        const isCharMap = values.every((v) => typeof v === "string" && v.length === 1);
+        if (isCharMap) {
+          return Object.keys(item as Record<string, any>)
+            .sort((a, b) => Number(a) - Number(b))
+            .map((k) => (item as any)[k])
+            .join("") as any;
+        }
+      }
+      return item;
+    }),
+    imageUrl: idea.imageUrl,  // 👈 was missing
+    createdAt: idea.createdAt,
+    updatedAt: idea.updatedAt,
     };
   }
 }

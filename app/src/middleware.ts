@@ -2,26 +2,28 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-    const path = request.nextUrl.pathname
-    // Only run middleware for dashboard routes
-    if (!path.startsWith('/dashboard')) {
-        return NextResponse.next()
+  const path = request.nextUrl.pathname;
+
+  const token = request.cookies.get('token');
+  const userCred = JSON.parse(request.cookies.get('CRED')?.value || '{}');
+  const role = userCred?.role;
+
+
+  if (path.startsWith('/dashboard')) {
+    if (!token || role !== "admin") {
+      return NextResponse.redirect(new URL('/signIn', request.url));
     }
+  }
 
-    // Check for auth token and user credentials in cookies
-    const token = request.cookies.get('token')
-    const userCred = JSON.parse(request.cookies.get('CRED')?.value || '{}')
-
-    const authorized = token && userCred?.role === "admin"
-    console.log({ authorized, token, userCred })
-    // If not authorized, redirect to signIn
-    if (!authorized) {
-        return NextResponse.redirect(new URL('/signIn', request.url))
+  if (path.startsWith('/user') || path === '/userp') {
+    if (!token || role !== "user") {
+      return NextResponse.redirect(new URL('/', request.url));
     }
+  }
 
-    return NextResponse.next()
-}
+  if (path === '/' && role === "user") {
+    return NextResponse.redirect(new URL('/userp', request.url));
+  }
 
-export const config = {
-    matcher: '/dashboard/:path*'
+  return NextResponse.next();
 }

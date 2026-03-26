@@ -17,7 +17,8 @@ import stripeRoutes from "./routes/stripeRoutes";
 import planRouter from "./routes/planRoutes";
 import contactRoutes from "./routes/contactRoute";
 import { stripeWebHook } from "./utils/stripe";
-
+import growthServiceRoutes from "./routes/growthServiceRoutes";
+import successStoryRoutes from "./routes/successStoryRoutes";
 import AppError from "./utils/appError";
 
 const app = express();
@@ -99,7 +100,8 @@ app.use("/api/feasibility-studies", compression(), feasibilityStudyRoutes);
 app.use("/api/plans", planRouter);
 app.use("/api/contact", contactRoutes);
 
-
+app.use("/api/growth-services", growthServiceRoutes);
+app.use("/api/success-stories", successStoryRoutes);
 // Stripe success and cancel endpoints
 app.get("/success", (req: Request, res: Response) => {
   const sessionId = req.query.session_id;

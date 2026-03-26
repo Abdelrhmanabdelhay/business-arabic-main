@@ -4,23 +4,21 @@ export interface IIdeaClub extends Document {
   _id: mongoose.Types.ObjectId;
   name: string;
   description: string;
-  content: Map<object, any>[];
+    content: string[];
   category: string;
   createdAt: string;
   updatedAt: string;
+  imageUrl?: string;
 }
 
 const ideaClubSchema = new mongoose.Schema<IIdeaClub>(
   {
     name: { type: String, required: true },
     description: { type: String, required: true },
-    content: [
-      {
-        type: Map,
-        of: mongoose.Schema.Types.Mixed,
-      },
-    ],
+    content: [{ type: String }],  
+
     category: { type: String, required: true },
+      imageUrl: { type: String },
   },
   { timestamps: true }
 );

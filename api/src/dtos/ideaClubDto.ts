@@ -1,15 +1,19 @@
 export interface CreateIdeaClubDto {
   name: string;
   description: string;
-  content: string;
+content: string[];
   category: string;
+    imageUrl?: string;
+
 }
 
 export interface UpdateIdeaClubDto {
   name?: string;
   description?: string;
-  content?: string;
+content?: string[];
   category: string;
+    imageUrl?: string;
+
 }
 
 export interface IdeaClubResponseDto {
@@ -17,9 +21,11 @@ export interface IdeaClubResponseDto {
   name: string;
   description: string;
   category: string;
-  content: Map<object, any>[];
-  createdAt: string;
+  content: string[];
+    createdAt: string;
   updatedAt: string;
+    imageUrl?: string;
+
 }
 
 export interface IdeaClubListResponseDto {
@@ -28,6 +34,8 @@ export interface IdeaClubListResponseDto {
   total: number;
   page: number;
   limit: number;
+    imageUrl?: string;
+
 }
 export interface PaymentResponseDto {
   id: string;
@@ -36,4 +44,6 @@ export interface PaymentResponseDto {
   status: string;
   createdAt: string;
   updatedAt: string;
+    imageUrl?: string;
+
 }

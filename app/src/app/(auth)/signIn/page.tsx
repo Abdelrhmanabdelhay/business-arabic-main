@@ -37,7 +37,7 @@ useEffect(() => {
     const user = useUserStore.getState().user;
 
     if (user?.role === "user") {
-      router.replace("/profileu"); 
+      router.replace("/userp"); 
     } else {
       router.replace("/dashboard"); 
     }
@@ -49,7 +49,7 @@ useEffect(() => {
       setToken(response.token);
       setUser(response.user);
       
-      router.push(response.user.role === "user" ? "/profileu" : "/dashboard");
+      router.push(response.user.role === "user" ? "/userp" : "/dashboard");
     } catch (error: any) {
       console.log({error})
       setError("root", {
@@ -63,7 +63,7 @@ if (isAuthenticated) {
   const user = useUserStore.getState().user;
 
   if (user?.role === "user") {
-    router.replace("/profileuu");
+    router.replace("/userp");
   } else {
     router.replace("/dashboard");
   }
