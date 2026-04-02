@@ -5,10 +5,13 @@ export interface IFeasibilityStudy extends Document {
   name: string;
   description: string;
   image: string;
-  price: string;
+  price: Number;
+    pdf: string; 
   category: string;
   createdAt: Date;
   updatedAt: Date;
+    image_public_id: string; // 👈 أضف ده
+  pdf_public_id: string;   // 👈 أضف ده
 }
 
 const feasibilityStudySchema = new mongoose.Schema<IFeasibilityStudy>(
@@ -16,8 +19,11 @@ const feasibilityStudySchema = new mongoose.Schema<IFeasibilityStudy>(
     name: { type: String, required: true },
     description: { type: String, required: true },
     image: { type: String, required: true },
-    price: { type: String, required: true, min: 0 },
+price: { type: Number, required: true },
    category: { type: String,required: true },
+    pdf: { type: String, required: true },
+    image_public_id: { type: String, required: true }, // 👈 جدي
+    pdf_public_id: { type: String, required: true },   // 👈 جدي
   },
   { timestamps: true }
 );

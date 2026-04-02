@@ -100,106 +100,20 @@ export default function IdeaClubPage() {
   return (
     <div
       dir="rtl"
-      style={{
-        fontFamily: "'Cairo', 'Tajawal', sans-serif",
-        background: "#f0f4ff",
-        minHeight: "100vh",
-      }}
+      className="min-h-screen bg-[#f0f4ff]"
+      style={{ fontFamily: "'Cairo', 'Tajawal', sans-serif" }}
     >
-      <style>{`
+      <style suppressHydrationWarning>{`
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;900&display=swap');
-        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .idea-card {
-          background: #fff;
-          border-radius: 22px;
-          overflow: hidden;
-          box-shadow: 0 4px 20px rgba(30,60,180,0.07);
-          transition: transform 0.32s cubic-bezier(.22,1,.36,1), box-shadow 0.32s ease;
-          cursor: pointer;
-          position: relative;
+        @keyframes shimmer {
+          0%   { background-position: 200% center; }
+          100% { background-position: -200% center; }
         }
-        .idea-card:hover {
-          transform: translateY(-10px);
-          box-shadow: 0 20px 52px rgba(30,60,180,0.16);
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(16px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
-
-        .cat-btn {
-          border: 1.5px solid #dde4ff;
-          background: #fff;
-          color: #475569;
-          border-radius: 50px;
-          padding: 8px 18px;
-          font-size: 13px;
-          font-weight: 700;
-          cursor: pointer;
-          font-family: 'Cairo', sans-serif;
-          transition: all 0.2s;
-          white-space: nowrap;
-        }
-        .cat-btn:hover { border-color: #2c4fd4; color: #2c4fd4; }
-        .cat-btn.active {
-          background: linear-gradient(135deg, #2c4fd4, #1a3aa8);
-          color: #fff;
-          border-color: transparent;
-          box-shadow: 0 4px 14px rgba(44,79,212,0.3);
-        }
-
-        .page-btn {
-          width: 40px; height: 40px;
-          border-radius: 10px;
-          border: 1.5px solid #dde4ff;
-          background: #fff;
-          color: #475569;
-          font-size: 14px;
-          font-weight: 700;
-          cursor: pointer;
-          font-family: 'Cairo', sans-serif;
-          transition: all 0.2s;
-          display: flex; align-items: center; justify-content: center;
-        }
-        .page-btn:hover { border-color: #2c4fd4; color: #2c4fd4; }
-        .page-btn.active {
-          background: linear-gradient(135deg, #2c4fd4, #1a3aa8);
-          color: #fff;
-          border-color: transparent;
-          box-shadow: 0 4px 12px rgba(44,79,212,0.3);
-        }
-        .page-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-
-        .search-input {
-          border: 1.5px solid #dde4ff;
-          border-radius: 50px;
-          padding: 12px 22px;
-          font-size: 14px;
-          font-family: 'Cairo', sans-serif;
-          outline: none;
-          width: 100%;
-          background: #fff;
-          color: #1a2060;
-          transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        .search-input:focus {
-          border-color: #2c4fd4;
-          box-shadow: 0 0 0 3px rgba(44,79,212,0.1);
-        }
-        .search-input::placeholder { color: #94a3b8; }
-
-        .search-btn {
-          background: linear-gradient(135deg, #2c4fd4, #1a3aa8);
-          color: #fff;
-          border: none;
-          border-radius: 50px;
-          padding: 12px 28px;
-          font-size: 14px;
-          font-weight: 700;
-          cursor: pointer;
-          font-family: 'Cairo', sans-serif;
-          white-space: nowrap;
-          transition: all 0.2s;
-          box-shadow: 0 4px 14px rgba(44,79,212,0.3);
-        }
-        .search-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(44,79,212,0.4); }
 
         .skeleton {
           background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
@@ -207,115 +121,125 @@ export default function IdeaClubPage() {
           animation: shimmer 1.4s infinite;
           border-radius: 10px;
         }
-        @keyframes shimmer {
-          0% { background-position: 200% center; }
-          100% { background-position: -200% center; }
+
+        .fade-in { animation: fadeIn 0.4s ease forwards; }
+
+        .idea-card {
+          transition: transform 0.32s cubic-bezier(.22,1,.36,1), box-shadow 0.32s ease;
+        }
+        .idea-card:hover {
+          transform: translateY(-10px);
+          box-shadow: 0 20px 52px rgba(30,60,180,0.16);
         }
 
-        .fade-in {
-          animation: fadeIn 0.4s ease forwards;
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(16px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .category-chip {
-          display: inline-block;
-          padding: 3px 12px;
-          border-radius: 50px;
-          font-size: 11px;
-          font-weight: 700;
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
 
-        .empty-state {
-          text-align: center;
-          padding: 80px 24px;
-          color: #94a3b8;
-        }
+        /* Hide scrollbar for category row */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
+      {/* ── Hero ── */}
       <div
+        className="relative overflow-hidden px-6 pb-20 pt-16"
         style={{
           background: "linear-gradient(145deg, #1a2f9e 0%, #2c4fd4 55%, #1e3fbc 100%)",
-          padding: "64px 24px 80px",
-          position: "relative",
-          overflow: "hidden",
         }}
       >
-        <div style={{ position: "absolute", top: -60, left: -60, width: 260, height: 260, background: "radial-gradient(circle, rgba(249,115,22,0.2) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", bottom: -40, right: "10%", width: 320, height: 320, background: "radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
+        {/* Decorative blobs */}
+        <div
+          className="pointer-events-none absolute rounded-full"
+          style={{
+            top: -60, left: -60, width: 260, height: 260,
+            background: "radial-gradient(circle, rgba(249,115,22,0.2) 0%, transparent 70%)",
+          }}
+        />
+        <div
+          className="pointer-events-none absolute rounded-full"
+          style={{
+            bottom: -40, right: "10%", width: 320, height: 320,
+            background: "radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 70%)",
+          }}
+        />
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage: "radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
+          }}
+        />
 
-        <div style={{ maxWidth: 860, margin: "0 auto", position: "relative", zIndex: 2, textAlign: "center" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 20, color: "rgba(255,255,255,0.55)", fontSize: 13 }}>
-            <span style={{ color: "#fbbf24", fontWeight: 700 }}>نادي أفكار المشاريع</span>
+        <div className="relative z-10 mx-auto max-w-[860px] text-center">
+          {/* Label */}
+          <div className="mb-5 flex items-center justify-center gap-1.5 text-[13px] text-white/55">
+            <span className="font-bold text-amber-400">نادي أفكار المشاريع</span>
           </div>
 
+          {/* Badge */}
           <div
+            className="mb-4 inline-flex items-center gap-1.5 rounded-full border px-[18px] py-1.5 text-[13px] font-bold text-amber-400"
             style={{
-              display: "inline-flex", alignItems: "center", gap: 6,
               background: "rgba(249,115,22,0.14)",
-              border: "1px solid rgba(249,115,22,0.35)",
-              borderRadius: 50, padding: "6px 18px",
-              color: "#fbbf24", fontSize: 13, fontWeight: 700,
-              marginBottom: 18,
+              borderColor: "rgba(249,115,22,0.35)",
             }}
           >
             <span>💡</span> أفكار مميزة ومدروسة
           </div>
 
           <h1
+            className="mb-3.5 font-black leading-tight text-white"
             style={{
               fontSize: "clamp(30px, 5vw, 56px)",
-              fontWeight: 900, color: "#fff", lineHeight: 1.2, marginBottom: 14,
               textShadow: "0 4px 24px rgba(0,0,0,0.18)",
             }}
           >
             نادي أفكار المشاريع
           </h1>
-          <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 16, maxWidth: 520, margin: "0 auto 32px", lineHeight: 1.8 }}>
+
+          <p className="mx-auto mb-8 max-w-[520px] text-base leading-relaxed text-white/70">
             اكتشف أفضل أفكار المشاريع في السوق السعودي وكن من أوائل الداخلين قبل أن تصبح الفرصة مزدحمة
           </p>
 
-          <div style={{ display: "flex", justifyContent: "center", gap: 32, flexWrap: "wrap" }}>
+          {/* Stats */}
+          <div className="flex flex-wrap justify-center gap-8">
             {[
               { num: total || "٢٠٠+", label: "فكرة متاحة" },
               { num: categories.length || "٦", label: "تصنيف" },
               { num: "١٠٠٪", label: "محتوى عربي" },
             ].map((s, i) => (
-              <div key={i} style={{ textAlign: "center" }}>
-                <div style={{ fontSize: 28, fontWeight: 900, color: "#fbbf24" }}>{s.num}</div>
-                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", marginTop: 2 }}>{s.label}</div>
+              <div key={i} className="text-center">
+                <div className="text-[28px] font-black text-amber-400">{s.num}</div>
+                <div className="mt-0.5 text-xs text-white/60">{s.label}</div>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div style={{ width: "100%", overflow: "hidden", lineHeight: 0, marginTop: -2 }}>
-        <svg viewBox="0 0 1440 70" preserveAspectRatio="none" style={{ display: "block", height: 70 }}>
+      {/* Wave divider */}
+      <div className="overflow-hidden leading-[0]" style={{ marginTop: -2 }}>
+        <svg viewBox="0 0 1440 70" preserveAspectRatio="none" className="block h-[70px] w-full">
           <path d="M0,35 C360,70 1080,0 1440,35 L1440,70 L0,70 Z" fill="#f0f4ff" />
         </svg>
       </div>
 
-      <div
-        ref={gridRef}
-        style={{ maxWidth: 1200, margin: "0 auto", padding: "40px 24px 0" }}
-      >
+      {/* ── Main Content ── */}
+      <div ref={gridRef} className="mx-auto max-w-[1200px] px-6 pt-10">
+
+        {/* Search bar */}
         <form
           onSubmit={handleSearch}
-          style={{
-            display: "flex", gap: 10, marginBottom: 28,
-            background: "#fff", borderRadius: 60, padding: "6px 6px 6px 22px",
-            boxShadow: "0 4px 20px rgba(30,60,180,0.08)",
-            border: "1.5px solid #e8eeff",
-          }}
+          className="mb-7 flex items-center gap-2.5 rounded-full border border-[#e8eeff] bg-white py-1.5 pl-1.5 pr-[22px] shadow-[0_4px_20px_rgba(30,60,180,0.08)]"
         >
-          <span style={{ display: "flex", alignItems: "center", color: "#94a3b8", fontSize: 18 }}>🔍</span>
+          <span className="flex items-center text-lg text-slate-400">🔍</span>
           <input
-            className="search-input"
-            style={{ border: "none", boxShadow: "none", padding: "8px 12px", borderRadius: 0 }}
+            className="flex-1 border-none bg-transparent py-2 px-3 text-sm text-[#1a2060] outline-none placeholder:text-slate-400"
+            style={{ fontFamily: "'Cairo', sans-serif" }}
             placeholder="ابحث عن فكرة مشروع..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
@@ -324,202 +248,201 @@ export default function IdeaClubPage() {
             <button
               type="button"
               onClick={() => { setSearchInput(""); setKeyword(""); setPage(1); }}
-              style={{ background: "none", border: "none", cursor: "pointer", color: "#94a3b8", fontSize: 18, padding: "0 4px" }}
+              className="cursor-pointer border-none bg-transparent p-1 text-lg text-slate-400"
             >
               ✕
             </button>
           )}
-          <button type="submit" className="search-btn">بحث</button>
+          <button
+            type="submit"
+            className="cursor-pointer whitespace-nowrap rounded-full border-none px-7 py-3 text-sm font-bold text-white shadow-[0_4px_14px_rgba(44,79,212,0.3)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(44,79,212,0.4)]"
+            style={{
+              background: "linear-gradient(135deg, #2c4fd4, #1a3aa8)",
+              fontFamily: "'Cairo', sans-serif",
+            }}
+          >
+            بحث
+          </button>
         </form>
 
-        <div
-          style={{
-            display: "flex", gap: 8, overflowX: "auto", paddingBottom: 8,
-            marginBottom: 32, scrollbarWidth: "none",
-          }}
-        >
+        {/* Category filters */}
+        <div className="no-scrollbar mb-8 flex gap-2 overflow-x-auto pb-2">
           <button
-            className={`cat-btn ${activeCategory === "all" ? "active" : ""}`}
             onClick={() => handleCategoryChange("all")}
+            className={`cursor-pointer whitespace-nowrap rounded-full px-[18px] py-2 text-[13px] font-bold transition-all duration-200 ${
+              activeCategory === "all"
+                ? "border-transparent text-white shadow-[0_4px_14px_rgba(44,79,212,0.3)]"
+                : "border border-[#dde4ff] bg-white text-slate-500 hover:border-[#2c4fd4] hover:text-[#2c4fd4]"
+            }`}
+            style={{
+              fontFamily: "'Cairo', sans-serif",
+              ...(activeCategory === "all" && {
+                background: "linear-gradient(135deg, #2c4fd4, #1a3aa8)",
+              }),
+            }}
           >
             الكل {activeCategory === "all" && `(${total})`}
           </button>
+
           {categories.map((cat) => (
             <button
               key={cat}
-              className={`cat-btn ${activeCategory === cat ? "active" : ""}`}
               onClick={() => handleCategoryChange(cat)}
+              className={`cursor-pointer whitespace-nowrap rounded-full px-[18px] py-2 text-[13px] font-bold transition-all duration-200 ${
+                activeCategory === cat
+                  ? "border-transparent text-white shadow-[0_4px_14px_rgba(44,79,212,0.3)]"
+                  : "border border-[#dde4ff] bg-white text-slate-500 hover:border-[#2c4fd4] hover:text-[#2c4fd4]"
+              }`}
+              style={{
+                fontFamily: "'Cairo', sans-serif",
+                ...(activeCategory === cat && {
+                  background: "linear-gradient(135deg, #2c4fd4, #1a3aa8)",
+                }),
+              }}
             >
               {cat}
             </button>
           ))}
         </div>
 
+        {/* Result count */}
         {!loading && (
-          <div style={{ marginBottom: 20, color: "#64748b", fontSize: 14 }}>
+          <div className="mb-5 text-sm text-slate-500">
             {keyword
               ? `نتائج البحث عن "${keyword}" — ${total} فكرة`
               : `إجمالي ${total} فكرة`}
           </div>
         )}
 
+        {/* ── Cards Grid ── */}
         <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-            gap: 26,
-            marginBottom: 52,
-          }}
+          className="mb-12 grid gap-[26px]"
+          style={{ gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))" }}
         >
-          {loading
-            ? Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} style={{ borderRadius: 22, overflow: "hidden", background: "#fff", boxShadow: "0 4px 20px rgba(30,60,180,0.06)" }}>
-                  <div className="skeleton" style={{ height: 180, borderRadius: 0 }} />
-                  <div style={{ padding: "20px 22px 26px" }}>
-                    <div className="skeleton" style={{ height: 12, width: "35%", marginBottom: 12 }} />
-                    <div className="skeleton" style={{ height: 20, width: "80%", marginBottom: 10 }} />
-                    <div className="skeleton" style={{ height: 13, width: "95%", marginBottom: 6 }} />
-                    <div className="skeleton" style={{ height: 13, width: "70%", marginBottom: 20 }} />
-                    <div className="skeleton" style={{ height: 36, width: "45%", borderRadius: 50 }} />
-                  </div>
+          {loading ? (
+            /* Skeleton cards */
+            Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                className="overflow-hidden rounded-[22px] bg-white shadow-[0_4px_20px_rgba(30,60,180,0.06)]"
+              >
+                <div className="skeleton h-[180px] rounded-none" />
+                <div className="px-[22px] pb-[26px] pt-5">
+                  <div className="skeleton mb-3 h-3" style={{ width: "35%" }} />
+                  <div className="skeleton mb-2.5 h-5" style={{ width: "80%" }} />
+                  <div className="skeleton mb-1.5 h-[13px]" style={{ width: "95%" }} />
+                  <div className="skeleton mb-5 h-[13px]" style={{ width: "70%" }} />
+                  <div className="skeleton h-9 rounded-full" style={{ width: "45%" }} />
                 </div>
-              ))
-            : ideas.length === 0
-            ? (
-                <div className="empty-state" style={{ gridColumn: "1 / -1" }}>
-                  <div style={{ fontSize: 52, marginBottom: 16 }}>🔍</div>
-                  <h3 style={{ fontSize: 20, fontWeight: 700, color: "#1a2060", marginBottom: 8 }}>
-                    لا توجد نتائج
-                  </h3>
-                  <p style={{ fontSize: 14 }}>
-                    جرّب البحث بكلمة مختلفة أو اختر تصنيفاً آخر
-                  </p>
-                </div>
-              )
-            : ideas.map((idea, i) => {
-                const c = CARD_COLORS[i % CARD_COLORS.length];
-                const imgSrc = resolveImageUrl(idea.imageUrl);
-                return (
+              </div>
+            ))
+          ) : ideas.length === 0 ? (
+            /* Empty state */
+            <div className="col-span-full py-20 text-center text-slate-400">
+              <div className="mb-4 text-[52px]">🔍</div>
+              <h3 className="mb-2 text-xl font-bold text-[#1a2060]">لا توجد نتائج</h3>
+              <p className="text-sm">جرّب البحث بكلمة مختلفة أو اختر تصنيفاً آخر</p>
+            </div>
+          ) : (
+            /* Idea cards */
+            ideas.map((idea, i) => {
+              const c = CARD_COLORS[i % CARD_COLORS.length];
+              const imgSrc = resolveImageUrl(idea.imageUrl);
+
+              return (
+                <div
+                  key={idea.id}
+                  className="idea-card fade-in relative cursor-pointer overflow-hidden rounded-[22px] bg-white shadow-[0_4px_20px_rgba(30,60,180,0.07)]"
+                  style={{ animationDelay: `${i * 0.06}s` }}
+                  onClick={() => router.push(`/idea-club/${idea.id}`)}
+                >
+                  {/* Top accent bar */}
                   <div
-                    key={idea.id}
-                    className="idea-card fade-in"
-                    style={{ animationDelay: `${i * 0.06}s` }}
-                    onClick={() => router.push(`/idea-club/${idea.id}`)}
-                  >
-                    <div style={{ height: 6, background: `linear-gradient(90deg, ${c.top}, ${c.accent})` }} />
+                    className="h-1.5"
+                    style={{ background: `linear-gradient(90deg, ${c.top}, ${c.accent})` }}
+                  />
 
-                    {imgSrc ? (
-                      <img
-                        src={imgSrc}
-                        alt={idea.name}
-                        style={{ width: "100%", height: 180, objectFit: "cover", display: "block" }}
-                        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
-                      />
-                    ) : (
+                  {/* Image or placeholder */}
+                  {imgSrc ? (
+                    <img
+                      src={imgSrc}
+                      alt={idea.name}
+                      className="block h-[180px] w-full object-cover"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.display = "none";
+                      }}
+                    />
+                  ) : (
+                    <div
+                      className="flex h-40 items-center justify-center"
+                      style={{
+                        background: `linear-gradient(135deg, ${c.top}14, ${c.accent}30)`,
+                      }}
+                    >
                       <div
+                        className="flex h-16 w-16 items-center justify-center rounded-[18px] text-[28px]"
                         style={{
-                          height: 160,
-                          background: `linear-gradient(135deg, ${c.top}14, ${c.accent}30)`,
-                          display: "flex", alignItems: "center", justifyContent: "center",
+                          background: `linear-gradient(135deg, ${c.top}, ${c.accent})`,
                         }}
                       >
-                        <div
-                          style={{
-                            width: 64, height: 64, borderRadius: 18,
-                            background: `linear-gradient(135deg, ${c.top}, ${c.accent})`,
-                            display: "flex", alignItems: "center",
-                            justifyContent: "center", fontSize: 28,
-                          }}
-                        >
-                          💡
-                        </div>
-                      </div>
-                    )}
-
-                    <div style={{ padding: "18px 20px 22px" }}>
-                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-                        <span
-                          className="category-chip"
-                          style={{
-                            background: c.light,
-                            color: c.top,
-                            border: `1px solid ${c.top}30`,
-                          }}
-                        >
-                          {idea.category}
-                        </span>
-                        {idea.createdAt && (
-                          <span style={{ fontSize: 11, color: "#94a3b8" }}>
-                            {new Date(idea.createdAt).toLocaleDateString("ar-SA", { year: "numeric", month: "short" })}
-                          </span>
-                        )}
-                      </div>
-
-                      <h3
-                        style={{
-                          fontSize: 17, fontWeight: 800, color: "#1a2060",
-                          marginBottom: 8, lineHeight: 1.45,
-                          display: "-webkit-box",
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: "vertical",
-                          overflow: "hidden",
-                        }}
-                      >
-                        {idea.name}
-                      </h3>
-
-                      <p
-                        style={{
-                          color: "#64748b", fontSize: 13, lineHeight: 1.7,
-                          marginBottom: 18,
-                          display: "-webkit-box",
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: "vertical",
-                          overflow: "hidden",
-                        }}
-                      >
-                        {idea.description}
-                      </p>
-
-                      {/* CTA */}
-                      <div
-                        style={{
-                          display: "inline-flex", alignItems: "center", gap: 6,
-                          background: c.light,
-                          border: `1.5px solid ${c.top}25`,
-                          borderRadius: 50, padding: "7px 16px",
-                          color: c.top, fontWeight: 700, fontSize: 13,
-                          transition: "all 0.2s",
-                        }}
-                        onMouseEnter={(e) => {
-                          (e.currentTarget as HTMLDivElement).style.background = c.top;
-                          (e.currentTarget as HTMLDivElement).style.color = "#fff";
-                        }}
-                        onMouseLeave={(e) => {
-                          (e.currentTarget as HTMLDivElement).style.background = c.light;
-                          (e.currentTarget as HTMLDivElement).style.color = c.top;
-                        }}
-                      >
-                        عرض الفكرة <span>←</span>
+                        💡
                       </div>
                     </div>
+                  )}
+
+                  {/* Card body */}
+                  <div className="px-5 pb-[22px] pt-[18px]">
+                    {/* Category + date */}
+                    <div className="mb-2.5 flex items-center justify-between">
+                      <span
+                        className="inline-block rounded-full px-3 py-0.5 text-[11px] font-bold"
+                        style={{
+                          background: c.light,
+                          color: c.top,
+                          border: `1px solid ${c.top}30`,
+                        }}
+                      >
+                        {idea.category}
+                      </span>
+                      {idea.createdAt && (
+                        <span className="text-[11px] text-slate-400">
+                          {new Date(idea.createdAt).toLocaleDateString("ar-SA", {
+                            year: "numeric",
+                            month: "short",
+                          })}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Title */}
+                    <h3
+                      className="line-clamp-2 mb-2 text-[17px] font-extrabold leading-[1.45] text-[#1a2060]"
+                    >
+                      {idea.name}
+                    </h3>
+
+                    {/* Description */}
+                    <p className="line-clamp-2 mb-[18px] text-[13px] leading-[1.7] text-slate-500">
+                      {idea.description}
+                    </p>
+
+                    {/* CTA chip */}
+                    <IdeaCardCTA c={c} />
                   </div>
-                );
-              })}
+                </div>
+              );
+            })
+          )}
         </div>
 
+        {/* ── Pagination ── */}
         {totalPages > 1 && (
-          <div
-            style={{
-              display: "flex", alignItems: "center", justifyContent: "center",
-              gap: 6, paddingBottom: 64, flexWrap: "wrap",
-            }}
-          >
+          <div className="flex flex-wrap items-center justify-center gap-1.5 pb-16">
             <button
-              className="page-btn"
-              style={{ width: "auto", padding: "0 14px", gap: 4, display: "flex", alignItems: "center" }}
               onClick={() => handlePageChange(page - 1)}
               disabled={page === 1}
+              className="flex cursor-pointer items-center gap-1 rounded-[10px] border border-[#dde4ff] bg-white px-3.5 py-0 text-sm font-bold text-slate-500 transition-all duration-200 hover:border-[#2c4fd4] hover:text-[#2c4fd4] disabled:cursor-not-allowed disabled:opacity-35"
+              style={{ height: 40, fontFamily: "'Cairo', sans-serif" }}
             >
               → السابق
             </button>
@@ -533,14 +456,24 @@ export default function IdeaClubPage() {
               }, [])
               .map((p, i) =>
                 p === "..." ? (
-                  <span key={`dot-${i}`} style={{ color: "#94a3b8", fontSize: 14, padding: "0 4px" }}>
+                  <span key={`dot-${i}`} className="px-1 text-sm text-slate-400">
                     ...
                   </span>
                 ) : (
                   <button
                     key={p}
-                    className={`page-btn ${page === p ? "active" : ""}`}
                     onClick={() => handlePageChange(p as number)}
+                    className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-[10px] border text-sm font-bold transition-all duration-200 ${
+                      page === p
+                        ? "border-transparent text-white shadow-[0_4px_12px_rgba(44,79,212,0.3)]"
+                        : "border-[#dde4ff] bg-white text-slate-500 hover:border-[#2c4fd4] hover:text-[#2c4fd4]"
+                    }`}
+                    style={{
+                      fontFamily: "'Cairo', sans-serif",
+                      ...(page === p && {
+                        background: "linear-gradient(135deg, #2c4fd4, #1a3aa8)",
+                      }),
+                    }}
                   >
                     {p}
                   </button>
@@ -548,16 +481,35 @@ export default function IdeaClubPage() {
               )}
 
             <button
-              className="page-btn"
-              style={{ width: "auto", padding: "0 14px", gap: 4, display: "flex", alignItems: "center" }}
               onClick={() => handlePageChange(page + 1)}
               disabled={page === totalPages}
+              className="flex cursor-pointer items-center gap-1 rounded-[10px] border border-[#dde4ff] bg-white px-3.5 py-0 text-sm font-bold text-slate-500 transition-all duration-200 hover:border-[#2c4fd4] hover:text-[#2c4fd4] disabled:cursor-not-allowed disabled:opacity-35"
+              style={{ height: 40, fontFamily: "'Cairo', sans-serif" }}
             >
               التالي ←
             </button>
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+/* ── Inline hover-state CTA chip (needs local state) ── */
+function IdeaCardCTA({ c }: { c: (typeof CARD_COLORS)[number] }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      className="inline-flex cursor-pointer items-center gap-1.5 rounded-full px-4 py-[7px] text-[13px] font-bold transition-all duration-200"
+      style={{
+        background: hovered ? c.top : c.light,
+        color: hovered ? "#fff" : c.top,
+        border: `1.5px solid ${c.top}25`,
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      عرض الفكرة <span>←</span>
     </div>
   );
 }

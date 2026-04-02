@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { CreateUserDto, UpdateUserDto } from "../dtos/userDto";
 import UserService from "../services/userService";
+import User from "../models/User";
+import { AuthenticatedRequest } from "../middlewares/auth";
 
 export class UserController {
   async createUser(req: Request, res: Response, next: NextFunction) {
@@ -22,6 +24,27 @@ export class UserController {
       next(error);
     }
   }
+
+async getMyStats(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const user = await User.findById(req.user.id);
+
+res.json({
+  plan: user?.plan ?? null,
+  downloadsUsed: user?.downloadsUsed ?? 0,
+  downloadsLimit:
+    user?.downloadsLimit === undefined || user?.downloadsLimit === null
+      ? -1
+      : user.downloadsLimit,
+});
+  } catch (error) {
+    next(error);
+  }
+}
 
   async getProfile(req: Request, res: Response, next: NextFunction) {
     try {

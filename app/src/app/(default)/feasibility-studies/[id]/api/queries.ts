@@ -10,3 +10,11 @@ export const useFeasibilityDetails = (id: string) => {
     select: (res: any) => ({ ...res.data, id: res.data?._id }),
   });
 };
+
+export const useUserStats = () => {
+  const { useGetQuery } = useApi();
+
+  return useGetQuery(`/users/me/stats`, undefined, {
+    staleTime: 1000 * 60 * 5,
+  });
+};

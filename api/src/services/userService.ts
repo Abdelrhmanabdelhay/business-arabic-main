@@ -4,7 +4,7 @@ import { PaymentResponseDto } from "../dtos/ideaClubDto";
 import { CreateUserDto, UpdateUserDto, UserResponseDto, UserListResponseDto } from "../dtos/userDto";
 import payment from "../models/payment";
 import User, { IUser } from "../models/User";
-
+import PLAN_CONFIG from "../config/plainConfig";
 
 export class UserService {
   async createUser(createUserDto: CreateUserDto): Promise<UserResponseDto> {
@@ -89,8 +89,16 @@ export class UserService {
       fullName: user.fullName,
       role: user.role,
       createdAt: user.createdAt,
+
+    // 🟢 Subscription data
+    plan: user.plan ?? null,
+    downloadsUsed: user.downloadsUsed ?? 0,
+    downloadsLimit: user.downloadsLimit ?? 0,
+    planExpiresAt: user.planExpiresAt ?? null,
     };
   }
+
+
   async getAllPaymentsOfUser(userId: string, page: number, limit: number): Promise<PaymentResponseDto[]> {
 
     // user query limit and page makek it

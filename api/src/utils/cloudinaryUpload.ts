@@ -22,10 +22,10 @@ const uploadFile = async (file: Express.Multer.File, folder?: string): Promise<U
       folder: folder || config.cloudinary.FOLDER,
       resource_type: 'auto' as const,
       public_id: `${Date.now()}-${file.originalname.split('.')[0]}`,
-      transformation: [
-        { quality: 'auto:good' },
-        { fetch_format: 'auto' }
-      ]
+      // transformation: [
+      //   { quality: 'auto:good' },
+      //   { fetch_format: 'auto' }
+      // ]
     };
 
     // Upload to Cloudinary

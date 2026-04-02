@@ -20,14 +20,27 @@ import { stripeWebHook } from "./utils/stripe";
 import growthServiceRoutes from "./routes/growthServiceRoutes";
 import successStoryRoutes from "./routes/successStoryRoutes";
 import AppError from "./utils/appError";
-
+import project from "./routes/project.routes";
 const app = express();
 
 setupSwagger(app);
 
 
-app.use(cors({ origin: "*", methods: ["GET", "POST", "PUT", "PATCH", "DELETE"] }));
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://yourdomain.com"
+];
 
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+}));
 app.use(morganMiddleware);
 
 // ⚠️ Stripe webhook route MUST be mounted BEFORE the body parsers
@@ -99,6 +112,7 @@ app.use("/api/projects", compression(), projectsRoutes);
 app.use("/api/feasibility-studies", compression(), feasibilityStudyRoutes);
 app.use("/api/plans", planRouter);
 app.use("/api/contact", contactRoutes);
+app.use("/api/projectsdownload",project);
 
 app.use("/api/growth-services", growthServiceRoutes);
 app.use("/api/success-stories", successStoryRoutes);

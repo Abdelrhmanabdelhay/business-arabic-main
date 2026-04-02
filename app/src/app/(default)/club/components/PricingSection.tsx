@@ -5,34 +5,34 @@ import PricingCard from "./PricingCard";
 
 export default function PricingSection() {
   const plans = [
-    {
-      name: "الباقة الشهرية",
-      price: "100",
-      duration: "شهر واحد",
-      features: ["دراسة جدوى واحدة"],
-      plan: "باقة الشهر الواحد",
-      featured: false,
-      accentColor: "#7c3aed",
-    },
-    {
-      name: "باقة 3 شهور",
-      price: "250",
-      duration: "ثلاثة أشهر",
-      features: ["6 دراسات جدوى", "6 ملفات Excel"],
-      plan: "باقة ثلاث شهور",
-      featured: true,
-      accentColor: "#f97316",
-    },
-    {
-      name: "الباقة السنوية",
-      price: "800",
-      duration: "سنة كاملة",
-      features: ["كل دراسات الجدوى", "كل الملفات", "أولوية الدعم"],
-      plan: "الباقة السنوية",
-      featured: false,
-      accentColor: "#2d4ef5",
-    },
-  ];
+  {
+    id: "monthly", // 👈 ده المهم
+    name: "الباقة الشهرية",
+    price: "100",
+    duration: "شهر واحد",
+    features: ["دراسة جدوى واحدة"],
+    featured: false,
+    accentColor: "#7c3aed",
+  },
+  {
+    id: "quarterly",
+    name: "باقة 3 شهور",
+    price: "250",
+    duration: "ثلاثة أشهر",
+    features: ["6 دراسات جدوى", "6 ملفات Excel"],
+    featured: true,
+    accentColor: "#f97316",
+  },
+  {
+    id: "yearly",
+    name: "الباقة السنوية",
+    price: "800",
+    duration: "سنة كاملة",
+    features: ["كل دراسات الجدوى", "كل الملفات", "أولوية الدعم"],
+    featured: false,
+    accentColor: "#2d4ef5",
+  },
+];
 
   return (
     <section
@@ -93,7 +93,7 @@ export default function PricingSection() {
           alignItems: "center",
         }}>
           {plans.map((plan, index) => (
-            <PricingCard key={plan.plan} plan={plan} index={index} />
+            <PricingCard key={plan.id} plan={plan} index={index} />
           ))}
         </div>
       </div>

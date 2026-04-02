@@ -17,6 +17,10 @@ export interface UserResponseDto {
   fullName: string;
   role: string;
   createdAt: Date;
+    plan?: string | null;
+  downloadsUsed?: number;
+  downloadsLimit?: number;
+  planExpiresAt?: Date | null;
 }
 
 export interface UserListResponseDto {

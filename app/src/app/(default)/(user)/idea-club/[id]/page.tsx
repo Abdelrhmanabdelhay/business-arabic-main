@@ -30,7 +30,8 @@ const resolveImageUrl = (imageUrl: any): string | null => {
 
 function hashColor(str: string) {
   let hash = 0;
-  for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  for (let i = 0; i < str.length; i++)
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
   return CARD_COLORS[Math.abs(hash) % CARD_COLORS.length];
 }
 
@@ -50,49 +51,28 @@ export default function IdeaDetailsPage() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  const c = idea ? hashColor(idea.id ?? idea.name ?? "default") : CARD_COLORS[2];
+  const c = idea
+    ? hashColor(idea.id ?? idea.name ?? "default")
+    : CARD_COLORS[2];
   const imgSrc = idea ? resolveImageUrl(idea.imageUrl) : null;
 
   return (
     <div
       dir="rtl"
-      style={{
-        fontFamily: "'Cairo', 'Tajawal', sans-serif",
-        background: "#f0f4ff",
-        minHeight: "100vh",
-      }}
+      className="min-h-screen bg-[#f0f4ff]"
+      style={{ fontFamily: "'Cairo', 'Tajawal', sans-serif" }}
     >
-      <style>{`
+      {/* Google Fonts + custom styles that can't be expressed in Tailwind */}
+      <style suppressHydrationWarning>{`
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;900&display=swap');
-        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .back-btn {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          background: rgba(255,255,255,0.12);
-          border: 1.5px solid rgba(255,255,255,0.22);
-          border-radius: 50px;
-          color: #fff;
-          font-family: 'Cairo', sans-serif;
-          font-size: 13px;
-          font-weight: 700;
-          padding: 9px 20px;
-          cursor: pointer;
-          transition: all 0.2s;
-          backdrop-filter: blur(6px);
-          text-decoration: none;
+        @keyframes shimmer {
+          0%   { background-position: 200% center; }
+          100% { background-position: -200% center; }
         }
-        .back-btn:hover {
-          background: rgba(255,255,255,0.22);
-          transform: translateX(4px);
-        }
-
-        .content-card {
-          background: #fff;
-          border-radius: 24px;
-          box-shadow: 0 4px 32px rgba(30,60,180,0.09);
-          overflow: hidden;
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
 
         .skeleton {
@@ -101,19 +81,15 @@ export default function IdeaDetailsPage() {
           animation: shimmer 1.4s infinite;
           border-radius: 10px;
         }
-        @keyframes shimmer {
-          0% { background-position: 200% center; }
-          100% { background-position: -200% center; }
+        .skeleton-hero {
+          background: linear-gradient(90deg, rgba(255,255,255,0.12) 25%, rgba(255,255,255,0.20) 50%, rgba(255,255,255,0.12) 75%);
+          background-size: 200% 100%;
+          animation: shimmer 1.4s infinite;
+          border-radius: 50px;
         }
+        .fade-in { animation: fadeIn 0.5s ease forwards; }
 
-        .fade-in {
-          animation: fadeIn 0.5s ease forwards;
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
+        /* Rich-text content styles */
         .idea-content h1,
         .idea-content h2,
         .idea-content h3,
@@ -128,51 +104,19 @@ export default function IdeaDetailsPage() {
         .idea-content h1 { font-size: 26px; }
         .idea-content h2 { font-size: 22px; color: #2c4fd4; }
         .idea-content h3 { font-size: 18px; }
-
-        .idea-content p {
-          color: #374151;
-          font-size: 15px;
-          line-height: 1.95;
-          margin-bottom: 16px;
-        }
-
+        .idea-content p  { color: #374151; font-size: 15px; line-height: 1.95; margin-bottom: 16px; }
         .idea-content ul,
-        .idea-content ol {
-          padding-right: 22px;
-          margin-bottom: 18px;
-        }
-        .idea-content li {
-          color: #374151;
-          font-size: 15px;
-          line-height: 1.85;
-          margin-bottom: 6px;
-        }
-
-        .idea-content strong {
-          color: #1a2060;
-          font-weight: 800;
-        }
-
-        .idea-content table {
-          width: 100%;
-          border-collapse: collapse;
-          margin-bottom: 24px;
-          font-size: 14px;
-        }
+        .idea-content ol { padding-right: 22px; margin-bottom: 18px; }
+        .idea-content li { color: #374151; font-size: 15px; line-height: 1.85; margin-bottom: 6px; }
+        .idea-content strong { color: #1a2060; font-weight: 800; }
+        .idea-content table { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 14px; }
         .idea-content th {
           background: linear-gradient(135deg, #2c4fd4, #1a3aa8);
-          color: #fff;
-          padding: 12px 16px;
-          text-align: right;
-          font-weight: 700;
+          color: #fff; padding: 12px 16px;
+          text-align: right; font-weight: 700;
         }
-        .idea-content td {
-          padding: 11px 16px;
-          border-bottom: 1px solid #e8eeff;
-          color: #374151;
-        }
+        .idea-content td { padding: 11px 16px; border-bottom: 1px solid #e8eeff; color: #374151; }
         .idea-content tr:nth-child(even) td { background: #f5f7ff; }
-
         .idea-content blockquote {
           border-right: 4px solid #2c4fd4;
           background: #eff3ff;
@@ -183,181 +127,171 @@ export default function IdeaDetailsPage() {
           font-weight: 700;
           font-size: 15px;
         }
-
-        .idea-content a {
-          color: #2c4fd4;
-          text-decoration: underline;
-        }
-
-        .idea-content img {
-          max-width: 100%;
-          border-radius: 12px;
-          margin: 16px 0;
-        }
-
-        .idea-content hr {
-          border: none;
-          border-top: 1.5px solid #e8eeff;
-          margin: 28px 0;
-        }
-
-        .meta-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          border-radius: 50px;
-          padding: 6px 16px;
-          font-size: 12px;
-          font-weight: 700;
-        }
+        .idea-content a   { color: #2c4fd4; text-decoration: underline; }
+        .idea-content img { max-width: 100%; border-radius: 12px; margin: 16px 0; }
+        .idea-content hr  { border: none; border-top: 1.5px solid #e8eeff; margin: 28px 0; }
       `}</style>
 
       {/* ── Hero ── */}
       <div
+        className="relative overflow-hidden px-6 pb-16 pt-10"
         style={{
           background: loading
             ? "linear-gradient(145deg, #1a2f9e 0%, #2c4fd4 55%, #1e3fbc 100%)"
             : `linear-gradient(145deg, ${c.top}cc 0%, ${c.top} 55%, ${c.top}dd 100%)`,
-          padding: "40px 24px 60px",
-          position: "relative",
-          overflow: "hidden",
           transition: "background 0.4s",
         }}
       >
-        {/* decorative blobs */}
-        <div style={{ position: "absolute", top: -60, left: -60, width: 280, height: 280, background: "radial-gradient(circle, rgba(249,115,22,0.18) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", bottom: -40, right: "10%", width: 320, height: 320, background: "radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
+        {/* Decorative blobs */}
+        <div
+          className="pointer-events-none absolute rounded-full"
+          style={{
+            top: -60, left: -60, width: 280, height: 280,
+            background: "radial-gradient(circle, rgba(249,115,22,0.18) 0%, transparent 70%)",
+          }}
+        />
+        <div
+          className="pointer-events-none absolute rounded-full"
+          style={{
+            bottom: -40, right: "10%", width: 320, height: 320,
+            background: "radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)",
+          }}
+        />
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage: "radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
+          }}
+        />
 
-        <div style={{ maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 2 }}>
+        <div className="relative z-10 mx-auto max-w-[900px]">
           {/* Back button */}
-          <button className="back-btn" onClick={() => router.push("/idea-club")} style={{ marginBottom: 28 }}>
+          <button
+            onClick={() => router.push("/idea-club")}
+            className="mb-7 inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2.5 text-[13px] font-bold text-white backdrop-blur-md transition-all duration-200 hover:bg-white/20 hover:translate-x-1"
+            style={{ fontFamily: "'Cairo', sans-serif" }}
+          >
             → العودة للأفكار
           </button>
 
           {loading ? (
+            /* Hero skeleton */
             <div>
-              <div className="skeleton" style={{ height: 14, width: "20%", marginBottom: 16, borderRadius: 50, background: "rgba(255,255,255,0.15)" }} />
-              <div className="skeleton" style={{ height: 38, width: "65%", marginBottom: 14, background: "rgba(255,255,255,0.15)" }} />
-              <div className="skeleton" style={{ height: 16, width: "85%", marginBottom: 8, background: "rgba(255,255,255,0.12)" }} />
-              <div className="skeleton" style={{ height: 16, width: "55%", background: "rgba(255,255,255,0.12)" }} />
+              <div className="skeleton-hero mb-4" style={{ height: 14, width: "20%" }} />
+              <div className="skeleton-hero mb-3.5" style={{ height: 38, width: "65%" }} />
+              <div className="skeleton-hero mb-2" style={{ height: 16, width: "85%" }} />
+              <div className="skeleton-hero" style={{ height: 16, width: "55%" }} />
             </div>
           ) : idea ? (
             <div className="fade-in">
               {/* Category + date row */}
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18, flexWrap: "wrap" }}>
+              <div className="mb-4 flex flex-wrap items-center gap-2.5">
                 <span
-                  className="meta-badge"
-                  style={{ background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.3)", color: "#fff" }}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/20 px-4 py-1.5 text-xs font-bold text-white"
                 >
                   🏷️ {idea.category}
                 </span>
                 {idea.createdAt && (
                   <span
-                    className="meta-badge"
-                    style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.8)" }}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-bold text-white/80"
                   >
-                    📅 {new Date(idea.createdAt).toLocaleDateString("ar-SA", { year: "numeric", month: "long", day: "numeric" })}
+                    📅{" "}
+                    {new Date(idea.createdAt).toLocaleDateString("ar-SA", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
                   </span>
                 )}
               </div>
 
               <h1
+                className="mb-4 font-black leading-snug text-white"
                 style={{
                   fontSize: "clamp(24px, 4.5vw, 42px)",
-                  fontWeight: 900,
-                  color: "#fff",
-                  lineHeight: 1.3,
-                  marginBottom: 16,
                   textShadow: "0 3px 20px rgba(0,0,0,0.2)",
                 }}
               >
                 {idea.name}
               </h1>
 
-              <p style={{ color: "rgba(255,255,255,0.82)", fontSize: 16, lineHeight: 1.8, maxWidth: 640 }}>
+              <p className="max-w-[640px] text-base leading-relaxed text-white/80">
                 {idea.description}
               </p>
             </div>
           ) : (
-            <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 16 }}>لم يتم العثور على الفكرة.</p>
+            <p className="text-base text-white/70">لم يتم العثور على الفكرة.</p>
           )}
         </div>
       </div>
 
       {/* Wave divider */}
-      <div style={{ width: "100%", overflow: "hidden", lineHeight: 0, marginTop: -2 }}>
-        <svg viewBox="0 0 1440 70" preserveAspectRatio="none" style={{ display: "block", height: 70 }}>
+      <div className="overflow-hidden leading-[0]" style={{ marginTop: -2 }}>
+        <svg
+          viewBox="0 0 1440 70"
+          preserveAspectRatio="none"
+          className="block h-[70px] w-full"
+        >
           <path d="M0,35 C360,70 1080,0 1440,35 L1440,70 L0,70 Z" fill="#f0f4ff" />
         </svg>
       </div>
 
       {/* ── Body ── */}
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 24px 80px" }}>
+      <div className="mx-auto max-w-[900px] px-6 pb-20">
 
         {loading ? (
-          <div className="content-card" style={{ padding: "40px 44px" }}>
-            {[100, 80, 90, 60, 95, 70, 85, 50].map((w, i) => (
-              <div key={i} className="skeleton" style={{ height: 14, width: `${w}%`, marginBottom: 14 }} />
-            ))}
+          /* Body skeleton */
+          <div className="overflow-hidden rounded-3xl bg-white shadow-[0_4px_32px_rgba(30,60,180,0.09)]">
+            <div className="px-11 py-10">
+              {[100, 80, 90, 60, 95, 70, 85, 50].map((w, i) => (
+                <div
+                  key={i}
+                  className="skeleton mb-3.5"
+                  style={{ height: 14, width: `${w}%` }}
+                />
+              ))}
+            </div>
           </div>
         ) : idea ? (
           <div className="fade-in">
-            {/* Hero image (if any) */}
+            {/* Hero image */}
             {imgSrc && !imgError && (
               <div
-                style={{
-                  borderRadius: 20,
-                  overflow: "hidden",
-                  marginBottom: 28,
-                  boxShadow: "0 8px 40px rgba(30,60,180,0.12)",
-                  border: `3px solid ${c.top}20`,
-                }}
+                className="mb-7 overflow-hidden rounded-[20px] shadow-[0_8px_40px_rgba(30,60,180,0.12)]"
+                style={{ border: `3px solid ${c.top}20` }}
               >
                 <img
                   src={imgSrc}
                   alt={idea.name}
-                  style={{ width: "100%", maxHeight: 440, objectFit: "cover", display: "block" }}
+                  className="block max-h-[440px] w-full object-cover"
                   onError={() => setImgError(true)}
                 />
               </div>
             )}
 
             {/* Content card */}
-            <div className="content-card">
+            <div className="overflow-hidden rounded-3xl bg-white shadow-[0_4px_32px_rgba(30,60,180,0.09)]">
               {/* Top accent bar */}
-              <div style={{ height: 5, background: `linear-gradient(90deg, ${c.top}, ${c.accent})` }} />
+              <div
+                className="h-[5px]"
+                style={{ background: `linear-gradient(90deg, ${c.top}, ${c.accent})` }}
+              />
 
-              <div style={{ padding: "36px 40px 44px" }}>
+              <div className="px-10 pb-11 pt-9">
                 {/* Section header */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10,
-                    marginBottom: 28,
-                    paddingBottom: 20,
-                    borderBottom: "1.5px solid #e8eeff",
-                  }}
-                >
+                <div className="mb-7 flex items-center gap-2.5 border-b border-[#e8eeff] pb-5">
                   <div
+                    className="flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-xl text-xl"
                     style={{
-                      width: 42,
-                      height: 42,
-                      borderRadius: 12,
                       background: `linear-gradient(135deg, ${c.top}, ${c.accent})`,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: 20,
-                      flexShrink: 0,
                     }}
                   >
                     💡
                   </div>
                   <div>
-                    <div style={{ fontSize: 12, color: "#94a3b8", fontWeight: 600 }}>تفاصيل الفكرة</div>
-                    <div style={{ fontSize: 18, fontWeight: 800, color: "#1a2060" }}>{idea.name}</div>
+                    <div className="text-xs font-semibold text-slate-400">تفاصيل الفكرة</div>
+                    <div className="text-lg font-extrabold text-[#1a2060]">{idea.name}</div>
                   </div>
                 </div>
 
@@ -368,67 +302,44 @@ export default function IdeaDetailsPage() {
                     dangerouslySetInnerHTML={{ __html: idea.content }}
                   />
                 ) : (
-                  <p style={{ color: "#64748b", fontSize: 15, lineHeight: 1.9 }}>
+                  <p className="text-[15px] leading-[1.9] text-slate-500">
                     {idea.description}
                   </p>
                 )}
               </div>
             </div>
 
-            {/* Back button at bottom */}
-            <div style={{ display: "flex", justifyContent: "center", marginTop: 40 }}>
+            {/* Back button (bottom) */}
+            <div className="mt-10 flex justify-center">
               <button
                 onClick={() => router.push("/idea-club")}
+                className="inline-flex cursor-pointer items-center gap-2 rounded-full border-none px-9 py-3.5 text-[15px] font-bold text-white transition-all duration-200 hover:-translate-y-1"
                 style={{
                   background: `linear-gradient(135deg, ${c.top}, ${c.accent})`,
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: 50,
-                  padding: "14px 36px",
-                  fontSize: 15,
-                  fontWeight: 700,
-                  fontFamily: "'Cairo', sans-serif",
-                  cursor: "pointer",
                   boxShadow: `0 6px 24px ${c.top}40`,
-                  transition: "all 0.2s",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
+                  fontFamily: "'Cairo', sans-serif",
                 }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-3px)"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "translateY(0)"; }}
               >
                 → استعرض المزيد من الأفكار
               </button>
             </div>
           </div>
         ) : (
-          <div
-            style={{
-              textAlign: "center",
-              padding: "80px 24px",
-              color: "#94a3b8",
-            }}
-          >
-            <div style={{ fontSize: 52, marginBottom: 16 }}>🔍</div>
-            <h3 style={{ fontSize: 22, fontWeight: 700, color: "#1a2060", marginBottom: 8 }}>
+          /* Not found state */
+          <div className="px-6 py-20 text-center text-slate-400">
+            <div className="mb-4 text-[52px]">🔍</div>
+            <h3 className="mb-2 text-[22px] font-bold text-[#1a2060]">
               لم يتم العثور على الفكرة
             </h3>
-            <p style={{ fontSize: 14, marginBottom: 24 }}>
+            <p className="mb-6 text-sm">
               ربما تم حذف هذه الفكرة أو الرابط غير صحيح
             </p>
             <button
               onClick={() => router.push("/idea-club")}
+              className="cursor-pointer rounded-full border-none px-7 py-3 text-sm font-bold text-white"
               style={{
                 background: "linear-gradient(135deg, #2c4fd4, #1a3aa8)",
-                color: "#fff",
-                border: "none",
-                borderRadius: 50,
-                padding: "12px 30px",
-                fontSize: 14,
-                fontWeight: 700,
                 fontFamily: "'Cairo', sans-serif",
-                cursor: "pointer",
               }}
             >
               العودة للأفكار

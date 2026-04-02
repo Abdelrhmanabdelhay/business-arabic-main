@@ -159,25 +159,21 @@ if (!hasHydrated) return null;
       content: "py-1 px-1 border border-default-200 bg-background",
     }}
   >
-    <DropdownTrigger>
-      <Button
-        variant="light"
-        className="p-2 bg-transparent gap-2 h-auto"
-      >
-        <Avatar
-          isBordered
-          as="button"
-          className="transition-transform"
-          color="primary"
-          name={user?.fullName}
-          size="sm"
-          src={user?.avatar}
-        />
-        <span className="text-[#1a1a1a] text-[15px]">
-          {user?.fullName}
-        </span>
-      </Button>
-    </DropdownTrigger>
+  <DropdownTrigger>
+  <div className="flex items-center gap-2 cursor-pointer">
+    <Avatar
+      isBordered
+      className="transition-transform"
+      color="primary"
+      name={user?.fullName}
+      size="sm"
+      src={user?.avatar}
+    />
+    <span className="text-[#1a1a1a] text-[15px]">
+      {user?.fullName}
+    </span>
+  </div>
+</DropdownTrigger>
 
     <DropdownMenu
       aria-label="User menu"

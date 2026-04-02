@@ -90,43 +90,74 @@ export function DashboardSidebar({ isSidebarOpen, toggleSidebar, isMobile }: Sid
             .filter((item) => !item.requiredRole || item.requiredRole === user?.role)
             .map((item) => (
             <div key={item.title} className="mb-1">
-              <button
-                onClick={() => toggleSubmenu(item.title)}
-                className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-200 ${
-                  pathname.startsWith(item.path)
-                    ? "text-primary-800 bg-primary-50 font-semibold shadow-sm"
-                    : "text-gray-700 hover:bg-gray-50"
-                }`}>
-                <item.icon size={20} className="ml-3" />
-                <AnimatePresence>
-                  {isSidebarOpen && (
-                    <motion.span
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="flex-1 text-right truncate">
-                      {item.title}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-                {isSidebarOpen && item.submenu.length > 0 && (
-                  <motion.svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    animate={{ rotate: activeSubmenu === item.title ? 180 : 0 }}
-                    className="text-current">
-                    <path
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.5"
-                      d="M15 7l-5 5-5-5"
-                    />
-                  </motion.svg>
-                )}
-              </button>
+{item.submenu.length > 0 ? (
+  <button
+    onClick={() => toggleSubmenu(item.title)}
+    className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-200 ${
+      pathname.startsWith(item.path)
+        ? "text-primary-800 bg-primary-50 font-semibold shadow-sm"
+        : "text-gray-700 hover:bg-gray-50"
+    }`}
+  >
+    <item.icon size={20} className="ml-3" />
+
+    <AnimatePresence>
+      {isSidebarOpen && (
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="flex-1 text-right truncate"
+        >
+          {item.title}
+        </motion.span>
+      )}
+    </AnimatePresence>
+
+    {isSidebarOpen && item.submenu.length > 0 && (
+      <motion.svg
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
+        animate={{ rotate: activeSubmenu === item.title ? 180 : 0 }}
+        className="text-current"
+      >
+        <path
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.5"
+          d="M15 7l-5 5-5-5"
+        />
+      </motion.svg>
+    )}
+  </button>
+) : (
+  <Link
+    href={item.path}
+    className={`w-full flex items-center px-4 py-3 rounded-lg transition-all duration-200 ${
+      pathname.startsWith(item.path)
+        ? "text-primary-800 bg-primary-50 font-semibold shadow-sm"
+        : "text-gray-700 hover:bg-gray-50"
+    }`}
+  >
+    <item.icon size={20} className="ml-3" />
+
+    <AnimatePresence>
+      {isSidebarOpen && (
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="flex-1 text-right truncate"
+        >
+          {item.title}
+        </motion.span>
+      )}
+    </AnimatePresence>
+  </Link>
+)}
 
               <AnimatePresence>
                 {isSidebarOpen && activeSubmenu === item.title && item.submenu.length > 0 && (

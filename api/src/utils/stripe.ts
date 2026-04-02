@@ -5,6 +5,7 @@ import payment from "../models/payment";
 import { sendContactEmail } from "./nodemailer";
 import toast from "react-hot-toast";
 import Stripe from "stripe";
+import PLAN_CONFIG from "../config/plainConfig";
 /**
  * Creates a Stripe Checkout session for a one-time payment.
  * @param {Request} req - The request object containing product details.
@@ -18,98 +19,117 @@ import { AuthenticatedRequest } from "../middlewares/auth";
 import createPaymentNumber from "./createPayNamber";
 import User from "../models/User";
 
+type PlanType = "monthly" | "quarterly" | "yearly";
+
+// 🔹 Type guard للتأكد من صحة plan
+function isValidPlan(plan: any): plan is PlanType {
+  return ["monthly", "quarterly", "yearly"].includes(plan);
+}
+
 const createCheckoutSession = async (req: AuthenticatedRequest, res: Response) => {
-  const domain = req.headers.origin;
-  const userId = req.params?.id || req?.user?.id;
-  const { serviceId, serviceType, name, description, image, price ,plan ,userData } =
-    req.body;
-const isSignupFlow = !!userData;
-
-if (!isSignupFlow && (!serviceId || !serviceType)) {
-  return res
-    .status(400)
-    .json({ error: "serviceId and serviceType required" });
-}
-
-
-  // Price is expected as SAR (original amount), not cents
-  const numPrice = Number(price);
-  if (isNaN(numPrice) || numPrice <= 0) {
-    return res.status(400).json({ error: "price must be a valid positive number" });
-  }
-
-  const line_items = [
-    {
-      price_data: {
-        currency: "sar",
-        product_data: {
-          name,
-          description,
-          images:(image ? { images: [image] } : {}),
-        },
-        unit_amount: Math.round(numPrice * 100), // Convert SAR to fils (cents)
-      },
-
-      quantity: 1,
-    },
-  ];
-let metadata: any = {};
-if (isSignupFlow) {
-
-  metadata = {
-    fullName: userData.fullName,
-    email: userData.email,
-    password: userData.password,
-    plan: plan,
-    type: "signup",
-  };
-} else {
-  metadata = {
-    userId,
-    serviceId,
-    type: "service_payment",
-  };
-}
   try {
+    const domain = req.headers.origin;
+    const userId = req.params?.id || req?.user?.id;
+    const { serviceId, serviceType, name: frontName, description, image, price: frontPrice, plan, userData } = req.body;
+
+    const isSignupFlow = !!userData;
+
+    // ✅ Validation
+    if (!isSignupFlow && (!serviceId || !serviceType)) {
+      return res.status(400).json({ error: "serviceId and serviceType required" });
+    }
+
+    // ✅ Determine correct price and name
+    let finalPrice: number;
+    let finalName: string;
+
+    if (isSignupFlow) {
+      if (!plan || !isValidPlan(plan)) {
+        return res.status(400).json({ error: "Invalid plan" });
+      }
+      const planConfig = PLAN_CONFIG[plan]; // TypeScript يفهم دلوقتي إن plan من النوع الصحيح
+      finalPrice = planConfig.price;
+      finalName = planConfig.name;
+    } else {
+      if (!frontPrice || isNaN(Number(frontPrice)) || Number(frontPrice) <= 0) {
+        return res.status(400).json({ error: "price must be a valid positive number" });
+      }
+      finalPrice = Number(frontPrice);
+      finalName = frontName || "Service Payment";
+    }
+
+    // ✅ Prepare line items for Stripe
+    const line_items = [
+      {
+        price_data: {
+          currency: "sar",
+          product_data: {
+            name: finalName,
+            ...(description ? { description } : {}),
+            images: image ? [image] : undefined,
+          },
+          unit_amount: Math.round(finalPrice * 100), // Convert SAR to cents
+        },
+        quantity: 1,
+      },
+    ];
+
+    // ✅ Metadata
+    const metadata: Record<string, any> = isSignupFlow
+      ? {
+          fullName: userData.fullName,
+          email: userData.email,
+          password: userData.password,
+          plan,
+          type: "signup",
+        }
+      : {
+          userId,
+          serviceId,
+          type: "service_payment",
+        };
+
+    // ✅ Create Stripe session
     const session = await stripe.checkout.sessions.create({
       line_items,
       payment_method_types: ["card"],
       mode: "payment",
       success_url: `${domain}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${domain}/canceled`,
-      metadata
-  
+      metadata,
     });
-
-if (!isSignupFlow) {
-  if (!userId || !serviceId) {
+if (!isSignupFlow && (!userId || !serviceId)) {
     return res.status(400).json({
-      error: "userId and serviceId are required for payment creation",
-    });
-  }
-
+    error: "userId and serviceId are required for payment creation",
+  });
+}
+if (!isSignupFlow) {
   await payment.create({
-    payNumber: createPaymentNumber(userId, serviceId),
-    userId,
-    serviceId,
+    payNumber: createPaymentNumber(userId!, serviceId!),
+    userId: userId!,
+    serviceId: serviceId!,
     serviceType,
-    amount: Math.round(numPrice),
+    amount: Math.round(finalPrice),
     stripeSessionId: session.id,
     status: "pending",
   });
 }
-    // Return the session URL instead of redirecting
-    res.status(200).json({
+
+    // ✅ Return session URL
+    return res.status(200).json({
       url: session.url,
       id: session.id,
       message: "Checkout session created successfully",
     });
-  } catch (error) {
-    res
-      .status(400)
-      .json({ error: error, message: "Failed to create checkout session" });
+  } catch (error: any) {
+    console.error("Stripe checkout error:", error);
+    return res.status(400).json({
+      error: error.message || error,
+      message: "Failed to create checkout session",
+    });
   }
 };
+
 console.log("🔥 HIT WEBHOOK ROUTE");
 const stripeWebHook = async (req: Request, res: Response) => {
   const sig = req.headers["stripe-signature"] as string;
@@ -146,11 +166,37 @@ const stripeWebHook = async (req: Request, res: Response) => {
   const password = session.metadata?.password;
   const plan = session.metadata?.plan;
   console.log("Session metadata:", session.metadata);
-    if (type === "signup") {
-      console.log("👤 Creating user account for:", email);
-      await User.create({ fullName, email, password: password, plan });
-      toast.success(`User account created for ${email}`);
-    }
+if (type === "signup") {
+  const existingUser = await User.findOne({ email });
+
+  if (!existingUser) {
+
+    type PlanType = "monthly" | "quarterly" | "yearly";
+function isValidPlan(plan: any): plan is PlanType {
+  return ["monthly", "quarterly", "yearly"].includes(plan);
+}
+if (!plan || !isValidPlan(plan)) {
+  throw new Error("Invalid plan");
+}
+
+const selectedPlan = PLAN_CONFIG[plan];
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + selectedPlan.durationDays);
+
+    await User.create({
+      fullName,
+      email,
+      password,
+      plan,
+
+      downloadsUsed: 0,
+      downloadsLimit: selectedPlan.limit,
+      planExpiresAt: expiresAt,
+    });
+
+    console.log("✅ User created with plan");
+  }
+}
         await payment.findOneAndUpdate(
           { stripeSessionId: session.id },
           {

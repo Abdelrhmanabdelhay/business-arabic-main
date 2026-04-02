@@ -3,6 +3,7 @@ import UserController from "../controllers/userController";
 import { validate } from "../middlewares/validate";
 import { createUserSchema, updateUserSchema } from "../validators/userValidator";
 import { authenticate, authorize } from "../middlewares/auth";
+import userController from "../controllers/userController";
 
 const router = express.Router();
 
@@ -135,7 +136,7 @@ router.get("/allPayments", authenticate, UserController.getAllPaymentsOfUser);
  *         $ref: '#/components/responses/Unauthorized'
  */
 router.get("/me", authenticate, UserController.getProfile);
-
+router.get("/me/stats", authenticate, UserController.getMyStats);
 /**
  * @swagger
  * /users/{id}:

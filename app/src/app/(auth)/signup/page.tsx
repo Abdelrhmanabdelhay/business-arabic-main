@@ -29,8 +29,11 @@ export default function SignUpPage() {
 const [isPending, setIsPending] = useState(false);
   const searchParams = useSearchParams();
 const selectedPlan = searchParams.get("plan");
-const selectedPrice = searchParams.get("price");
-const selectedName = searchParams.get("name");
+const planLabels: Record<string, string> = {
+  monthly: "الباقة الشهرية",
+  quarterly: "باقة 3 شهور",
+  yearly: "الباقة السنوية",
+};
   const {
     control,
     handleSubmit,
@@ -48,12 +51,10 @@ const selectedName = searchParams.get("name");
       const res = await fetch(`${API_URL}/stripe/create-checkout-session`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-      plan: selectedPlan,
-        price: Number(selectedPrice),                    
-        name: decodeURIComponent(selectedName ?? ""),   
-        image: "",                  
-          userData: data }),
+          body: JSON.stringify({ 
+            plan: selectedPlan,
+            userData: data
+          }),
       });
       const result = await res.json();
       if (!result.url) throw new Error("No checkout URL returned");
@@ -155,8 +156,7 @@ const selectedName = searchParams.get("name");
                     className="bg-primary-500"
                     style={{ width: 6, height: 6, borderRadius: "50%", display: "inline-block" }}
                   />
-                  الخطة المختارة: {selectedPlan}
-                </span>
+الخطة المختارة: {planLabels[selectedPlan || ""] || selectedPlan}                </span>
               </motion.div>
             )}
           </AnimatePresence>

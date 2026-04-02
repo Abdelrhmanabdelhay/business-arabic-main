@@ -4,12 +4,14 @@ import { AuthenticatedRequest } from "../middlewares/auth";
 import feasibilityStudyService from "../services/feasibilityStudyService";
 import AppError from "../utils/appError";
 import uploadFile from "../middlewares/uploadFile";
-
-// Define DTOs inline to avoid import issues
+import cloudinary from "../config/cloudinaryConfig";
 interface CreateFeasibilityStudyDto {
   name: string;
   description: string;
   image: string;
+  image_public_id: string;
+  pdf: string;
+  pdf_public_id: string;  
   price: string;
   category: string;
 }
@@ -20,6 +22,7 @@ interface UpdateFeasibilityStudyDto {
   image?: string;
   price?: string;
   category?: string;
+  pdf?: string;
 }
 
 export class FeasibilityStudyController {
@@ -73,24 +76,42 @@ async createFeasibilityStudy(
   next: NextFunction
 ) {
   try {
-    console.log("FILE:", req.file);
+    const files = req.files as {
+      image?: Express.Multer.File[];
+      pdf?: Express.Multer.File[];
+    };
+
+    console.log("FILES:", files);
     console.log("BODY:", req.body);
 
-    // ✅ تأكد إن الصورة موجودة
-    if (!req.file) {
+    if (!files?.image || files.image.length === 0) {
       return next(new AppError("Image is required", 400));
     }
 
-    // ✅ ارفع الصورة على Cloudinary
-    const uploadedImage = await uploadFile(req.file, "feasibility-studies");
+    if (!files?.pdf || files.pdf.length === 0) {
+      return next(new AppError("PDF is required", 400));
+    }
 
-    const data: CreateFeasibilityStudyDto = {
-      name: req.body.name,
-      description: req.body.description,
-      image: uploadedImage.secure_url, 
-      price: req.body.price,
-      category: req.body.category?.trim(),
-    };
+    const uploadedImage = await uploadFile(
+      files.image[0],
+      "feasibility-images"
+    );
+
+    const uploadedPdf = await uploadFile(
+      files.pdf[0],
+      "feasibility-pdfs"
+    );
+
+const data: any = {
+  name: req.body.name,
+  description: req.body.description,
+  image: uploadedImage.secure_url,
+  image_public_id: uploadedImage.public_id, 
+  pdf: uploadedPdf.secure_url,
+  pdf_public_id: uploadedPdf.public_id,     
+  price: req.body.price,
+  category: req.body.category?.trim(),
+};
 
     const study = await feasibilityStudyService.createFeasibilityStudy({
       ...data,
@@ -116,25 +137,58 @@ async updateFeasibilityStudy(
   try {
     const { id } = req.params;
 
+    const files = req.files as {
+      image?: Express.Multer.File[];
+      pdf?: Express.Multer.File[];
+    };
+
+    const existingStudy = await feasibilityStudyService.getFeasibilityStudyById(id);
+
+    if (!existingStudy) {
+      return next(new AppError("Study not found", 404));
+    }
+
     const data: any = {
       ...req.body,
       category: req.body.category?.trim(),
     };
 
-    if (req.file) {
+    // ================= IMAGE =================
+    if (files?.image?.length) {
+      if (existingStudy.image_public_id) {
+        await cloudinary.uploader.destroy(existingStudy.image_public_id);
+      }
+
       const uploadedImage = await uploadFile(
-        req.file,
-        "feasibility-studies"
+        files.image[0],
+        "feasibility-images"
       );
 
       data.image = uploadedImage.secure_url;
+      data.image_public_id = uploadedImage.public_id;
+    }
+
+    if (files?.pdf?.length) {
+      if (existingStudy.pdf_public_id) {
+        await cloudinary.uploader.destroy(existingStudy.pdf_public_id, {
+          resource_type: "raw",
+        });
+      }
+
+      const uploadedPdf = await uploadFile(
+        files.pdf[0],
+        "feasibility-pdfs"
+      );
+
+      data.pdf = uploadedPdf.secure_url;
+      data.pdf_public_id = uploadedPdf.public_id;
     }
 
     if (data.price) {
       data.price = Number(data.price);
     }
 
-    const study = await feasibilityStudyService.updateFeasibilityStudy(
+    const updatedStudy = await feasibilityStudyService.updateFeasibilityStudy(
       id,
       data
     );
@@ -142,7 +196,7 @@ async updateFeasibilityStudy(
     res.status(200).json({
       status: "success",
       message: "Feasibility study updated successfully",
-      data: study,
+      data: updatedStudy,
     });
   } catch (error) {
     next(error);
@@ -150,18 +204,38 @@ async updateFeasibilityStudy(
 }
 
   // Delete feasibility study
-  async deleteFeasibilityStudy(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-    try {
-      const { id } = req.params;
-      await feasibilityStudyService.deleteFeasibilityStudy(id);
-      res.status(200).json({
-        status: "success",
-        message: "Feasibility study deleted successfully"
-      });
-    } catch (error) {
-      next(error);
+ async deleteFeasibilityStudy(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  try {
+    const { id } = req.params;
+
+    const study = await feasibilityStudyService.getFeasibilityStudyById(id);
+
+    if (!study) {
+      return next(new AppError("Study not found", 404));
     }
+
+// 🗑️ delete image
+if (study.image_public_id) {
+  await cloudinary.uploader.destroy(study.image_public_id);
+}
+
+// 🗑️ delete pdf
+if (study.pdf_public_id) {
+  await cloudinary.uploader.destroy(study.pdf_public_id, {
+    resource_type: "raw",
+  });
+}
+
+    await feasibilityStudyService.deleteFeasibilityStudy(id);
+
+    res.status(200).json({
+      status: "success",
+      message: "Feasibility study deleted successfully",
+    });
+  } catch (error) {
+    next(error);
   }
+}
 
   // Get feasibility studies by category
   async getFeasibilityStudiesByCategory(req: AuthenticatedRequest, res: Response, next: NextFunction) {

@@ -13,8 +13,10 @@ export interface IUser extends Document {
   updatedAt: Date;
   resetPasswordToken?: string;
 resetPasswordExpires?: Date;
-plan?: string;
-  comparePassword(candidatePassword: string): Promise<boolean>;
+  plan?: "monthly" | "quarterly" | "yearly";
+  downloadsUsed: number;
+  downloadsLimit: number;
+  planExpiresAt?: Date;  comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
 const userSchema = new mongoose.Schema<IUser>(
@@ -25,8 +27,25 @@ const userSchema = new mongoose.Schema<IUser>(
     role: { type: String, enum: ["user", "admin"], default: "user" },
     resetPasswordToken: { type: String },
     resetPasswordExpires: { type: Date },
-    plan: { type: String }
-  },
+  plan: {
+      type: String,
+      enum: ["monthly", "quarterly", "yearly"],
+      default: null,
+    },
+
+    downloadsUsed: {
+      type: Number,
+      default: 0,
+    },
+
+    downloadsLimit: {
+      type: Number,
+      default: 0,
+    },
+
+    planExpiresAt: {
+      type: Date,
+    },  },
   { timestamps: true }
 );
 

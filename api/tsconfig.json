@@ -6,8 +6,9 @@
     "outDir": "./build",
     "esModuleInterop": true,
     "strict": true,
-    "typeRoots": ["./node_modules/@types", "./src"],
+    "typeRoots": ["./node_modules/@types", "./src/types"],
     "types": ["express"]
+    
   },
   "include": ["src/**/*"]
 }

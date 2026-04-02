@@ -9,6 +9,7 @@ export interface AuthenticatedRequest extends Request {
     id: string;
     role: string;
   };
+  userData?: any; // يمكنك تخصيص هذا النوع حسب بيانات المستخدم التي تريد تمريرها
 }
 
 

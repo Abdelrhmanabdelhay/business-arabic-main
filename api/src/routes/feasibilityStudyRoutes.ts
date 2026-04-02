@@ -370,7 +370,10 @@ router.put("/:id", authenticate, upload.single("image"), validate(feasibilityStu
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
  */
-router.post("/", authenticate, upload.single("image"),
+router.post("/", authenticate, upload.fields([
+  { name: "image", maxCount: 1 },
+  { name: "pdf", maxCount: 1 }
+]),
   validate(createFeasibilityStudySchema), feasibilityStudyController.createFeasibilityStudy);
 
 /**
@@ -435,7 +438,10 @@ router.delete("/:id", authenticate, validate(feasibilityStudyIdSchema), (req: Au
  *       404:
  *         $ref: '#/components/responses/NotFound'
  */
-router.put("/:id", authenticate, upload.single("image"), validate(updateFeasibilityStudySchema), feasibilityStudyController.updateFeasibilityStudy);
+router.put("/:id", authenticate, upload.fields([
+  { name: "image", maxCount: 1 },
+  { name: "pdf", maxCount: 1 }
+]), validate(updateFeasibilityStudySchema), feasibilityStudyController.updateFeasibilityStudy);
 
 /**
  * @swagger

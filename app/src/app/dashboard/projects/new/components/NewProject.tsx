@@ -23,6 +23,7 @@ const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 export default function NewProject() {
   const router = useRouter();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
   // Add project mutation
@@ -44,7 +45,23 @@ export default function NewProject() {
       price: 0,
     },
   });
+const MAX_PDF_SIZE = 10 * 1024 * 1024; // 10MB
+const handlePdfSelect = (file: File) => {
+  if (file) {
+    if (file.size > MAX_PDF_SIZE) {
+      toast.error("حجم ملف الـ PDF يجب أن يكون أقل من 10 ميجابايت");
+      return;
+    }
 
+    if (file.type !== "application/pdf") {
+      toast.error("يجب رفع ملف PDF فقط");
+      return;
+    }
+
+    setPdfFile(file);
+    setValue("pdf", file as any);
+  }
+};
   // Handle file selection
   const handleFileSelect = (file: File) => {
     if (file) {
@@ -90,22 +107,33 @@ export default function NewProject() {
   };
 
   // Submit handler
-  const onSubmit = async (data: ProjectFormData) => {
-    try {
-      const formData = new FormData();
-      formData.append("name", data.name);
-      formData.append("description", data.description);
-      formData.append("category", data.category);
-      formData.append("price", data.price.toString());
-      formData.append("image", data.image);
-
-      await addLaunchedProject(formData);
-      toast.success("تم إضافة دراسة الجدوي بنجاح");
-      router.push("/dashboard/projects");
-    } catch (error) {
-      console.error("Error submitting project:", error);
+const onSubmit = async (data: ProjectFormData) => {
+  try {
+    if (!pdfFile) {
+      toast.error("يجب رفع ملف PDF");
+      return;
     }
-  };
+
+    const formData = new FormData();
+    if (!data.image) {
+  toast.error("يجب رفع صورة");
+  return;
+}
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("category", data.category);
+    formData.append("price", data.price.toString());
+    formData.append("image", data.image);
+    formData.append("pdf", pdfFile); // 👈 NEW
+
+    await addLaunchedProject(formData);
+
+    toast.success("تم إضافة دراسة الجدوي بنجاح");
+    router.push("/dashboard/projects");
+  } catch (error) {
+    console.error("Error submitting project:", error);
+  }
+};
 
   // Handle API errors
   useEffect(() => {
@@ -337,8 +365,58 @@ export default function NewProject() {
                 </p>
               </CardBody>
             </Card>
+
+             <Card className="border border-default-200/50 bg-background/60 backdrop-blur-xl shadow-xl mt-4">
+    <CardHeader className="border-b border-default-200/50">
+      <h3 className="text-lg font-semibold">ملف دراسة الجدوي (PDF)</h3>
+    </CardHeader>
+    <CardBody>
+      <div className="border-2 border-dashed rounded-lg p-4 text-center">
+        {pdfFile ? (
+          <div className="flex flex-col items-center gap-3">
+            <p className="text-sm font-medium">{pdfFile.name}</p>
+
+            <Button
+              color="danger"
+              size="sm"
+              onClick={() => {
+                setPdfFile(null);
+                setValue("pdf", null);
+              }}
+            >
+              حذف الملف
+            </Button>
+          </div>
+        ) : (
+          <div className="py-6">
+            <input
+              type="file"
+              id="pdf-upload"
+              className="hidden"
+              accept="application/pdf"
+              onChange={(e) => handlePdfSelect(e.target.files?.[0] as File)}
+            />
+
+            <FiUpload className="mx-auto h-10 w-10 text-default-300" />
+
+            <label
+              htmlFor="pdf-upload"
+              className="mt-3 inline-flex items-center rounded-md bg-primary-50 px-4 py-2 text-sm font-semibold text-primary-600 hover:bg-primary-100 cursor-pointer"
+            >
+              رفع ملف PDF
+            </label>
+
+            <p className="mt-2 text-xs text-default-400">
+              فقط ملفات PDF - الحد الأقصى 10MB
+            </p>
+          </div>
+        )}
+      </div>
+    </CardBody>
+  </Card>
           </motion.div>
-        </div>
+
+         </div>
       </div>
     </div>
   );

@@ -15,8 +15,16 @@ import * as z from "zod";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { EditProjectMutation, GetProject } from "@/lib/actions/projects.actions";
-import { ProjectFormData, projectSchema } from "@/lib/schemas/projectSchema";
-
+import { ProjectFormData,editProjectSchema } from "@/lib/schemas/projectSchema";
+function fixFileName(name: string) {
+  try {
+    return decodeURIComponent(
+      escape(name)
+    );
+  } catch {
+    return name;
+  }
+}
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -26,7 +34,7 @@ export default function EditProject() {
   const router = useRouter();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-
+const [pdfFile, setPdfFile] = useState<File | null>(null);
   // Fetch project details
   const { data: projectData, isPending: isLoadingProject, error: fetchError } = GetProject({ id: id as string });
 
@@ -47,14 +55,33 @@ export default function EditProject() {
     watch,
     reset,
   } = useForm<ProjectFormData>({
-    resolver: zodResolver(projectSchema),
-    defaultValues: {
-      name: "",
-      description: "",
-      price: 0,
-    },
+resolver: zodResolver(editProjectSchema),
+defaultValues: {
+  name: "",
+  description: "",
+  price: 0,
+  image: null,
+  pdf: null,
+}
   });
+const MAX_PDF_SIZE = 10 * 1024 * 1024;
 
+const handlePdfSelect = (file: File) => {
+  if (file) {
+    if (file.size > MAX_PDF_SIZE) {
+      toast.error("حجم ملف الـ PDF يجب أن يكون أقل من 10 ميجابايت");
+      return;
+    }
+
+    if (file.type !== "application/pdf") {
+      toast.error("يجب رفع ملف PDF فقط");
+      return;
+    }
+
+    setPdfFile(file);
+    setValue("pdf", file as any);
+  }
+};
   // Handle file selection
   const handleFileSelect = (file: File) => {
     if (file) {
@@ -104,22 +131,31 @@ export default function EditProject() {
 
   // Submit handler
   const onSubmit = async (data: ProjectFormData) => {
-    try {
-      const formData = new FormData();
+  try {
+    const formData = new FormData();
 
-      formData.append("name", data.name);
-      formData.append("description", data.description);
-      formData.append("category", data.category);
-      formData.append("price", data.price.toString());
-      data.image && formData.append("image", data.image);
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("category", data.category);
+    formData.append("price", data.price.toString());
 
-      await editLaunchedProject(formData);
-      toast.success("تم تعديل المشروع  بنجاح");
-      router.push("/dashboard/projects");
-    } catch (error) {
-      console.error("Error submitting project:", error);
+    // 👇 مهم: ابعت بس لو المستخدم غيّر
+    if (data.image) {
+      formData.append("image", data.image);
     }
-  };
+
+    if (pdfFile) {
+      formData.append("pdf", pdfFile);
+    }
+
+    await editLaunchedProject(formData);
+
+    toast.success("تم تعديل المشروع بنجاح");
+    router.push("/dashboard/projects");
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   // Handle API errors
   useEffect(() => {
@@ -365,6 +401,58 @@ onChange={(e) =>
                 </p>
               </CardBody>
             </Card>
+
+            <Card className="border border-default-200/50 bg-background/60 backdrop-blur-xl shadow-xl mt-4">
+  <CardHeader className="border-b border-default-200/50">
+    <h3 className="text-lg font-semibold">ملف المشروع (PDF)</h3>
+  </CardHeader>
+  <CardBody>
+    <div className="border-2 border-dashed rounded-lg p-4 text-center">
+{pdfFile ? (
+  <div className="flex flex-col items-center gap-3">
+    <p className="text-sm font-medium">{pdfFile.name}</p>
+
+    <Button
+      color="danger"
+      size="sm"
+      onClick={() => {
+        setPdfFile(null);
+        setValue("pdf", null);
+      }}
+    >
+      حذف الملف
+    </Button>
+  </div>
+) : (
+  <div className="py-6">
+
+{!pdfFile && projectData?.pdf && (
+  <p className="text-sm text-default-500 mb-2">
+    📄 {fixFileName(projectData.pdf.split("/").pop() || "")}
+  </p>
+)}
+
+    <input
+      type="file"
+      id="pdf-upload"
+      className="hidden"
+      accept="application/pdf"
+      onChange={(e) => handlePdfSelect(e.target.files?.[0] as File)}
+    />
+
+    <FiUpload className="mx-auto h-10 w-10 text-default-300" />
+
+    <label
+      htmlFor="pdf-upload"
+      className="mt-3 inline-flex items-center rounded-md bg-primary-50 px-4 py-2 text-sm font-semibold text-primary-600 hover:bg-primary-100 cursor-pointer"
+    >
+      رفع ملف PDF
+    </label>
+  </div>
+)}
+    </div>
+  </CardBody>
+</Card>
           </motion.div>
         </div>
       </div>

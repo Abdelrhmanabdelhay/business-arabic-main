@@ -10,7 +10,7 @@ export const UserNavbar = () => {
   const userNavItems = [
     { href: "/userp", label: "الرئيسية" },
     { href: "/idea-club", label: " افكار مشاريع" },
-    { href: "/user/feasibility-studies", label: "قصص نجاح" },
+    { href: "/feasibility-studiesuser", label: "دراسات الجدوى" },
     { href: "/user/consultation", label: "تطوير ونمو اعمال" },
   ];
 const logout = useUserStore((state) => state.logout);

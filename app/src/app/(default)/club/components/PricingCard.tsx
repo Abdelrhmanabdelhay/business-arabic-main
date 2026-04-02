@@ -120,7 +120,7 @@ export default function PricingCard({
 
           {/* CTA Button */}
           <button
-            onClick={() => router.push(`/signup?plan=${plan.plan}&price=${plan.price}&name=${encodeURIComponent(plan.name)}`)}
+            onClick={() => router.push(`/signup?plan=${plan.id}`)}
             style={{
               width: "100%",
               padding: "14px",

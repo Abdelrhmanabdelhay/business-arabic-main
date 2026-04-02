@@ -4,6 +4,13 @@ import clsx from "clsx";
 import { Providers } from "./providers";
 import { fontCairo } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
+import { Tajawal } from "next/font/google";
+
+const tajawal = Tajawal({
+  subsets: ["arabic"],
+  weight: ["400", "500", "700"],
+});
+
 
 export const metadata: Metadata = {
   title: {
