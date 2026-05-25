@@ -5,16 +5,17 @@ export interface IdeaClub {
   name: string;
   description: string;
   category: string;
-  content: Block[];
-  image?: string;
+  content: string;
+  imageUrl?: string;        
   likes?: number;
   views?: number;
   createdAt: string;
   updatedAt: string;
 }
+
 export interface IdeasResponse {
   ideas: IdeaClub[];
-  categories: string[]
+  categories: string[];
   page: number;
   limit: number;
   total: number;
@@ -23,12 +24,8 @@ export interface IdeasResponse {
 
 export type IdeasComponentProps = {
   ideas: IdeaClub[];
-
   onDelete: (id: string) => Promise<void>;
-
   selectedId: string;
-
   isDeleting: boolean;
-
   isDeleted: boolean;
 };

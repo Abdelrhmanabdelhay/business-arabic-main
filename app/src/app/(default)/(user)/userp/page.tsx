@@ -44,7 +44,7 @@ interface GrowthService {
 }
 
 const ACCENT_COLORS = ["#7C3AED", "#F97316", "#2c4fd4", "#0EA5E9", "#10B981"];
-
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8080/api";
 export default function HomePage() {
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [stories, setStories] = useState<SuccessStory[]>([]);
@@ -56,7 +56,7 @@ export default function HomePage() {
 
   // ── Fetch ideas
   useEffect(() => {
-    fetch("http://localhost:8080/api/ideas?page=1&limit=3")
+    fetch(`${API_BASE}/ideas?page=1&limit=3`)
       .then((res) => res.json())
       .then((data) => setIdeas(data.ideas ?? []))
       .catch(() => setIdeas([]));
@@ -64,7 +64,7 @@ export default function HomePage() {
 
   // ── Fetch success stories
   useEffect(() => {
-    fetch("http://localhost:8080/api/success-stories?limit=5")
+    fetch(`${API_BASE}/success-stories?limit=5`)
       .then((res) => res.json())
       .then((data) => setStories(data.stories ?? data ?? []))
       .catch(() => setStories([]));
@@ -72,7 +72,7 @@ export default function HomePage() {
 
   // ── Fetch growth services
   useEffect(() => {
-    fetch("http://localhost:8080/api/growth-services")
+    fetch(`${API_BASE}/growth-services`)
       .then((res) => res.json())
       .then((data) => setGrowthServices(data.services ?? data ?? []))
       .catch(() => setGrowthServices([]));

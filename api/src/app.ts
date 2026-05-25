@@ -60,14 +60,22 @@ app.use(morganMiddleware);
 // );
 
 // Normal body parsers
-app.use((req, res, next) => {
-  if (req.originalUrl === "/api/stripe/webhook") {
-    return next(); // ⛔ skip json parsing
+// AFTER
+// Stripe webhook FIRST
+app.post(
+  "/api/stripe/webhook",
+  express.raw({ type: "application/json" }),
+  (req: Request, res: Response) => {
+    return stripeWebHook(req, res);
   }
-  express.json()(req, res, next);
-});app.use(express.urlencoded({ extended: true }));
+);
+
+// THEN normal parsers
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
+
+// routes
 app.use("/api/stripe", stripeRoutes);
-// Root route
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({
     message: "Welcome to Business Arabic API",

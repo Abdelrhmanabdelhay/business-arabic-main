@@ -21,7 +21,6 @@ import { parseCookies } from "nookies";
 import { FaFacebookF, FaTwitter } from "react-icons/fa";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/dropdown";
 import { useUserStore } from "@/lib/stores/useUserStore";
-import { UserNavbar } from "./UserNavbar";
 interface NavLinkProps {
   href: string;
   children: React.ReactNode;
@@ -59,6 +58,8 @@ const { user, isAuthenticated, hasHydrated } = useUserStore();
 
 const isFeasibilityPage = pathname === "/feasibility-studies";
 
+
+
 const logout = useUserStore((state) => state.logout);
 
 const handleLogout = async () => {
@@ -89,6 +90,23 @@ const handleNavigation = (path?: string) => {
     { key: "orders", label: "الطلبات", href: "/my-orders" },
     { key: "logout", label: "تسجيل الخروج", action: handleLogout },
   ];
+  const userNavItems = [
+  { href: "/userp", label: "الرئيسية" },
+  { href: "/idea-club", label: " افكار مشاريع" },
+  { href: "/feasibility-studiesuser", label: "دراسات الجدوى" },
+  { href: "/growth-services", label: "تطوير ونمو اعمال" },
+  {href:"/success-stories",label:"قصص النجاح"}
+];
+
+const userDropdownItemsForUser = [
+  { key: "profile", label: "الملف الشخصي", href: "/profile" },
+  { key: "orders", label: "طلباتي", href: "/my-orders" },
+  { key: "logout", label: "تسجيل الخروج", action: handleLogout },
+];
+
+  const navItemsToUse = user?.role === "user" ? userNavItems : (navItems || siteConfig.navItems);
+  const dropdownItemsToUse = user?.role === "user" ? userDropdownItemsForUser : (dropdownItems || userDropdownItems);
+
 if (!hasHydrated) return null;
 
 
@@ -108,7 +126,7 @@ if (!hasHydrated) return null;
           </button>
         </NavbarBrand>
         <div className="hidden lg:flex gap-12 items-center mr-8">
-          {(navItems || siteConfig.navItems).map((item) => (
+          {navItemsToUse.map((item) => (
             <NavbarItem key={item.href}>
               <NavLink href={item.href}>{item.label}</NavLink>
             </NavbarItem>
@@ -177,7 +195,7 @@ if (!hasHydrated) return null;
 
     <DropdownMenu
       aria-label="User menu"
-      items={dropdownItems || userDropdownItems}
+      items={dropdownItemsToUse}
       className="text-right"
       itemClasses={{
         base: "gap-4",
@@ -252,7 +270,7 @@ if (!hasHydrated) return null;
 
       {/* Mobile Menu */}
       <NavbarMenu className="pt-6 px-6 pb-6 bg-white">
-        {siteConfig.navItems.map((item) => (
+        {navItemsToUse.map((item) => (
           <NavbarMenuItem key={item.href} className="my-3">
             <NavLink href={item.href} className="text-[15px] block py-2">
               {item.label}
@@ -270,7 +288,7 @@ if (!hasHydrated) return null;
             />
           ) : user ? (
             <div className="flex flex-col gap-2">
-              {(dropdownItems || userDropdownItems).map((item) => (
+              {dropdownItemsToUse.map((item) => (
                 <Button
                   key={item.key}
                   variant="light"

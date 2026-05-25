@@ -4,7 +4,7 @@ export interface IIdeaClub extends Document {
   _id: mongoose.Types.ObjectId;
   name: string;
   description: string;
-    content: string[];
+    content: any[];
   category: string;
   createdAt: string;
   updatedAt: string;
@@ -15,8 +15,11 @@ const ideaClubSchema = new mongoose.Schema<IIdeaClub>(
   {
     name: { type: String, required: true },
     description: { type: String, required: true },
-    content: [{ type: String }],  
-
+content: {
+  type: Array as any,
+  required: true,
+  default: [],
+},
     category: { type: String, required: true },
       imageUrl: { type: String },
   },

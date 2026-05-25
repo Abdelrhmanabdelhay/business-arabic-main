@@ -21,43 +21,42 @@ const Page = ({ params }: BlogPageProps) => {
   }
 
   // Transform the structured content into readable format for BlogPost
- const parsedContent = (post.content || []).map((block: any) => {
+const parsedContent = (post.content || []).map((block: any) => {
   switch (block.type) {
     case "paragraph":
       return {
         type: "paragraph",
-        content: block.value || "",
+        content: block.text || block.value || block.content || "",
       };
 
     case "heading":
       return {
         type: "heading",
-        content: block.value || "",
+        content: block.text || block.value || block.content || "",
       };
 
     case "list":
       return {
         type: "list",
-        content: block.items || [],
+        content: block.items || block.content || [],
       };
 
     case "image":
       return {
         type: "image",
         content: {
-          url: block.url || "",
-          alt: block.alt || "",
+          url: block.url || block.content?.url || "",
+          alt: block.alt || block.content?.alt || "",
         },
       };
 
     default:
       return {
         type: "paragraph",
-        content: block.value || "",
+        content: block.text || block.value || block.content || "",
       };
   }
 });
-
 
   const formattedPost = {
     ...post,

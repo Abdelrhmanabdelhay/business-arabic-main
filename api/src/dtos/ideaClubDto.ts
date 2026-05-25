@@ -1,3 +1,5 @@
+import { StringExpressionOperatorReturningObject } from "mongoose";
+
 export interface CreateIdeaClubDto {
   name: string;
   description: string;

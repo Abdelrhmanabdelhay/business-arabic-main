@@ -1,6 +1,6 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiUsers, FiGrid, FiBriefcase, FiMenu } from "react-icons/fi";
+import { FiUsers, FiGrid, FiBriefcase, FiMenu ,FiFileText} from "react-icons/fi";
 import { Button } from "@nextui-org/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -31,6 +31,26 @@ const menuItems: MenuItem[] = [
       { title: "قائمة دراسات الجدوي", path: "/dashboard/projects" },
       { title: "إضافة دراسة جدوي", path: "/dashboard/projects/new" },
     ],
+  },
+  {
+  title: "المقالات",
+  icon: FiFileText,
+  path: "/dashboard/blogs",
+  submenu: [
+    { title: "قائمة المقالات", path: "/dashboard/blogs" },
+    { title: "إضافة مقال", path: "/dashboard/blogs/new" },
+  ],
+  requiredRole: "admin",
+},
+  {
+    title: "نوادي الأفكار",
+    icon: FiBriefcase,
+    path: "/dashboard/idea-clubs",
+    submenu: [
+      { title: "قائمة نوادي الأفكار", path: "/dashboard/idea-clubs" },
+      { title: "إضافة نادي أفكار", path: "/dashboard/idea-clubs/new" },
+    ],
+     requiredRole: "admin",
   },
 ];
 
