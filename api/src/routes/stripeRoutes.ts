@@ -2,7 +2,7 @@
 import express ,{ Router } from 'express';
 import { handleCreateCheckoutSession, handleCreateSubscriptionCheckoutSession, handleCreateTestCheckoutSession, handleGetUserOrders, handleRefundPayment, handleSyncPaymentStatus } from '../controllers/stripeController';
 import { authenticate } from '../middlewares/auth';
-import { stripeWebHook } from '../utils/stripe';
+import { renewCheckoutSession, stripeWebHook } from '../utils/stripe';
 
 const router = Router();
 /**
@@ -165,6 +165,7 @@ router.post(
  */
 
 router.post('/create-checkout-session', handleCreateCheckoutSession);
+router.post('/renew-checkout-session', authenticate, renewCheckoutSession); 
 
 // POST /create-test-checkout-session
 router.post('/create-test-checkout-session', authenticate, handleCreateTestCheckoutSession);

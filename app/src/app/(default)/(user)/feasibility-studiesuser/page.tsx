@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef,useMemo } from "react";
+import { useEffect, useState, useCallback, useRef, useMemo } from "react";
 import axios from "axios";
 import { useUserStats } from "../../feasibility-studies/[id]/api/queries";
 import { useQueryClient } from "@tanstack/react-query";
@@ -38,6 +38,7 @@ interface UserData {
   plan: string | null;
   downloadsUsed: number;
   downloadsLimit: number;
+  planExpiresAt?: string | null;
 }
 
 type DownloadState = "idle" | "loading" | "done" | "error";
@@ -51,6 +52,7 @@ const DEFAULT_USER: UserData = {
   plan: null,
   downloadsUsed: 0,
   downloadsLimit: -1,
+  planExpiresAt: null,
 };
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
@@ -112,17 +114,19 @@ const Icon = {
       <line x1="12" y1="16" x2="12.01" y2="16" />
     </svg>
   ),
+  Lock: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+    </svg>
+  ),
 };
 
 // ─── Spinner ──────────────────────────────────────────────────────────────────
 
 function Spinner({ size = 16 }: { size?: number }) {
   return (
-    <svg
-      width={size} height={size} viewBox="0 0 24 24"
-      fill="none" stroke="currentColor" strokeWidth="2"
-      className="animate-spin"
-    >
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="animate-spin">
       <circle cx="12" cy="12" r="10" strokeOpacity="0.2" />
       <path d="M12 2a10 10 0 0 1 10 10" strokeLinecap="round" />
     </svg>
@@ -133,13 +137,37 @@ function Spinner({ size = 16 }: { size?: number }) {
 
 function Toast({ msg, type }: { msg: string; type: "success" | "error" }) {
   return (
-    <div
-      className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-[300] flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium shadow-lg whitespace-nowrap animate-[fadeUp_0.25s_ease] ${
-        type === "success" ? "bg-[#1c1c1a] text-white" : "bg-red-500 text-white"
-      }`}
-    >
+    <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-[300] flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium shadow-lg whitespace-nowrap animate-[fadeUp_0.25s_ease] ${
+      type === "success" ? "bg-[#1c1c1a] text-white" : "bg-red-500 text-white"
+    }`}>
       {type === "success" ? <Icon.Check /> : <Icon.AlertCircle />}
       <span>{msg}</span>
+    </div>
+  );
+}
+
+// ─── Expired Plan Banner ──────────────────────────────────────────────────────
+
+function ExpiredPlanBanner({ isPlanExpired, hasNoPlan }: { isPlanExpired: boolean; hasNoPlan: boolean }) {
+  const handleRenewSubscription = () => {
+
+    }
+  if (!isPlanExpired && !hasNoPlan) return null;
+
+  return (
+    <div className="bg-red-50 border-b border-red-200 px-8 py-3 flex items-center justify-between gap-4">
+      <div className="flex items-center gap-2 text-red-600 text-sm font-medium">
+        <Icon.Lock />
+        {isPlanExpired
+          ? "انتهت صلاحية اشتراكك — لا يمكنك إضافة دراسات أو تحميلها."
+          : "ليس لديك اشتراك نشط — يرجى الاشتراك للوصول إلى الدراسات."}
+      </div>
+      <a
+        href="/renew?plan=quarterly"
+        className="flex-shrink-0 px-4 py-1.5 bg-red-600 text-white text-xs font-bold rounded-full hover:bg-red-700 transition-colors"
+      >
+        {isPlanExpired ? "تجديد الاشتراك" : "اشترك الآن"}
+      </a>
     </div>
   );
 }
@@ -168,6 +196,8 @@ function SkeletonCard() {
 function CartDrawer({
   cart,
   user,
+  hasActivePlan,
+  isPlanExpired,
   dlState,
   onRemove,
   onDownloadOne,
@@ -176,6 +206,8 @@ function CartDrawer({
 }: {
   cart: FeasibilityStudy[];
   user: UserData;
+  hasActivePlan: boolean;
+  isPlanExpired: boolean;
   dlState: Record<string, DownloadState>;
   onRemove: (id: string) => void;
   onDownloadOne: (study: FeasibilityStudy) => void;
@@ -187,9 +219,8 @@ function CartDrawer({
   const isUnlimited = limit === -1;
   const remaining = isUnlimited ? Infinity : Math.max(0, limit - used);
   const pct = isUnlimited ? 100 : limit > 0 ? Math.min(100, Math.round((used / limit) * 100)) : 100;
-
   const barColor = pct >= 90 ? "#E24B4A" : pct >= 65 ? "#BA7517" : "#1D9E75";
-  const canDownloadMore = isUnlimited || remaining > 0;
+  const canDownloadMore = hasActivePlan && (isUnlimited || remaining > 0);
 
   return (
     <div
@@ -217,10 +248,11 @@ function CartDrawer({
           <div className="flex justify-between items-center mb-2">
             <span className="text-[13px] text-gray-500">تحميلاتك المتبقية</span>
             <span className="text-[14px] font-bold" style={{ color: barColor }}>
-              {isUnlimited ? "غير محدود" : `${remaining} / ${limit}`}
+              {!hasActivePlan ? "—" : isUnlimited ? "غير محدود" : `${remaining} / ${limit}`}
             </span>
           </div>
-          {!isUnlimited && (
+
+          {hasActivePlan && !isUnlimited && (
             <div className="h-1.5 rounded-full bg-gray-200 overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-500"
@@ -228,12 +260,30 @@ function CartDrawer({
               />
             </div>
           )}
-          {!canDownloadMore && (
+
+          {/* ── Status message ── */}
+          {isPlanExpired ? (
+            <p className="flex items-center gap-1.5 mt-2.5 text-xs text-red-500">
+              <Icon.Lock />
+              انتهت صلاحية اشتراكك —{" "}
+              <a href="/renew?plan=quarterly" className="underline font-semibold hover:text-red-700">
+                جدّد اشتراكك
+              </a>
+            </p>
+          ) : !hasActivePlan ? (
+            <p className="flex items-center gap-1.5 mt-2.5 text-xs text-red-500">
+              <Icon.Lock />
+              لا يوجد اشتراك نشط —{" "}
+              <a href="/renew?plan=quarterly" className="underline font-semibold hover:text-red-700">
+                اشترك الآن
+              </a>
+            </p>
+          ) : !canDownloadMore ? (
             <p className="flex items-center gap-1.5 mt-2.5 text-xs text-red-500">
               <Icon.AlertCircle />
               وصلت للحد الأقصى — يرجى ترقية اشتراكك.
             </p>
-          )}
+          ) : null}
         </div>
 
         {/* List */}
@@ -248,15 +298,8 @@ function CartDrawer({
             {cart.map((study) => {
               const state = dlState[study._id] ?? "idle";
               return (
-                <li
-                  key={study._id}
-                  className="flex items-center gap-2.5 px-6 py-2.5 border-b border-black/[0.09] hover:bg-[#fafaf8] transition-colors"
-                >
-                  <img
-                    src={study.image}
-                    alt={study.name}
-                    className="w-12 h-12 rounded-lg object-cover flex-shrink-0 border border-black/[0.09]"
-                  />
+                <li key={study._id} className="flex items-center gap-2.5 px-6 py-2.5 border-b border-black/[0.09] hover:bg-[#fafaf8] transition-colors">
+                  <img src={study.image} alt={study.name} className="w-12 h-12 rounded-lg object-cover flex-shrink-0 border border-black/[0.09]" />
                   <div className="flex-1 min-w-0">
                     <p className="text-[13px] font-semibold truncate">{study.name}</p>
                     <p className="text-[12px] text-gray-400 mt-0.5">{study.category}</p>
@@ -270,7 +313,12 @@ function CartDrawer({
                       }`}
                       disabled={!canDownloadMore || state === "loading" || state === "done"}
                       onClick={() => onDownloadOne(study)}
-                      title={state === "done" ? "تم التحميل" : "تحميل"}
+                      title={
+                        isPlanExpired ? "انتهى اشتراكك"
+                        : !hasActivePlan ? "لا يوجد اشتراك"
+                        : state === "done" ? "تم التحميل"
+                        : "تحميل"
+                      }
                     >
                       {state === "loading" ? <Spinner /> : state === "done" ? <Icon.Check /> : <Icon.Download />}
                     </button>
@@ -314,17 +362,24 @@ function CartDrawer({
 function StudyCard({
   study,
   inCart,
+  canDownloadMore,
+  hasActivePlan,
+  isPlanExpired,
   onToggleCart,
-    canDownloadMore,
 }: {
   study: FeasibilityStudy;
   inCart: boolean;
-    canDownloadMore: boolean;
+  canDownloadMore: boolean;
+  hasActivePlan: boolean;
+  isPlanExpired: boolean;
   onToggleCart: (study: FeasibilityStudy) => void;
-
-  
 }) {
-  
+  const disabledTitle = isPlanExpired
+    ? "انتهت صلاحية اشتراكك"
+    : !hasActivePlan
+    ? "لا يوجد اشتراك نشط"
+    : "وصلت للحد الأقصى للتحميلات";
+
   return (
     <article className="bg-white border border-black/[0.09] rounded-xl overflow-hidden flex flex-col transition-all duration-[220ms] hover:-translate-y-[3px] hover:shadow-[0_8px_28px_rgba(0,0,0,0.07)] hover:border-black/[0.14] animate-[fadeUp_0.35s_ease_both]">
       <div className="relative h-[180px] overflow-hidden bg-gray-200">
@@ -341,17 +396,18 @@ function StudyCard({
         <h3 className="text-[15px] font-bold text-[#1c1c1a] mb-1.5 line-clamp-2">{study.name}</h3>
         <p className="text-[13px] text-gray-500 leading-relaxed flex-1 mb-4 line-clamp-3">{study.description}</p>
         <div className="flex items-center justify-between gap-2">
-<button
-  disabled={!canDownloadMore}
-  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-[13px] font-medium border transition-all
-    ${!canDownloadMore
-      ? "opacity-40 cursor-not-allowed border-gray-300 text-gray-400"
-      : inCart
-      ? "bg-red-50 border-red-500 text-red-500 hover:bg-red-100"
-      : "bg-transparent border-[#185FA5] text-[#185FA5] hover:bg-blue-50"
-    }`}
-  onClick={() => onToggleCart(study)}
->
+          <button
+            disabled={!canDownloadMore && !inCart}
+            title={!canDownloadMore && !inCart ? disabledTitle : ""}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-[13px] font-medium border transition-all ${
+              !canDownloadMore && !inCart
+                ? "opacity-40 cursor-not-allowed border-gray-300 text-gray-400"
+                : inCart
+                ? "bg-red-50 border-red-500 text-red-500 hover:bg-red-100"
+                : "bg-transparent border-[#185FA5] text-[#185FA5] hover:bg-blue-50"
+            }`}
+            onClick={() => onToggleCart(study)}
+          >
             {inCart ? <><Icon.Minus /> إزالة</> : <><Icon.Plus /> أضف للسلة</>}
           </button>
         </div>
@@ -363,16 +419,14 @@ function StudyCard({
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function FeasibilityStudiesPage() {
-
-  // ✅ ALL hooks must be called inside the component — never at module level
   const queryClient = useQueryClient();
   const { data: userStats } = useUserStats();
 
-  // ✅ Derive user directly from query data — no useState/useEffect needed
   const user: UserData = {
     plan: (userStats as any)?.plan ?? DEFAULT_USER.plan,
     downloadsUsed: (userStats as any)?.downloadsUsed ?? DEFAULT_USER.downloadsUsed,
     downloadsLimit: (userStats as any)?.downloadsLimit ?? DEFAULT_USER.downloadsLimit,
+    planExpiresAt: (userStats as any)?.planExpiresAt ?? DEFAULT_USER.planExpiresAt,
   };
 
   /* ── State ── */
@@ -388,23 +442,36 @@ export default function FeasibilityStudiesPage() {
   const [dlState, setDlState] = useState<Record<string, DownloadState>>({});
   const [toast, setToast] = useState<{ msg: string; type: "success" | "error" } | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout>>();
-
+  const [selectedCategory, setSelectedCategory] = useState("الكل");
 
   const categories = useMemo(() => {
-  const cats = studies.map((s) => s.category || "عام");
-  return ["الكل", ...Array.from(new Set(cats))];
-}, [studies]);
+    const cats = studies.map((s) => s.category || "عام");
+    return ["الكل", ...Array.from(new Set(cats))];
+  }, [studies]);
 
-const [selectedCategory, setSelectedCategory] = useState("الكل");
+  const filteredStudies = useMemo(() => {
+    if (selectedCategory === "الكل") return studies;
+    return studies.filter((s) => (s.category || "عام") === selectedCategory);
+  }, [studies, selectedCategory]);
 
+  /* ── Subscription status ── */
+  const isUnlimited = user.downloadsLimit === -1;
 
-const filteredStudies = useMemo(() => {
-  if (selectedCategory === "الكل") return studies;
+  const isPlanExpired =
+    !!user.planExpiresAt &&
+    new Date(user.planExpiresAt).getTime() < Date.now();
 
-  return studies.filter(
-    (s) => (s.category || "عام") === selectedCategory
-  );
-}, [studies, selectedCategory]);
+  const hasNoPlan = !user.plan;
+
+  const hasActivePlan = !!user.plan && !isPlanExpired;
+
+  const remainingDownloads = isUnlimited
+    ? Infinity
+    : Math.max(0, user.downloadsLimit - user.downloadsUsed);
+
+  const canDownloadMore =
+    hasActivePlan && (isUnlimited || remainingDownloads > 0);
+
   /* ── Debounce keyword ── */
   useEffect(() => {
     const t = setTimeout(() => { setDebouncedKw(keyword); setPage(1); }, 450);
@@ -421,15 +488,8 @@ const filteredStudies = useMemo(() => {
         const endpoint = debouncedKw
           ? `${API}/feasibility-studies/search`
           : `${API}/feasibility-studies`;
-
-        const params = debouncedKw
-          ? { q: debouncedKw }
-          : { limit: LIMIT, page };
-
-        const { data } = await axios.get<ApiResponse>(endpoint, {
-          params,
-          withCredentials: true,
-        });
+        const params = debouncedKw ? { q: debouncedKw } : { limit: LIMIT, page };
+        const { data } = await axios.get<ApiResponse>(endpoint, { params, withCredentials: true });
         if (!cancelled) {
           setStudies(data.data);
           setTotal(data.total ?? data.results ?? data.data.length);
@@ -452,81 +512,82 @@ const filteredStudies = useMemo(() => {
   }, []);
 
   /* ── Cart ── */
-  const isUnlimited = user.downloadsLimit === -1;
-const remainingDownloads = isUnlimited
-  ? Infinity
-  : Math.max(0, user.downloadsLimit - user.downloadsUsed);
+  const toggleCart = useCallback((study: FeasibilityStudy) => {
+    setCart((prev) => {
+      const exists = prev.some((s) => s._id === study._id);
 
-const canDownloadMore = isUnlimited || remainingDownloads > 0;
-const toggleCart = useCallback((study: FeasibilityStudy) => {
-  setCart((prev) => {
-    const exists = prev.some((s) => s._id === study._id);
+      // Always allow removing even with expired plan
+      if (exists) {
+        showToast(`تمت إزالة "${study.name}" من السلة`);
+        return prev.filter((s) => s._id !== study._id);
+      }
 
-    // ✅ Always allow removing
-    if (exists) {
-      showToast(`تمت إزالة "${study.name}" من السلة`);
-      return prev.filter((s) => s._id !== study._id);
+      if (isPlanExpired) {
+        showToast("انتهت صلاحية اشتراكك — يرجى التجديد", "error");
+        return prev;
+      }
+
+      if (hasNoPlan) {
+        showToast("لا يوجد اشتراك نشط — يرجى الاشتراك أولاً", "error");
+        return prev;
+      }
+
+      const _isUnlimited = user.downloadsLimit === -1;
+      const remaining = _isUnlimited
+        ? Infinity
+        : Math.max(0, user.downloadsLimit - user.downloadsUsed);
+
+      if (!_isUnlimited && prev.length >= remaining) {
+        showToast("وصلت للحد الأقصى للتحميلات — لا يمكنك الإضافة", "error");
+        return prev;
+      }
+
+      showToast(`تمت إضافة "${study.name}" إلى السلة`);
+      return [...prev, study];
+    });
+  }, [showToast, user, isPlanExpired, hasNoPlan]);
+
+  const downloadStudy = useCallback(async (study: FeasibilityStudy) => {
+    if (isPlanExpired) {
+      showToast("انتهت صلاحية اشتراكك — يرجى التجديد", "error");
+      return;
+    }
+    if (hasNoPlan) {
+      showToast("لا يوجد اشتراك نشط", "error");
+      return;
+    }
+    if (!canDownloadMore) {
+      showToast("وصلت للحد الأقصى للتحميلات", "error");
+      return;
+    }
+    if (!study.pdf) {
+      showToast("هذا الملف غير متاح", "error");
+      return;
     }
 
-    // ✅ Check against cart length vs remaining downloads — both fresh inside setter
-    const isUnlimited = user.downloadsLimit === -1;
-    const remaining = isUnlimited
-      ? Infinity
-      : Math.max(0, user.downloadsLimit - user.downloadsUsed);
+    setDlState((p) => ({ ...p, [study._id]: "loading" }));
 
-    // ✅ Also cap cart size by remaining quota
-    if (!isUnlimited && prev.length >= remaining) {
-      showToast("وصلت للحد الأقصى للتحميلات — لا يمكنك الإضافة", "error");
-      return prev;
+    try {
+      const response = await axiosInstance.get(`/projectsdownload/download/${study._id}`, { responseType: "blob" });
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = `${study.name}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+      queryClient.invalidateQueries({ queryKey: ["/users/me/stats"] });
+      setDlState((p) => ({ ...p, [study._id]: "done" }));
+      showToast(`تم تحميل "${study.name}" بنجاح`);
+    } catch (err: any) {
+      const msg = err?.response?.data?.message ?? "حدث خطأ أثناء التحميل";
+      setDlState((p) => ({ ...p, [study._id]: "error" }));
+      showToast(msg, "error");
     }
+  }, [showToast, queryClient, canDownloadMore, isPlanExpired, hasNoPlan]);
 
-    showToast(`تمت إضافة "${study.name}" إلى السلة`);
-    return [...prev, study];
-  });
-}, [showToast, user]); 
-
-
-const downloadStudy = useCallback(async (study: FeasibilityStudy) => {
-  if (!canDownloadMore) {
-    showToast("وصلت للحد الأقصى للتحميلات", "error");
-    return;
-  }
-
-  if (!study.pdf) {
-    showToast("هذا الملف غير متاح", "error");
-    return;
-  }
-
-  setDlState((p) => ({ ...p, [study._id]: "loading" }));
-
-  try {
-    const response = await axiosInstance.get(
-      `/projectsdownload/download/${study._id}`,
-      { responseType: "blob" } 
-    );
-
-    const blob = new Blob([response.data], { type: "application/pdf" });
-    const blobUrl = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = blobUrl;
-    a.download = `${study.name}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-    setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
-
-    queryClient.invalidateQueries({ queryKey: ["/users/me/stats"] });
-    setDlState((p) => ({ ...p, [study._id]: "done" }));
-    showToast(`تم تحميل "${study.name}" بنجاح`);
-
-  } catch (err: any) {
-    const msg = err?.response?.data?.message ?? "حدث خطأ أثناء التحميل";
-    setDlState((p) => ({ ...p, [study._id]: "error" }));
-    showToast(msg, "error");
-  }
-}, [showToast, queryClient, canDownloadMore]);
   const downloadAll = useCallback(async () => {
     for (const study of cart) {
       if (dlState[study._id] === "done") continue;
@@ -576,59 +637,48 @@ const downloadStudy = useCallback(async (study: FeasibilityStudy) => {
           </button>
         </header>
 
- <div className="px-8 py-5 bg-white border-b border-black/[0.09] flex items-center gap-12">
+        {/* ── Expired / No-plan Banner ── */}
+        <ExpiredPlanBanner isPlanExpired={isPlanExpired} hasNoPlan={hasNoPlan} />
 
-  {/* 🔍 Search */}
-  <div className="flex-1 max-w-[480px] relative">
-    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
-      <Icon.Search />
-    </span>
-    <input
-      className="w-full py-2.5 pr-10 pl-3.5 border border-black/[0.09] rounded-full text-sm bg-[#f9f9f7] outline-none transition-all
-      focus:border-[#185FA5] focus:shadow-[0_0_0_3px_rgba(24,95,165,0.12)] focus:bg-white"
-      placeholder="ابحث عن دراسة..."
-      value={keyword}
-      onChange={(e) => setKeyword(e.target.value)}
-    />
-  </div>
+        {/* Search + Filter */}
+        <div className="px-8 py-5 bg-white border-b border-black/[0.09] flex items-center gap-12">
+          <div className="flex-1 max-w-[480px] relative">
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+              <Icon.Search />
+            </span>
+            <input
+              className="w-full py-2.5 pr-10 pl-3.5 border border-black/[0.09] rounded-full text-sm bg-[#f9f9f7] outline-none transition-all focus:border-[#185FA5] focus:shadow-[0_0_0_3px_rgba(24,95,165,0.12)] focus:bg-white"
+              placeholder="ابحث عن دراسة..."
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+            />
+          </div>
 
-  {/* 🧠 Dropdown */}
-  <div className="flex-shrink-0">
-    <Dropdown>
-      <DropdownTrigger>
-        <Button
-          radius="full"
-          className="
-            px-6 py-2
-            bg-gradient-to-r from-primary to-purple-500
-            text-white font-semibold
-            shadow-lg shadow-primary/40
-            hover:scale-105 hover:shadow-xl
-            transition-all duration-300
-          "
-        >
-          <span className="flex items-center gap-2 text-black">
-            {selectedCategory}
-            <span className="text-sm opacity-80">▼</span>
-          </span>
-        </Button>
-      </DropdownTrigger>
+          <div className="flex-shrink-0">
+            <Dropdown>
+              <DropdownTrigger>
+                <Button
+                  radius="full"
+                  className="px-6 py-2 bg-gradient-to-r from-primary to-purple-500 text-white font-semibold shadow-lg shadow-primary/40 hover:scale-105 hover:shadow-xl transition-all duration-300"
+                >
+                  <span className="flex items-center gap-2 text-black">
+                    {selectedCategory}
+                    <span className="text-sm opacity-80">▼</span>
+                  </span>
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Categories"
+                onAction={(key) => { setSelectedCategory(String(key)); setPage(1); }}
+              >
+                {categories.map((cat) => (
+                  <DropdownItem key={cat}>{cat}</DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+        </div>
 
-      <DropdownMenu
-        aria-label="Categories"
-        onAction={(key) => {
-          setSelectedCategory(String(key));
-          setPage(1);
-        }}
-      >
-        {categories.map((cat) => (
-          <DropdownItem key={cat}>{cat}</DropdownItem>
-        ))}
-      </DropdownMenu>
-    </Dropdown>
-  </div>
-
-</div>
         {/* Grid */}
         <main className="px-8 py-8 max-w-[1280px] mx-auto">
           {error ? (
@@ -658,8 +708,9 @@ const downloadStudy = useCallback(async (study: FeasibilityStudy) => {
                         study={study}
                         inCart={cart.some((s) => s._id === study._id)}
                         onToggleCart={toggleCart}
-                          canDownloadMore={canDownloadMore} 
-
+                        canDownloadMore={canDownloadMore}
+                        hasActivePlan={hasActivePlan}
+                        isPlanExpired={isPlanExpired}
                       />
                     </div>
                   ))}
@@ -717,6 +768,8 @@ const downloadStudy = useCallback(async (study: FeasibilityStudy) => {
           <CartDrawer
             cart={cart}
             user={user}
+            hasActivePlan={hasActivePlan}
+            isPlanExpired={isPlanExpired}
             dlState={dlState}
             onRemove={removeFromCart}
             onDownloadOne={downloadStudy}

@@ -19,11 +19,11 @@ import { AuthenticatedRequest } from "../middlewares/auth";
 import createPaymentNumber from "./createPayNamber";
 import User from "../models/User";
 
-type PlanType = "monthly" | "quarterly" | "yearly";
+type PlanType = "monthly" | "quarterly" | "yearly" | "basic" | "pro" | "premium";
 
 // 🔹 Type guard للتأكد من صحة plan
 function isValidPlan(plan: any): plan is PlanType {
-  return ["monthly", "quarterly", "yearly"].includes(plan);
+  return ["monthly", "quarterly", "yearly", "basic", "pro", "premium"].includes(plan);
 }
 
 const createCheckoutSession = async (req: AuthenticatedRequest, res: Response) => {
@@ -129,7 +129,55 @@ if (!isSignupFlow) {
     });
   }
 };
+const renewCheckoutSession = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const domain = req.headers.origin;
+    const userId = req?.user?.id;
+    const { plan } = req.body;
 
+    if (!userId) {
+      return res.status(401).json({ error: "User not authenticated" });
+    }
+
+    if (!plan || !isValidPlan(plan)) {
+      return res.status(400).json({ error: "Invalid plan" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const planConfig = PLAN_CONFIG[plan];
+
+    const session = await stripe.checkout.sessions.create({
+      line_items: [
+        {
+          price_data: {
+            currency: "sar",
+            product_data: { name: planConfig.name },
+            unit_amount: Math.round(planConfig.price * 100),
+          },
+          quantity: 1,
+        },
+      ],
+      payment_method_types: ["card"],
+      mode: "payment",
+      success_url: `${domain}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${domain}/canceled`,
+      metadata: {
+        userId,          // ← existing user id
+        plan,
+        type: "renew",   // ← key difference
+      },
+    });
+
+    return res.status(200).json({ url: session.url, id: session.id });
+  } catch (error: any) {
+    console.error("Renew checkout error:", error);
+    return res.status(400).json({ error: error.message, message: "Failed to create renew session" });
+  }
+};
 console.log("🔥 HIT WEBHOOK ROUTE");
 const stripeWebHook = async (req: Request, res: Response) => {
   const sig = req.headers["stripe-signature"] as string;
@@ -171,9 +219,9 @@ if (type === "signup") {
 
   if (!existingUser) {
 
-    type PlanType = "monthly" | "quarterly" | "yearly";
+    type PlanType = "monthly" | "quarterly" | "yearly" | "basic" | "pro" | "premium";
 function isValidPlan(plan: any): plan is PlanType {
-  return ["monthly", "quarterly", "yearly"].includes(plan);
+  return ["monthly", "quarterly", "yearly", "basic", "pro", "premium"].includes(plan);
 }
 if (!plan || !isValidPlan(plan)) {
   throw new Error("Invalid plan");
@@ -197,6 +245,24 @@ const selectedPlan = PLAN_CONFIG[plan];
     console.log("✅ User created with plan");
   }
 }
+  if (type === "renew") {
+    const { userId, plan } = session.metadata!;
+
+    if (!plan || !isValidPlan(plan)) throw new Error("Invalid plan");
+
+    const planConfig = PLAN_CONFIG[plan as PlanType];
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + planConfig.durationDays);
+
+    await User.findByIdAndUpdate(userId, {
+      plan,
+      downloadsUsed: 0,                    
+      downloadsLimit: planConfig.limit,
+      planExpiresAt: expiresAt,
+    });
+
+    console.log("✅ User plan renewed:", userId);
+  }
         await payment.findOneAndUpdate(
           { stripeSessionId: session.id },
           {
@@ -675,5 +741,6 @@ export {
   getUserOrders,
   refundPayment,
   syncPaymentStatus,
+  renewCheckoutSession
 };
 

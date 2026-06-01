@@ -22,7 +22,7 @@ export function middleware(request: NextRequest) {
   }
 
   if (role === "user") {
-    const allowedPaths = ['/idea-club', '/userp' ,'/feasibility-studiesuser','/growth-services','/success-stories'];
+    const allowedPaths = ['/idea-club', '/userp' ,'/feasibility-studiesuser','/growth-services','/success-stories','/renew'];
 
     const isAllowed = allowedPaths.some(p => path.startsWith(p));
 

@@ -8,7 +8,7 @@ export default function PricingSection() {
   {
     id: "monthly", // 👈 ده المهم
     name: "الباقة الشهرية",
-    price: "100",
+    price: "200",
     duration: "شهر واحد",
     features: ["دراسة جدوى واحدة"],
     featured: false,
@@ -17,7 +17,7 @@ export default function PricingSection() {
   {
     id: "quarterly",
     name: "باقة 3 شهور",
-    price: "250",
+    price: "400",
     duration: "ثلاثة أشهر",
     features: ["6 دراسات جدوى", "6 ملفات Excel"],
     featured: true,

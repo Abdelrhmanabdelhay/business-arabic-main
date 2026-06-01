@@ -13,7 +13,7 @@ export interface IUser extends Document {
   updatedAt: Date;
   resetPasswordToken?: string;
 resetPasswordExpires?: Date;
-  plan?: "monthly" | "quarterly" | "yearly";
+  plan?: "monthly" | "quarterly" | "yearly" | "basic" | "pro" | "premium";
   downloadsUsed: number;
   downloadsLimit: number;
   planExpiresAt?: Date;  comparePassword(candidatePassword: string): Promise<boolean>;
@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema<IUser>(
     resetPasswordExpires: { type: Date },
   plan: {
       type: String,
-      enum: ["monthly", "quarterly", "yearly"],
+      enum: ["monthly", "quarterly", "yearly" , "basic", "pro", "premium"],
       default: null,
     },
 

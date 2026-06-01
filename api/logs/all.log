@@ -13018,3 +13018,561 @@ npm install --save stripenpm install --save stripenpm install --save stripe2024-
 [35m[39m
 2026-05-25 16:08:09:89 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 1526.681 ms[39m
 [35m[39m
+2026-05-26 13:15:40:1540 [32minfo[39m: [32mServer in development mode started successfully using port 8080[39m
+2026-05-26 13:15:43:1543 [32minfo[39m: [32mDatabase connected successfully[39m
+2026-05-26 18:04:48:448 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 11960.933 ms[39m
+[35m[39m
+2026-05-26 18:06:29:629 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=12&page=1 304 - - 1102.136 ms[39m
+[35m[39m
+2026-05-26 18:23:41:2341 [32minfo[39m: [32mServer in development mode started successfully using port 8080[39m
+2026-05-26 18:23:45:2345 [32minfo[39m: [32mDatabase connected successfully[39m
+2026-05-26 18:27:55:2755 [32minfo[39m: [32mServer in development mode started successfully using port 8080[39m
+2026-05-26 18:27:58:2758 [32minfo[39m: [32mDatabase connected successfully[39m
+2026-05-26 18:32:35:3235 [35mhttp[39m: [35m::1 POST /api/auth/signIn 200 320 - 1772.011 ms[39m
+[35m[39m
+2026-05-26 18:32:37:3237 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 200 1997 - 615.736 ms[39m
+[35m[39m
+2026-05-26 18:32:37:3237 [35mhttp[39m: [35m::1 GET /api/growth-services 200 1680 - 616.351 ms[39m
+[35m[39m
+2026-05-26 18:32:37:3237 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 200 - - 923.310 ms[39m
+[35m[39m
+2026-05-26 18:32:37:3237 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 607.423 ms[39m
+[35m[39m
+2026-05-26 18:32:37:3237 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 611.691 ms[39m
+[35m[39m
+2026-05-26 18:32:38:3238 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 917.385 ms[39m
+[35m[39m
+2026-05-26 18:33:12:3312 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 328.147 ms[39m
+[35m[39m
+2026-05-26 18:33:12:3312 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 315.907 ms[39m
+[35m[39m
+2026-05-26 18:33:12:3312 [35mhttp[39m: [35m::1 GET /api/users/me/stats 200 100 - 613.382 ms[39m
+[35m[39m
+2026-05-26 18:34:07:347 [35mhttp[39m: [35m::1 GET /api/projectsdownload/download/69cd2909ace9520cabea7bb4 302 267 - 1623.070 ms[39m
+[35m[39m
+2026-05-26 18:34:11:3411 [35mhttp[39m: [35m::1 GET /api/users/me/stats 200 100 - 611.923 ms[39m
+[35m[39m
+2026-05-26 18:34:12:3412 [35mhttp[39m: [35m::1 GET /api/projectsdownload/download/69cd2928ace9520cabea7bb9 302 267 - 1520.514 ms[39m
+[35m[39m
+2026-05-26 18:34:14:3414 [35mhttp[39m: [35m::1 GET /api/users/me/stats 200 100 - 608.806 ms[39m
+[35m[39m
+2026-05-26 18:34:15:3415 [35mhttp[39m: [35m::1 GET /api/projectsdownload/download/69cd2951ace9520cabea7bbe 302 267 - 1551.115 ms[39m
+[35m[39m
+2026-05-26 18:34:17:3417 [35mhttp[39m: [35m::1 GET /api/users/me/stats 200 100 - 620.577 ms[39m
+[35m[39m
+2026-05-26 18:34:19:3419 [35mhttp[39m: [35m::1 GET /api/projectsdownload/download/69cd28dface9520cabea7baf 302 267 - 1519.626 ms[39m
+[35m[39m
+2026-05-26 18:34:22:3422 [35mhttp[39m: [35m::1 GET /api/users/me/stats 200 100 - 617.480 ms[39m
+[35m[39m
+2026-05-26 18:34:25:3425 [35mhttp[39m: [35m::1 GET /api/projectsdownload/download/69cd28baace9520cabea7baa 302 267 - 1535.529 ms[39m
+[35m[39m
+2026-05-26 18:34:26:3426 [35mhttp[39m: [35m::1 GET /api/users/me/stats 200 100 - 611.384 ms[39m
+[35m[39m
+2026-05-26 18:35:09:359 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 324.299 ms[39m
+[35m[39m
+2026-05-26 18:35:09:359 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 320.443 ms[39m
+[35m[39m
+2026-05-26 18:35:09:359 [35mhttp[39m: [35m::1 GET /api/users/me/stats 304 - - 618.071 ms[39m
+[35m[39m
+2026-05-26 18:55:50:5550 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 325.256 ms[39m
+[35m[39m
+2026-05-26 18:55:51:5551 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 379.351 ms[39m
+[35m[39m
+2026-05-26 18:55:51:5551 [35mhttp[39m: [35m::1 GET /api/users/me/stats 200 100 - 674.995 ms[39m
+[35m[39m
+2026-05-26 18:56:22:5622 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 313.413 ms[39m
+[35m[39m
+2026-05-26 18:56:22:5622 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 317.023 ms[39m
+[35m[39m
+2026-05-26 18:56:22:5622 [35mhttp[39m: [35m::1 GET /api/users/me/stats 200 100 - 609.135 ms[39m
+[35m[39m
+2026-05-26 18:56:26:5626 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 337.492 ms[39m
+[35m[39m
+2026-05-26 18:56:27:5627 [35mhttp[39m: [35m::1 GET /api/users/me/stats 304 - - 605.859 ms[39m
+[35m[39m
+2026-05-26 18:56:27:5627 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 306.999 ms[39m
+[35m[39m
+2026-05-26 18:56:44:5644 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 200 - - 387.791 ms[39m
+[35m[39m
+2026-05-26 18:56:44:5644 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 200 - - 500.601 ms[39m
+[35m[39m
+2026-05-26 18:56:45:5645 [35mhttp[39m: [35m::1 GET /api/users/me/stats 200 100 - 812.009 ms[39m
+[35m[39m
+2026-05-26 19:00:30:030 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 329.402 ms[39m
+[35m[39m
+2026-05-26 19:00:30:030 [35mhttp[39m: [35m::1 GET /api/users/me/stats 304 - - 610.854 ms[39m
+[35m[39m
+2026-05-26 19:00:30:030 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 333.668 ms[39m
+[35m[39m
+2026-05-26 19:02:03:23 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 308.854 ms[39m
+[35m[39m
+2026-05-26 19:02:03:23 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 462.659 ms[39m
+[35m[39m
+2026-05-26 19:02:04:24 [35mhttp[39m: [35m::1 GET /api/users/me/stats 304 - - 1137.186 ms[39m
+[35m[39m
+2026-05-26 19:08:07:87 [35mhttp[39m: [35m::1 GET /api/users/me/stats 304 - - 669.907 ms[39m
+[35m[39m
+2026-05-26 19:08:27:827 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 1074.859 ms[39m
+[35m[39m
+2026-05-26 19:08:28:828 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 303.591 ms[39m
+[35m[39m
+2026-05-26 19:08:33:833 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 378.830 ms[39m
+[35m[39m
+2026-05-26 19:08:34:834 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 629.174 ms[39m
+[35m[39m
+2026-05-26 19:08:38:838 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 421.010 ms[39m
+[35m[39m
+2026-05-26 19:08:38:838 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 325.059 ms[39m
+[35m[39m
+2026-05-26 19:08:40:840 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 307.211 ms[39m
+[35m[39m
+2026-05-26 19:08:40:840 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 313.973 ms[39m
+[35m[39m
+2026-05-26 19:23:10:2310 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 478.335 ms[39m
+[35m[39m
+2026-05-26 19:23:11:2311 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 304.962 ms[39m
+[35m[39m
+2026-05-26 19:23:11:2311 [35mhttp[39m: [35m::1 GET /api/users/me/stats 304 - - 989.052 ms[39m
+[35m[39m
+2026-05-26 19:23:25:2325 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 1597.880 ms[39m
+[35m[39m
+2026-05-26 19:23:25:2325 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 1480.491 ms[39m
+[35m[39m
+2026-05-26 19:23:25:2325 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 3842.396 ms[39m
+[35m[39m
+2026-05-26 19:23:26:2326 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 1247.960 ms[39m
+[35m[39m
+2026-05-26 19:23:26:2326 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 1248.474 ms[39m
+[35m[39m
+2026-05-26 19:23:27:2327 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 941.730 ms[39m
+[35m[39m
+2026-05-26 19:23:37:2337 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 305.573 ms[39m
+[35m[39m
+2026-05-26 19:23:38:2338 [35mhttp[39m: [35m::1 GET /api/users/me/stats 304 - - 607.086 ms[39m
+[35m[39m
+2026-05-26 19:23:38:2338 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 306.192 ms[39m
+[35m[39m
+2026-05-26 19:27:56:2756 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 858.762 ms[39m
+[35m[39m
+2026-05-26 19:30:23:3023 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 434.827 ms[39m
+[35m[39m
+2026-05-27 11:51:42:5142 [32minfo[39m: [32mServer in development mode started successfully using port 8080[39m
+2026-05-27 11:51:45:5145 [32minfo[39m: [32mDatabase connected successfully[39m
+2026-05-27 11:55:14:5514 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 674.169 ms[39m
+[35m[39m
+2026-05-27 11:55:58:5558 [35mhttp[39m: [35m::1 POST /api/auth/signIn 404 440 - 816.858 ms[39m
+[35m[39m
+2026-05-27 11:56:56:5656 [35mhttp[39m: [35m::1 POST /api/auth/signIn 200 320 - 423.856 ms[39m
+[35m[39m
+2026-05-27 11:57:00:570 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 611.027 ms[39m
+[35m[39m
+2026-05-27 11:57:00:570 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 628.514 ms[39m
+[35m[39m
+2026-05-27 11:57:00:570 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 937.061 ms[39m
+[35m[39m
+2026-05-27 11:57:00:570 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 629.284 ms[39m
+[35m[39m
+2026-05-27 11:57:00:570 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 618.832 ms[39m
+[35m[39m
+2026-05-27 11:57:01:571 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 923.392 ms[39m
+[35m[39m
+2026-05-27 11:57:04:574 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 329.295 ms[39m
+[35m[39m
+2026-05-27 11:57:04:574 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 323.478 ms[39m
+[35m[39m
+2026-05-27 11:57:04:574 [35mhttp[39m: [35m::1 GET /api/users/me/stats 304 - - 778.186 ms[39m
+[35m[39m
+2026-05-27 11:57:41:5741 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 614.127 ms[39m
+[35m[39m
+2026-05-27 11:57:41:5741 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 617.313 ms[39m
+[35m[39m
+2026-05-27 11:57:42:5742 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 910.097 ms[39m
+[35m[39m
+2026-05-27 11:57:42:5742 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 614.341 ms[39m
+[35m[39m
+2026-05-27 11:57:42:5742 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 617.048 ms[39m
+[35m[39m
+2026-05-27 11:57:43:5743 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 910.450 ms[39m
+[35m[39m
+2026-05-27 11:59:49:5949 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 314.272 ms[39m
+[35m[39m
+2026-05-27 11:59:50:5950 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 312.442 ms[39m
+[35m[39m
+2026-05-27 11:59:50:5950 [35mhttp[39m: [35m::1 GET /api/users/me/stats 304 - - 619.590 ms[39m
+[35m[39m
+2026-05-27 12:00:54:054 [35mhttp[39m: [35m::1 POST /api/stripe/renew-checkout-session 200 557 - 2598.151 ms[39m
+[35m[39m
+2026-05-27 12:02:08:28 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 200 17 - 202.102 ms[39m
+[35m[39m
+2026-05-27 12:02:08:28 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 200 17 - 34.230 ms[39m
+[35m[39m
+2026-05-27 12:02:08:28 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 200 17 - 1.743 ms[39m
+[35m[39m
+2026-05-27 12:02:09:29 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 200 17 - 942.548 ms[39m
+[35m[39m
+2026-05-27 12:02:11:211 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 200 17 - 1.676 ms[39m
+[35m[39m
+2026-05-27 12:02:21:221 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 611.599 ms[39m
+[35m[39m
+2026-05-27 12:02:21:221 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 624.157 ms[39m
+[35m[39m
+2026-05-27 12:02:21:221 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 938.614 ms[39m
+[35m[39m
+2026-05-27 12:02:21:221 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 609.231 ms[39m
+[35m[39m
+2026-05-27 12:02:22:222 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 623.789 ms[39m
+[35m[39m
+2026-05-27 12:02:22:222 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 935.774 ms[39m
+[35m[39m
+2026-05-27 12:02:26:226 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 311.637 ms[39m
+[35m[39m
+2026-05-27 12:02:26:226 [35mhttp[39m: [35m::1 GET /api/users/me/stats 200 100 - 610.557 ms[39m
+[35m[39m
+2026-05-27 12:02:26:226 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 310.630 ms[39m
+[35m[39m
+2026-05-27 12:10:57:1057 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 611.633 ms[39m
+[35m[39m
+2026-05-27 12:10:57:1057 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 677.682 ms[39m
+[35m[39m
+2026-05-27 12:10:57:1057 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 925.980 ms[39m
+[35m[39m
+2026-05-27 12:10:58:1058 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 622.019 ms[39m
+[35m[39m
+2026-05-27 12:10:58:1058 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 625.459 ms[39m
+[35m[39m
+2026-05-27 12:10:58:1058 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 933.246 ms[39m
+[35m[39m
+2026-05-27 12:11:07:117 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 389.606 ms[39m
+[35m[39m
+2026-05-27 17:41:29:4129 [32minfo[39m: [32mServer in development mode started successfully using port 8080[39m
+2026-05-27 17:41:33:4133 [32minfo[39m: [32mDatabase connected successfully[39m
+2026-05-27 17:42:36:4236 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 200 1997 - 615.474 ms[39m
+[35m[39m
+2026-05-27 17:42:36:4236 [35mhttp[39m: [35m::1 GET /api/growth-services 200 1680 - 618.745 ms[39m
+[35m[39m
+2026-05-27 17:42:36:4236 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 200 - - 924.349 ms[39m
+[35m[39m
+2026-05-27 17:42:37:4237 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 611.871 ms[39m
+[35m[39m
+2026-05-27 17:42:37:4237 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 617.503 ms[39m
+[35m[39m
+2026-05-27 17:42:37:4237 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 914.973 ms[39m
+[35m[39m
+2026-05-27 17:42:53:4253 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 315.090 ms[39m
+[35m[39m
+2026-05-27 17:42:53:4253 [35mhttp[39m: [35m::1 GET /api/users/me/stats 401 32 - 312.645 ms[39m
+[35m[39m
+2026-05-27 17:42:53:4253 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 310.628 ms[39m
+[35m[39m
+2026-05-27 17:42:55:4255 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 609.196 ms[39m
+[35m[39m
+2026-05-27 17:42:55:4255 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 618.891 ms[39m
+[35m[39m
+2026-05-27 17:42:55:4255 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 911.352 ms[39m
+[35m[39m
+2026-05-27 17:42:55:4255 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 612.204 ms[39m
+[35m[39m
+2026-05-27 17:42:55:4255 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 612.304 ms[39m
+[35m[39m
+2026-05-27 17:42:56:4256 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 916.298 ms[39m
+[35m[39m
+2026-05-27 17:43:00:430 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 309.923 ms[39m
+[35m[39m
+2026-05-27 17:43:00:430 [35mhttp[39m: [35m::1 GET /api/users/me/stats 401 32 - 311.045 ms[39m
+[35m[39m
+2026-05-27 17:43:00:430 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 - - - - ms[39m
+[35m[39m
+2026-05-27 17:43:01:431 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 620.955 ms[39m
+[35m[39m
+2026-05-27 17:43:01:431 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 623.129 ms[39m
+[35m[39m
+2026-05-27 17:43:01:431 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 909.946 ms[39m
+[35m[39m
+2026-05-27 17:43:02:432 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 609.151 ms[39m
+[35m[39m
+2026-05-27 17:43:02:432 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 612.224 ms[39m
+[35m[39m
+2026-05-27 17:43:02:432 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 967.596 ms[39m
+[35m[39m
+2026-05-27 17:43:20:4320 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 612.431 ms[39m
+[35m[39m
+2026-05-27 17:43:20:4320 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 609.697 ms[39m
+[35m[39m
+2026-05-27 17:43:20:4320 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 912.069 ms[39m
+[35m[39m
+2026-05-27 17:43:20:4320 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 613.942 ms[39m
+[35m[39m
+2026-05-27 17:43:20:4320 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 611.207 ms[39m
+[35m[39m
+2026-05-27 17:43:21:4321 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 910.724 ms[39m
+[35m[39m
+2026-05-27 17:43:54:4354 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 307.926 ms[39m
+[35m[39m
+2026-05-27 17:44:11:4411 [35mhttp[39m: [35m::1 POST /api/auth/signIn 200 320 - 1403.509 ms[39m
+[35m[39m
+2026-05-27 17:44:12:4412 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 618.191 ms[39m
+[35m[39m
+2026-05-27 17:44:12:4412 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 622.701 ms[39m
+[35m[39m
+2026-05-27 17:44:12:4412 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 922.959 ms[39m
+[35m[39m
+2026-05-27 17:44:12:4412 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 607.884 ms[39m
+[35m[39m
+2026-05-27 17:44:12:4412 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 609.053 ms[39m
+[35m[39m
+2026-05-27 17:44:13:4413 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 911.048 ms[39m
+[35m[39m
+2026-05-27 17:44:13:4413 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 200 - - 309.778 ms[39m
+[35m[39m
+2026-05-27 17:44:14:4414 [35mhttp[39m: [35m::1 GET /api/users/me/stats 200 100 - 610.397 ms[39m
+[35m[39m
+2026-05-27 17:44:14:4414 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 310.857 ms[39m
+[35m[39m
+2026-05-27 17:44:35:4435 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 676.383 ms[39m
+[35m[39m
+2026-05-27 17:44:35:4435 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 680.447 ms[39m
+[35m[39m
+2026-05-27 17:44:35:4435 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 991.869 ms[39m
+[35m[39m
+2026-05-27 17:44:36:4436 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 612.766 ms[39m
+[35m[39m
+2026-05-27 17:44:36:4436 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 617.926 ms[39m
+[35m[39m
+2026-05-27 17:44:36:4436 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 911.116 ms[39m
+[35m[39m
+2026-05-27 17:44:42:4442 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=6 200 - - 913.588 ms[39m
+[35m[39m
+2026-05-27 17:44:43:4443 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=6 304 - - 915.949 ms[39m
+[35m[39m
+2026-05-27 17:44:44:4444 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 609.867 ms[39m
+[35m[39m
+2026-05-27 17:44:44:4444 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 611.099 ms[39m
+[35m[39m
+2026-05-27 17:44:44:4444 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 921.080 ms[39m
+[35m[39m
+2026-05-27 17:44:45:4445 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 607.764 ms[39m
+[35m[39m
+2026-05-27 17:44:45:4445 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 611.872 ms[39m
+[35m[39m
+2026-05-27 17:44:45:4445 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 915.510 ms[39m
+[35m[39m
+2026-05-27 17:56:19:5619 [32minfo[39m: [32mServer in development mode started successfully using port 8080[39m
+2026-05-27 17:56:22:5622 [32minfo[39m: [32mDatabase connected successfully[39m
+2026-05-31 17:47:51:4751 [32minfo[39m: [32mServer in development mode started successfully using port 8080[39m
+2026-05-31 17:47:54:4754 [32minfo[39m: [32mDatabase connected successfully[39m
+2026-05-31 17:48:39:4839 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 200 - - 345.339 ms[39m
+[35m[39m
+2026-05-31 17:48:49:4849 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 315.758 ms[39m
+[35m[39m
+2026-05-31 17:49:37:4937 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=12&page=1 200 - - 314.714 ms[39m
+[35m[39m
+2026-05-31 17:51:53:5153 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2928ace9520cabea7bb9 200 757 - 338.094 ms[39m
+[35m[39m
+2026-05-31 17:56:57:5657 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=12&page=1 304 - - 348.299 ms[39m
+[35m[39m
+2026-05-31 18:15:31:1531 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=12&page=1 - - - - ms[39m
+[35m[39m
+2026-05-31 18:15:57:1557 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=12&page=1 - - - - ms[39m
+[35m[39m
+2026-05-31 18:16:31:1631 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=12&page=1 200 - - 554.614 ms[39m
+[35m[39m
+2026-05-31 18:18:46:1846 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 643.499 ms[39m
+[35m[39m
+2026-05-31 18:22:01:221 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 466.243 ms[39m
+[35m[39m
+2026-05-31 18:22:12:2212 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2928ace9520cabea7bb9 304 - - 504.630 ms[39m
+[35m[39m
+2026-05-31 18:26:00:260 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=12&page=1 304 - - 341.956 ms[39m
+[35m[39m
+2026-05-31 18:26:05:265 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2951ace9520cabea7bbe 200 746 - 311.082 ms[39m
+[35m[39m
+2026-05-31 18:54:59:5459 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2951ace9520cabea7bbe 304 - - 345.343 ms[39m
+[35m[39m
+2026-06-01 09:14:45:1445 [32minfo[39m: [32mServer in development mode started successfully using port 8080[39m
+2026-06-01 09:14:49:1449 [32minfo[39m: [32mDatabase connected successfully[39m
+2026-06-01 09:14:56:1456 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 347.857 ms[39m
+[35m[39m
+2026-06-01 09:19:42:1942 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2928ace9520cabea7bb9 200 757 - 1960.272 ms[39m
+[35m[39m
+2026-06-01 09:21:14:2114 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 1530.685 ms[39m
+[35m[39m
+2026-06-01 09:24:10:2410 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2951ace9520cabea7bbe 200 746 - 397.904 ms[39m
+[35m[39m
+2026-06-01 09:24:43:2443 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=12&page=1 304 - - 498.334 ms[39m
+[35m[39m
+2026-06-01 09:24:48:2448 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd28dface9520cabea7baf 200 796 - 719.586 ms[39m
+[35m[39m
+2026-06-01 09:25:10:2510 [35mhttp[39m: [35m::1 POST /api/stripe/create-subscription-checkout-session 401 32 - 3061.065 ms[39m
+[35m[39m
+2026-06-01 09:25:18:2518 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd28dface9520cabea7baf 304 - - 375.822 ms[39m
+[35m[39m
+2026-06-01 09:37:46:3746 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd28dface9520cabea7baf 304 - - 18755.200 ms[39m
+[35m[39m
+2026-06-01 09:37:48:3748 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 8088.005 ms[39m
+[35m[39m
+2026-06-01 09:37:53:3753 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2928ace9520cabea7bb9 304 - - 525.193 ms[39m
+[35m[39m
+2026-06-01 09:38:13:3813 [35mhttp[39m: [35m::1 POST /api/stripe/create-subscription-checkout-session 401 32 - 2486.112 ms[39m
+[35m[39m
+2026-06-01 09:38:27:3827 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2928ace9520cabea7bb9 304 - - 451.529 ms[39m
+[35m[39m
+2026-06-01 09:39:00:390 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 454.003 ms[39m
+[35m[39m
+2026-06-01 09:39:07:397 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 200 - - 3237.080 ms[39m
+[35m[39m
+2026-06-01 09:39:33:3933 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2928ace9520cabea7bb9 304 - - 1837.204 ms[39m
+[35m[39m
+2026-06-01 09:41:03:413 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2928ace9520cabea7bb9 304 - - 579.077 ms[39m
+[35m[39m
+2026-06-01 09:47:09:479 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2928ace9520cabea7bb9 304 - - 667.180 ms[39m
+[35m[39m
+2026-06-01 09:49:48:4948 [35mhttp[39m: [35m::1 POST /api/stripe/create-subscription-checkout-session 401 32 - 470.950 ms[39m
+[35m[39m
+2026-06-01 09:49:55:4955 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2928ace9520cabea7bb9 304 - - 386.146 ms[39m
+[35m[39m
+2026-06-01 10:05:26:526 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=12&page=1 304 - - 739.255 ms[39m
+[35m[39m
+2026-06-01 10:05:29:529 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2928ace9520cabea7bb9 304 - - 363.133 ms[39m
+[35m[39m
+2026-06-01 10:23:20:2320 [32minfo[39m: [32mServer in development mode started successfully using port 8080[39m
+2026-06-01 10:23:24:2324 [32minfo[39m: [32mDatabase connected successfully[39m
+2026-06-01 10:24:06:246 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 362.436 ms[39m
+[35m[39m
+2026-06-01 10:24:26:2426 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=12&page=1 304 - - 322.775 ms[39m
+[35m[39m
+2026-06-01 10:25:15:2515 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=12&page=1 304 - - 319.937 ms[39m
+[35m[39m
+2026-06-01 10:25:22:2522 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2928ace9520cabea7bb9 304 - - 320.813 ms[39m
+[35m[39m
+2026-06-01 10:29:45:2945 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2928ace9520cabea7bb9 304 - - 319.997 ms[39m
+[35m[39m
+2026-06-01 10:53:36:5336 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2928ace9520cabea7bb9 304 - - 427.521 ms[39m
+[35m[39m
+2026-06-01 10:53:57:5357 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2928ace9520cabea7bb9 304 - - 429.842 ms[39m
+[35m[39m
+2026-06-01 10:57:48:5748 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 398.306 ms[39m
+[35m[39m
+2026-06-01 10:59:16:5916 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2928ace9520cabea7bb9 304 - - 322.275 ms[39m
+[35m[39m
+2026-06-01 10:59:19:5919 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2928ace9520cabea7bb9 304 - - 359.281 ms[39m
+[35m[39m
+2026-06-01 11:00:20:020 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=12&page=1 304 - - 350.249 ms[39m
+[35m[39m
+2026-06-01 11:00:34:034 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2928ace9520cabea7bb9 304 - - 318.430 ms[39m
+[35m[39m
+2026-06-01 11:00:36:036 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 322.070 ms[39m
+[35m[39m
+2026-06-01 11:05:36:536 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2928ace9520cabea7bb9 304 - - 319.201 ms[39m
+[35m[39m
+2026-06-01 11:06:58:658 [35mhttp[39m: [35m::1 POST /api/stripe/create-checkout-session 200 607 - 6528.698 ms[39m
+[35m[39m
+2026-06-01 11:07:13:713 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=12&page=1 304 - - 341.477 ms[39m
+[35m[39m
+2026-06-01 11:07:16:716 [35mhttp[39m: [35m::1 GET /api/feasibility-studies/69cd2928ace9520cabea7bb9 304 - - 319.123 ms[39m
+[35m[39m
+2026-06-01 11:08:21:821 [35mhttp[39m: [35m::1 POST /api/stripe/create-checkout-session 400 24 - 1.672 ms[39m
+[35m[39m
+2026-06-01 11:08:24:824 [35mhttp[39m: [35m::1 POST /api/stripe/create-checkout-session 400 24 - 1.019 ms[39m
+[35m[39m
+2026-06-01 11:08:39:839 [35mhttp[39m: [35m::1 POST /api/stripe/create-checkout-session 400 24 - 0.648 ms[39m
+[35m[39m
+2026-06-01 11:08:39:839 [35mhttp[39m: [35m::1 POST /api/stripe/create-checkout-session 400 24 - 1.401 ms[39m
+[35m[39m
+2026-06-01 11:09:34:934 [35mhttp[39m: [35m::1 POST /api/stripe/create-checkout-session 400 24 - 1.225 ms[39m
+[35m[39m
+2026-06-01 11:10:25:1025 [35mhttp[39m: [35m::1 POST /api/stripe/create-checkout-session 400 24 - 1.042 ms[39m
+[35m[39m
+2026-06-01 11:18:15:1815 [32minfo[39m: [32mServer in development mode started successfully using port 8080[39m
+2026-06-01 11:18:19:1819 [32minfo[39m: [32mDatabase connected successfully[39m
+2026-06-01 11:20:02:202 [35mhttp[39m: [35m::1 POST /api/stripe/create-checkout-session 400 24 - 117.353 ms[39m
+[35m[39m
+2026-06-01 11:20:28:2028 [35mhttp[39m: [35m::1 GET /api/stripe/create-checkout-session 404 1204 - 5.691 ms[39m
+[35m[39m
+2026-06-01 11:20:28:2028 [35mhttp[39m: [35m::1 GET /favicon.ico 404 1158 - 1.410 ms[39m
+[35m[39m
+2026-06-01 11:22:46:2246 [32minfo[39m: [32mServer in development mode started successfully using port 8080[39m
+2026-06-01 11:22:50:2250 [32minfo[39m: [32mDatabase connected successfully[39m
+2026-06-01 11:22:53:2253 [35mhttp[39m: [35m::1 POST /api/stripe/create-checkout-session 200 607 - 920.810 ms[39m
+[35m[39m
+2026-06-01 11:23:45:2345 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 200 17 - 7.100 ms[39m
+[35m[39m
+2026-06-01 11:23:46:2346 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 200 17 - 1.409 ms[39m
+[35m[39m
+2026-06-01 11:23:46:2346 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 200 17 - 1.162 ms[39m
+[35m[39m
+2026-06-01 11:23:46:2346 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 500 12 - 341.585 ms[39m
+[35m[39m
+2026-06-01 11:23:49:2349 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 200 17 - 1.858 ms[39m
+[35m[39m
+2026-06-01 11:24:15:2415 [35mhttp[39m: [35m::1 POST /api/auth/signIn 404 440 - 328.880 ms[39m
+[35m[39m
+2026-06-01 11:24:46:2446 [32minfo[39m: [32mServer in development mode started successfully using port 8080[39m
+2026-06-01 11:24:50:2450 [32minfo[39m: [32mDatabase connected successfully[39m
+2026-06-01 11:25:41:2541 [35mhttp[39m: [35m::1 POST /api/stripe/create-checkout-session 200 607 - 758.335 ms[39m
+[35m[39m
+2026-06-01 11:26:00:260 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 200 17 - 3.481 ms[39m
+[35m[39m
+2026-06-01 11:26:00:260 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 200 17 - 2.656 ms[39m
+[35m[39m
+2026-06-01 11:26:00:260 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 200 17 - 1.114 ms[39m
+[35m[39m
+2026-06-01 11:26:00:260 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 500 12 - 362.598 ms[39m
+[35m[39m
+2026-06-01 11:26:03:263 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 200 17 - 1.345 ms[39m
+[35m[39m
+2026-06-01 11:27:21:2721 [32minfo[39m: [32mServer in development mode started successfully using port 8080[39m
+2026-06-01 11:27:24:2724 [32minfo[39m: [32mDatabase connected successfully[39m
+2026-06-01 11:27:39:2739 [32minfo[39m: [32mServer in development mode started successfully using port 8080[39m
+2026-06-01 11:27:42:2742 [32minfo[39m: [32mDatabase connected successfully[39m
+2026-06-01 11:27:53:2753 [35mhttp[39m: [35m::1 POST /api/stripe/create-checkout-session 200 607 - 685.201 ms[39m
+[35m[39m
+2026-06-01 11:28:13:2813 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 200 17 - 3.667 ms[39m
+[35m[39m
+2026-06-01 11:28:13:2813 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 200 17 - 3.867 ms[39m
+[35m[39m
+2026-06-01 11:28:13:2813 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 200 17 - 2.365 ms[39m
+[35m[39m
+2026-06-01 11:28:14:2814 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 200 17 - 1060.141 ms[39m
+[35m[39m
+2026-06-01 11:28:16:2816 [35mhttp[39m: [35m::1 POST /api/stripe/webhook 200 17 - 1.491 ms[39m
+[35m[39m
+2026-06-01 11:28:39:2839 [35mhttp[39m: [35m::1 POST /api/auth/signIn 200 302 - 404.224 ms[39m
+[35m[39m
+2026-06-01 11:28:45:2845 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 647.798 ms[39m
+[35m[39m
+2026-06-01 11:28:45:2845 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 649.378 ms[39m
+[35m[39m
+2026-06-01 11:28:45:2845 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 948.124 ms[39m
+[35m[39m
+2026-06-01 11:28:46:2846 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 646.178 ms[39m
+[35m[39m
+2026-06-01 11:28:46:2846 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 644.554 ms[39m
+[35m[39m
+2026-06-01 11:28:46:2846 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 962.535 ms[39m
+[35m[39m
+2026-06-01 11:28:59:2859 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=6 200 - - 956.195 ms[39m
+[35m[39m
+2026-06-01 11:29:00:290 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=6 304 - - 946.718 ms[39m
+[35m[39m
+2026-06-01 11:29:11:2911 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 327.516 ms[39m
+[35m[39m
+2026-06-01 11:29:11:2911 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=9&page=1 304 - - 329.153 ms[39m
+[35m[39m
+2026-06-01 11:29:11:2911 [35mhttp[39m: [35m::1 GET /api/users/me/stats 200 96 - 656.193 ms[39m
+[35m[39m
+2026-06-01 11:29:28:2928 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 628.243 ms[39m
+[35m[39m
+2026-06-01 11:29:28:2928 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 642.017 ms[39m
+[35m[39m
+2026-06-01 11:29:28:2928 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 964.278 ms[39m
+[35m[39m
+2026-06-01 11:29:29:2929 [35mhttp[39m: [35m::1 GET /api/growth-services 304 - - 627.168 ms[39m
+[35m[39m
+2026-06-01 11:29:29:2929 [35mhttp[39m: [35m::1 GET /api/success-stories?limit=5 304 - - 643.733 ms[39m
+[35m[39m
+2026-06-01 11:29:29:2929 [35mhttp[39m: [35m::1 GET /api/ideas?page=1&limit=3 304 - - 963.590 ms[39m
+[35m[39m
+2026-06-01 11:29:54:2954 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 324.143 ms[39m
+[35m[39m
+2026-06-01 11:30:51:3051 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 325.168 ms[39m
+[35m[39m

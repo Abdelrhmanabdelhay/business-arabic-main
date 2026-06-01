@@ -40,6 +40,7 @@ res.json({
     user?.downloadsLimit === undefined || user?.downloadsLimit === null
       ? -1
       : user.downloadsLimit,
+       planExpiresAt: user?.planExpiresAt ?? null,
 });
   } catch (error) {
     next(error);

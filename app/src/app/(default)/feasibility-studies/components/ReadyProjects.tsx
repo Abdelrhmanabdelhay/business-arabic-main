@@ -174,12 +174,6 @@ export default function ReadyProjects() {
                   </p>
 
                   <div className="flex items-center justify-between pt-3 border-t border-default-200">
-                    <div>
-                      <span className="text-2xl font-bold text-default-900">
-                        {Number(project.price).toLocaleString("ar-SA")}
-                      </span>
-                      <span className="text-default-500 text-sm mr-1">ريال</span>
-                    </div>
                     <Button
                       color="primary"
                       variant="flat"
@@ -191,7 +185,7 @@ export default function ReadyProjects() {
                 }
                     >
                       
-                      طلب دراسة الجدوى
+                      تفاصيل دراسة الجدوى
                     </Button>
                   </div>
                 </div>

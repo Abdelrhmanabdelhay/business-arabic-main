@@ -23,7 +23,6 @@ const handleLogout = async () => {
 };
   const userDropdownItems = [
     { key: "profile", label: "الملف الشخصي", href: "/profile" },
-    { key: "orders", label: "طلباتي", href: "/my-orders" },
     { key: "logout", label: "تسجيل الخروج", action: handleLogout },
   ];
 

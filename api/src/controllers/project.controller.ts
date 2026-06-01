@@ -15,7 +15,15 @@ export const downloadProject = async (
     }
 
     const user = await User.findById(req.user.id);
+const isExpired =
+  user?.planExpiresAt &&
+  new Date(user.planExpiresAt).getTime() < Date.now();
 
+if (isExpired) {
+  return res.status(403).json({
+    message: "Subscription expired",
+  });
+}
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }

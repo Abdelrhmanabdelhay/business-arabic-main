@@ -1,8 +1,12 @@
-import { createCheckoutSession, createTestCheckoutSession, createSubscriptionCheckoutSession, getUserOrders, refundPayment, syncPaymentStatus } from '../utils/stripe';
+import { createCheckoutSession, createTestCheckoutSession, createSubscriptionCheckoutSession, getUserOrders, refundPayment, syncPaymentStatus,renewCheckoutSession } from '../utils/stripe';
 import { Request, Response } from 'express';
 
 export const handleCreateCheckoutSession = (req: Request, res: Response) => {
   return createCheckoutSession(req, res);
+};
+
+export const handleRenewCheckoutSession = (req: Request, res: Response) => {
+  return renewCheckoutSession(req, res);
 };
 
 export const handleCreateTestCheckoutSession = (req: Request, res: Response) => {

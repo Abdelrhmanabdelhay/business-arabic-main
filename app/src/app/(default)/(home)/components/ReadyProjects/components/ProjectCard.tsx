@@ -3,12 +3,15 @@ import { motion, useAnimation, Variants } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Project } from "../types";
+import { Button } from "@nextui-org/button";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface ProjectCardProps {
   project: Project;
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
+const router = useRouter();
   const controls = useAnimation();
   const [isHovered, setIsHovered] = useState(false);
 
@@ -60,7 +63,19 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       <div className="p-4 text-gray-800">
         <h3 className="text-xl font-semibold mb-2">{project.name}</h3>
         <p className="text-gray-600 text-sm mb-2">{project.description}</p>
-        <p className="text-primary-800 font-bold">{project.price} ريال</p>
+                            <Button
+                      color="primary"
+                      variant="flat"
+                      size="sm"
+                      radius="full"
+                      className="font-medium"
+                                      onPress={() =>
+                  router.push(`/feasibility-studies/${project.id}`)
+                }
+                    >
+                      
+                      تفاصيل دراسة الجدوى
+                    </Button>
       </div>
     </motion.div>
   );

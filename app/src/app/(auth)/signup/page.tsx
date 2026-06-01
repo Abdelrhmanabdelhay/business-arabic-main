@@ -33,6 +33,9 @@ const planLabels: Record<string, string> = {
   monthly: "الباقة الشهرية",
   quarterly: "باقة 3 شهور",
   yearly: "الباقة السنوية",
+  basic: "الباقة الأساسية",
+  pro: "دعم أولوية",
+  premium: "دعم الدعم"
 };
   const {
     control,
@@ -71,9 +74,7 @@ const planLabels: Record<string, string> = {
       className="min-h-screen relative flex items-center justify-center p-4"
       style={{ fontFamily: "'Tajawal', sans-serif" }}
     >
-      {/* Google Fonts */}
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700&display=swap');`}</style>
-
+      
       {/* ── Original background ── */}
       <div className="fixed inset-0 -z-10 opacity-30">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-100 via-white to-primary-50" />
