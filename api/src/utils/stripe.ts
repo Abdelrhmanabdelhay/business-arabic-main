@@ -3,7 +3,6 @@ const stripe = require("stripe")(config.stripe.SECRET_KEY);
 import { Request, Response } from "express";
 import payment from "../models/payment";
 import { sendContactEmail } from "./nodemailer";
-import toast from "react-hot-toast";
 import Stripe from "stripe";
 import PLAN_CONFIG from "../config/plainConfig";
 /**
