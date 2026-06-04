@@ -4,9 +4,6 @@ import { parseCookies } from "nookies";
 
 export const axiosInstance = axios.create({
   baseURL: `${API_URL}`,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
 axiosInstance.interceptors.request.use((config) => {
@@ -15,6 +12,17 @@ axiosInstance.interceptors.request.use((config) => {
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  if (config.data instanceof FormData) {
+    if (config.headers) {
+      delete config.headers["Content-Type"];
+    }
+    console.log("axios request - FormData request to", config.url, "headers:", config.headers);
+  } else {
+    if (config.headers) {
+      config.headers["Content-Type"] = "application/json";
+    }
   }
 
   return config;

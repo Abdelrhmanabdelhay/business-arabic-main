@@ -55,6 +55,7 @@ function IdeaClubDetails() {
     content: "",
     imageUrl: "",
   });
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [imagePreview, setImagePreview] = useState("");
@@ -66,16 +67,11 @@ function IdeaClubDetails() {
         name: ideaClub.name || "",
         description: ideaClub.description || "",
         category: ideaClub.category || "",
-        content:
-          typeof ideaClub.content === "string"
-            ? ideaClub.content
-            : "",
+        content: Array.isArray(ideaClub.content)
+          ? ideaClub.content.join("\n")
+          : ideaClub.content || "",
         imageUrl: ideaClub.imageUrl || "",
       });
-
-      if (ideaClub.imageUrl) {
-        setImagePreview(ideaClub.imageUrl);
-      }
     }
   }, [ideaClub, isNew]);
 
@@ -102,14 +98,19 @@ function IdeaClubDetails() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    console.log("handleImageChange - selected file", file.name, file.type, file.size);
+
     if (file.size > 5 * 1024 * 1024) {
       toast.error("حجم الصورة كبير جداً — الحد الأقصى 5MB");
       return;
     }
 
+    // store file immediately so it's available for submit even if FileReader is still working
+    setSelectedFile(file);
     const reader = new FileReader();
     reader.onload = () => {
       const result = reader.result as string;
+      console.log("handleImageChange - preview result length", result.length);
       setImagePreview(result);
       setFormData((prev) => ({ ...prev, imageUrl: result }));
     };
@@ -118,6 +119,7 @@ function IdeaClubDetails() {
 
   const handleRemoveImage = () => {
     setImagePreview("");
+    setSelectedFile(null);
     setFormData((prev) => ({ ...prev, imageUrl: "" }));
   };
 
@@ -125,17 +127,24 @@ function IdeaClubDetails() {
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
 
+    console.log("handleSubmit - payload", {
+      ...formData,
+      imageFile: selectedFile,
+      imagePreview: imagePreview ? imagePreview.slice(0, 100) : null,
+    });
+
     if (!validateForm()) {
       toast.error("يرجى تصحيح الأخطاء");
       return;
     }
 
     try {
+      console.log('Submitting ideaClub with selectedFile:', !!selectedFile, selectedFile?.name, 'imagePreview:', !!imagePreview);
       if (isNew) {
-        await createIdeaClub(formData);
+        await createIdeaClub({ ...formData, imageFile: selectedFile ?? undefined });
         toast.success("تم الإنشاء");
       } else {
-        await updateIdeaClub(formData);
+        await updateIdeaClub({ ...formData, imageFile: selectedFile ?? undefined });
         toast.success("تم التحديث");
       }
 
@@ -143,6 +152,7 @@ function IdeaClubDetails() {
     } catch (error: any) {
       const msg =
         error?.response?.data?.error || "حدث خطأ أثناء الحفظ";
+      console.log("handleSubmit - error", error);
       toast.error(msg);
     }
   };
@@ -243,22 +253,23 @@ function IdeaClubDetails() {
               onChange={handleImageChange}
             />
 
-            {imagePreview ? (
-              <div className="relative">
+            {(imagePreview || formData.imageUrl) ? (
+              <div className="relative inline-block">
                 <Image
-                  src={imagePreview}
-                  alt=""
+                  src={imagePreview || formData.imageUrl}
+                  alt={formData.name || "preview"}
                   width={500}
                   height={300}
+                  style={{ objectFit: "cover", borderRadius: 8 }}
                 />
-                <Button onClick={handleRemoveImage}>
-                  <FiX />
-                </Button>
+                <div className="absolute top-2 left-2">
+                  <Button size="sm" color="danger" onClick={handleRemoveImage}>
+                    <FiX />
+                  </Button>
+                </div>
               </div>
             ) : (
-              <Button
-                onClick={() => fileInputRef.current?.click()}
-              >
+              <Button onClick={() => fileInputRef.current?.click()}>
                 <FiUpload /> رفع صورة
               </Button>
             )}

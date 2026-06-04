@@ -28,15 +28,57 @@ interface NavLinkProps {
   onClick?: () => void;
 }
 
-const NavLink = ({ href, children, className = "", onClick }: NavLinkProps) => {
+const NavLink = ({
+  href,
+  children,
+  className = "",
+  onClick,
+}: NavLinkProps) => {
   const router = useRouter();
+  const pathname = usePathname();
+
+  const isActive = pathname === href;
+
   return (
     <button
       onClick={() => {
         if (onClick) onClick();
         router.push(href);
       }}
-      className={`text-[15px] text-[#1a1a1a] hover:text-[#3366FF] transition-colors duration-150 ${className}`}
+      className={`
+        relative
+        px-2
+        py-2
+        rounded-xl
+        text-[15px]
+        font-medium
+        transition-all
+        duration-300
+        border-2
+        ${
+          isActive
+            ? `
+              text-white
+              border-white
+              bg-gradient-to-b
+              from-[#4d77b9]
+              to-[#234a86]
+              shadow-[0_0_0_3px_#d7e2f5,0_4px_12px_rgba(35,74,134,0.35)]
+            `
+            : `
+              text-[#1a1a1a]
+              border-transparent
+              hover:text-white
+              hover:border-white
+              hover:bg-gradient-to-b
+              hover:from-[#4d77b9]
+              hover:to-[#234a86]
+              hover:shadow-[0_0_0_3px_#d7e2f5,0_4px_12px_rgba(35,74,134,0.35)]
+              hover:-translate-y-[1px]
+            `
+        }
+        ${className}
+      `}
     >
       {children}
     </button>

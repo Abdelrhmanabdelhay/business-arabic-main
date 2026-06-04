@@ -21,7 +21,11 @@ export const siteConfig = {
       href: "/blog",
     },
     {
-      label: "عن الموقع",
+      label:  "الأسئلة الشائعة",
+      href: "/questions",
+    },
+    {
+      label: "عن بزنس برو",
       href: "/about",
     },
   ],

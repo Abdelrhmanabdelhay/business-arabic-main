@@ -52,10 +52,11 @@ export function CreateIdeaClubMutation() {
     mutationFn: async (payload: CreateIdeaClubDto) => {
       // image is uploaded as multipart/form-data if it's a base64/file
       const formData = buildFormData(payload);
-      const { data } = await axios.post("/ideas", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      return data as IdeaClub;
+      console.log("CreateIdeaClubMutation - sending FormData to /ideas", Array.from(formData.keys()));
+      const response = await axios.post("/ideas", formData);
+      console.log("CreateIdeaClubMutation - response body", response.data);
+      console.log("CreateIdeaClubMutation - response imageUrl", response.data?.imageUrl);
+      return response.data as IdeaClub;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ideas"] });
@@ -76,10 +77,11 @@ export function UpdateIdeaClubMutation({ id, page }: { id: string; page: number 
   const mutation = useMutation({
     mutationFn: async (payload: UpdateIdeaClubDto) => {
       const formData = buildFormData(payload);
-      const { data } = await axios.patch(`/ideas/${id}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      return data as IdeaClub;
+      console.log("UpdateIdeaClubMutation - sending FormData to /ideas/", id, Array.from(formData.keys()));
+      const response = await axios.patch(`/ideas/${id}`, formData);
+      console.log("UpdateIdeaClubMutation - response body", response.data);
+      console.log("UpdateIdeaClubMutation - response imageUrl", response.data?.imageUrl);
+      return response.data as IdeaClub;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ideas"] });
@@ -123,24 +125,35 @@ export function DeleteIdeaClubMutation({ id, page }: { id: string; page: number 
  * - `content`:  Block[] → JSON stringified
  * - All other fields appended as strings
  */
-function buildFormData(payload: CreateIdeaClubDto | UpdateIdeaClubDto): FormData {
+type IdeaClubPayload = (CreateIdeaClubDto | UpdateIdeaClubDto) & { imageFile?: File };
+
+function buildFormData(payload: IdeaClubPayload): FormData {
   const fd = new FormData();
 
-  const { imageUrl, content, ...rest } = payload;
+  const { imageUrl, imageFile, content, ...rest } = payload as any;
+  console.log("buildFormData - payload keys:", Object.keys(payload), "imageFile:", !!imageFile, "imageUrl:", !!imageUrl);
 
   // Append all simple string fields
   Object.entries(rest).forEach(([key, value]) => {
     if (value !== undefined) fd.append(key, String(value));
   });
 
-  // Append content as serialized JSON
+  // Append content as serialized JSON for arrays, or raw text for strings
   if (content !== undefined) {
-    fd.append("content", JSON.stringify(content));
+    if (Array.isArray(content)) {
+      fd.append("content", JSON.stringify(content));
+    } else {
+      fd.append("content", String(content));
+    }
   }
 
-  // Handle image
-  if (imageUrl) {
-    if (imageUrl.startsWith("data:")) {
+  // Handle image file first, then fallback to imageUrl
+  if (imageFile) {
+    console.log("buildFormData - appending imageFile", imageFile.name, imageFile.type, imageFile.size);
+    fd.append("image", imageFile, imageFile.name);
+  } else if (imageUrl) {
+    console.log("buildFormData - appending imageUrl string", imageUrl?.slice(0, 100));
+    if (typeof imageUrl === "string" && imageUrl.startsWith("data:")) {
       const [meta, base64] = imageUrl.split(",");
       const mime = meta.match(/:(.*?);/)?.[1] ?? "image/jpeg";
       const binary = atob(base64);
@@ -152,5 +165,6 @@ function buildFormData(payload: CreateIdeaClubDto | UpdateIdeaClubDto): FormData
     }
   }
 
+  console.log("buildFormData - final keys:", Array.from(fd.keys()));
   return fd;
 }

@@ -11,6 +11,7 @@ export const UserNavbar = () => {
     { href: "/userp", label: "الرئيسية" },
     { href: "/idea-club", label: " افكار مشاريع" },
     { href: "/feasibility-studiesuser", label: "دراسات الجدوى" },
+    { href: "/questions", label: "  الأسئلة الشائعة" },
     { href: "/user/consultation", label: "تطوير ونمو اعمال" },
   ];
 const logout = useUserStore((state) => state.logout);

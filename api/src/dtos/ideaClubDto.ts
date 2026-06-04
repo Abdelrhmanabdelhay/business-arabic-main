@@ -3,19 +3,17 @@ import { StringExpressionOperatorReturningObject } from "mongoose";
 export interface CreateIdeaClubDto {
   name: string;
   description: string;
-content: string[];
+  content: string | string[];
   category: string;
-    imageUrl?: string;
-
+  imageUrl?: string;
 }
 
 export interface UpdateIdeaClubDto {
   name?: string;
   description?: string;
-content?: string[];
-  category: string;
-    imageUrl?: string;
-
+  content?: string | string[];
+  category?: string;
+  imageUrl?: string;
 }
 
 export interface IdeaClubResponseDto {

@@ -29,3 +29,21 @@ export type IdeasComponentProps = {
   isDeleting: boolean;
   isDeleted: boolean;
 };
+
+export interface CreateIdeaClubDto {
+  name: string;
+  description: string;
+  content: string | string[];
+  category: string;
+  imageUrl?: string;
+  imageFile?: File;
+}
+
+export interface UpdateIdeaClubDto {
+  name?: string;
+  description?: string;
+  content?: string | string[];
+  category?: string;
+  imageUrl?: string;
+  imageFile?: File;
+}

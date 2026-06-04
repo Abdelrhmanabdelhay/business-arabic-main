@@ -37,7 +37,7 @@ const Footer = () => {
             className="space-y-6"
           >
             <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400">
-              عن الشركة
+              عن بزنس برو
             </h3>
             <p className="text-blue-200 leading-relaxed">
               نحن نساعد رواد الأعمال على بناء وتنمية أعمالهم في العالم العربي من
