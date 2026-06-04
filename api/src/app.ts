@@ -27,10 +27,9 @@ setupSwagger(app);
 
 
 const allowedOrigins = [
-  "http://localhost:3000",
-  "https://72.60.28.76",
   "https://businessstorepro.com",
   "https://www.businessstorepro.com",
+  "https://api.businessstorepro.com",
 ];
 app.use(cors({
   origin: function (origin, callback) {
