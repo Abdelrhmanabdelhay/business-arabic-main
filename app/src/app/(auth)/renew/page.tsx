@@ -1,5 +1,5 @@
 "use client";
-export const dynamic = "force-dynamic";
+import { Suspense } from "react";
 
 import { useState } from "react";
 import { Button } from "@nextui-org/button";
@@ -39,6 +39,7 @@ export default function RenewPage() {
   };
 
   return (
+    <Suspense fallback="جاري التحميل...">
     <div dir="rtl" className="min-h-screen flex items-center justify-center p-4"
       style={{ fontFamily: "'Tajawal', sans-serif" }}>
       <div className="fixed inset-0 -z-10 opacity-30">
@@ -130,5 +131,6 @@ export default function RenewPage() {
         </div>
       </motion.div>
     </div>
+    </Suspense>
   );
 }

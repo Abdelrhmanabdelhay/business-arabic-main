@@ -1,5 +1,5 @@
 "use client";
-export const dynamic = "force-dynamic";
+import { Suspense } from "react";
 
 import { useState } from "react";
 import { Input } from "@nextui-org/input";
@@ -71,6 +71,7 @@ const planLabels: Record<string, string> = {
   };
 
   return (
+    <Suspense fallback="جاري التحميل...">
     <div
       dir="rtl"
       className="min-h-screen relative flex items-center justify-center p-4"
@@ -346,5 +347,6 @@ const planLabels: Record<string, string> = {
         </form>
       </motion.div>
     </div>
+    </Suspense>
   );
 }
