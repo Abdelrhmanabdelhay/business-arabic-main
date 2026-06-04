@@ -1,5 +1,5 @@
 "use client";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 
 import { useState } from "react";
 import { Button } from "@nextui-org/button";
@@ -14,10 +14,14 @@ const planLabels: Record<string, string> = {
 };
 
 export default function RenewPage() {
-  const searchParams = useSearchParams();
-  const [selectedPlan, setSelectedPlan] = useState(
-    searchParams.get("plan") ?? "quarterly"
-  );
+const [selectedPlan, setSelectedPlan] = useState("quarterly");
+
+useEffect(() => {
+  const plan =
+    new URLSearchParams(window.location.search).get("plan");
+
+  if (plan) setSelectedPlan(plan);
+}, []);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

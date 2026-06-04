@@ -29,8 +29,10 @@ export default function SignUpPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 const [isPending, setIsPending] = useState(false);
-  const searchParams = useSearchParams();
-const selectedPlan = searchParams.get("plan");
+const selectedPlan =
+  typeof window !== "undefined"
+    ? new URLSearchParams(window.location.search).get("plan")
+    : null;
 const planLabels: Record<string, string> = {
   monthly: "الباقة الشهرية",
   quarterly: "باقة 3 شهور",
