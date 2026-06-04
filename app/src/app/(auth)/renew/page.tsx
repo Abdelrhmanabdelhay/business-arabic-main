@@ -4,7 +4,6 @@ import { Suspense, useEffect } from "react";
 import { useState } from "react";
 import { Button } from "@nextui-org/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { useSearchParams } from "next/navigation";
 import { axiosInstance } from "@/lib/axios";
 
 const planLabels: Record<string, string> = {

@@ -13,7 +13,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SignUpMutation } from "@/lib/actions/auth";
-import { useSearchParams } from "next/navigation";
 import { API_URL } from "../../../constants/constants";
 const stagger = {
   hidden: {},
