@@ -24,7 +24,7 @@ export default function SuccessStoriesPage() {
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
   const router = useRouter();
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8080/api";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api";
   useEffect(() => {
     fetch(`${API_BASE}/success-stories?limit=20`)
       .then((r) => r.json())

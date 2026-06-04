@@ -20,7 +20,7 @@ const CARD_COLORS = [
   { top: "#10B981", accent: "#6ee7b7", light: "#f0fdf4" },
   { top: "#EC4899", accent: "#f9a8d4", light: "#fdf2f8" },
 ];
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8080/api";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api";
 const resolveImageUrl = (imageUrl: any): string | null => {
   if (!imageUrl) return null;
   if (typeof imageUrl === "string" && imageUrl.trim() !== "") return imageUrl;

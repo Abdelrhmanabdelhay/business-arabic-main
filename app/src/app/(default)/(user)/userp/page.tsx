@@ -44,7 +44,7 @@ interface GrowthService {
 }
 
 const ACCENT_COLORS = ["#7C3AED", "#F97316", "#2c4fd4", "#0EA5E9", "#10B981"];
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8080/api";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api";
 export default function HomePage() {
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [stories, setStories] = useState<SuccessStory[]>([]);
