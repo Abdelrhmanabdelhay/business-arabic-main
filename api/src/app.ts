@@ -28,7 +28,7 @@ setupSwagger(app);
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://yourdomain.com"
+  "http://72.60.28.76/"
 ];
 
 app.use(cors({
