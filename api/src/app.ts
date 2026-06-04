@@ -28,7 +28,7 @@ setupSwagger(app);
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "http://72.60.28.76",
+  "https://72.60.28.76",
   "https://businessstorepro.com",
   "https://www.businessstorepro.com",
 ];
