@@ -2,7 +2,8 @@ export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
   name: "بزنس عربي",
-  description: "موقع المشاريع والأفكار التجارية العربية",
+  description: "بزنس ستور برو منصة عربية تقدم أفكار مشاريع، دراسات جدوى احترافية، مدونة تجارية، وخدمات نمو الأعمال عبر الإنترنت.",
+  url: "https://businessstorepro.com",
   navItems: [
     {
       label: "الرئيسية",

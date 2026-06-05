@@ -1,10 +1,11 @@
-import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import clsx from "clsx";
 import { Providers } from "./providers";
 import { fontCairo } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
 import { Tajawal } from "next/font/google";
+
+export const metadataBase = new URL(siteConfig.url);
 
 const tajawal = Tajawal({
   subsets: ["arabic"],
@@ -20,6 +21,28 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   icons: {
     icon: "/favicon.ico",
+  },
+  openGraph: {
+    title: siteConfig.name,
+    description: siteConfig.description,
+    type: "website",
+    siteName: siteConfig.name,
+    locale: "ar-SA",
+    url: siteConfig.url,
+    images: [`${siteConfig.url}/og-image.svg`],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [`${siteConfig.url}/og-image.svg`],
+  },
+  alternates: {
+    canonical: siteConfig.url,
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
