@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { siteConfig } from "@/config/site";
 import {
   FaFacebookF,
   FaTwitter,
@@ -55,22 +56,20 @@ const Footer = () => {
               روابط سريعة
             </h3>
             <ul className="space-y-3">
-              {["من نحن", "خدماتنا", "مشاريعنا", "اتصل بنا"].map(
-                (item, index) => (
-                  <motion.li
-                    key={index}
-                    whileHover={{ x: 5 }}
-                    transition={{ type: "spring", stiffness: 300 }}
+              {siteConfig.navItems.map((item, index) => (
+                <motion.li
+                  key={index}
+                  whileHover={{ x: 5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <Link
+                    href={item.href}
+                    className="text-blue-200 hover:text-white transition-colors duration-300 flex items-center"
                   >
-                    <Link
-                      href={`/${item.replace(" ", "-")}`}
-                      className="text-blue-200 hover:text-white transition-colors duration-300 flex items-center"
-                    >
-                      <span className="mr-2 text-indigo-400">›</span> {item}
-                    </Link>
-                  </motion.li>
-                ),
-              )}
+                    <span className="mr-2 text-indigo-400">›</span> {item.label}
+                  </Link>
+                </motion.li>
+              ))}
             </ul>
           </motion.div>
 

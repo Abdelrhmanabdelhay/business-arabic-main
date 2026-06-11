@@ -14080,3 +14080,5 @@ npm install --save stripenpm install --save stripenpm install --save stripe2024-
 [35m[39m
 2026-06-04 13:41:00:410 [35mhttp[39m: [35m::1 GET /api/feasibility-studies?limit=3&page=1&fields=id,name,description,image,price,category 304 - - 318.625 ms[39m
 [35m[39m
+2026-06-11 09:06:36:636 [32minfo[39m: [32mServer in development mode started successfully using port 8080[39m
+2026-06-11 09:06:39:639 [32minfo[39m: [32mDatabase connected successfully[39m
