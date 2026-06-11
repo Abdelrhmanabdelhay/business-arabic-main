@@ -4,15 +4,6 @@ import clsx from "clsx";
 import { Providers } from "./providers";
 import { fontCairo } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
-import { Tajawal } from "next/font/google";
-
-export const metadataBase = new URL(siteConfig.url);
-
-const tajawal = Tajawal({
-  subsets: ["arabic"],
-  weight: ["400", "500", "700"],
-});
-
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -53,12 +44,6 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-};
-export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" },
-  ],
 };
 
 export default function RootLayout({
