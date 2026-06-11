@@ -76,13 +76,17 @@ export class AuthService {
 
     const resetLink = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
 
-    await sendResetPasswordEmail(
-      user.fullName,
-      user.email,
-      `Click here to reset your password: ${resetLink}`
-    );
+const emailResult = await sendResetPasswordEmail(
+  user.fullName,
+  user.email,
+  `Click here to reset your password: ${resetLink}`
+);
 
-    return { message: "Reset link sent to email" };
+if (!emailResult.success) {
+  throw new Error("Failed to send reset email");
+}
+
+return { message: "Reset link sent to email" };
   }
 
 

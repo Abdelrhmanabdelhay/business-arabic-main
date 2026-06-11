@@ -9,6 +9,7 @@ const transporter = nodemailer.createTransport({
     pass: process.env.SMTP_PASS,
   },
 });
+    const logoPath = path.join(process.cwd(), "assets", "logo.png");
 
 export const sendContactEmail = async (
   name: string,
@@ -243,7 +244,7 @@ const info = await transporter.sendMail({
   attachments: [
     {
       filename: 'logo.png',
-      path: path.join(__dirname, "../assets/logo.png"),
+      path: logoPath,
       cid: 'businessLogo' 
     }
   ]
@@ -349,7 +350,7 @@ export const sendResetPasswordEmail = async (
       attachments: [
         {
           filename: 'logo.png',
-          path: path.join(__dirname, "../assets/logo.png"),
+          path: logoPath,
           cid: 'businessLogo',
         },
       ],
