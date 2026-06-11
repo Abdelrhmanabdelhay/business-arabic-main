@@ -15,14 +15,19 @@ const tajawal = Tajawal({
 
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
+
   title: {
     default: siteConfig.name,
     template: `%s - ${siteConfig.name}`,
   },
+
   description: siteConfig.description,
+
   icons: {
     icon: "/favicon.ico",
   },
+
   openGraph: {
     title: siteConfig.name,
     description: siteConfig.description,
@@ -30,23 +35,25 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     locale: "ar-SA",
     url: siteConfig.url,
-    images: [`${siteConfig.url}/og-image.svg`],
+    images: ["/og-image.svg"], // يمكن تركها relative
   },
+
   twitter: {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
-    images: [`${siteConfig.url}/og-image.svg`],
+    images: ["/og-image.svg"],
   },
+
   alternates: {
     canonical: siteConfig.url,
   },
+
   robots: {
     index: true,
     follow: true,
   },
 };
-
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
