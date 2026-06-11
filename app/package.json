@@ -85,6 +85,6 @@
     "sass": "^1.80.6",
     "tailwind-variants": "0.1.20",
     "tailwindcss": "3.4.3",
-    "typescript": "5.0.4"
+    "typescript": "5.6.3"
   }
 }
