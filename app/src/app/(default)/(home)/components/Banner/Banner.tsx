@@ -96,7 +96,7 @@ export const Banner = () => {
             variants={fadeIn}
             transition={{ duration: 0.5 }}
           >
-            نمو أعمالك يبدأ هنا
+           ابدأ مشروعك بذكاء وخطة واضحة ,مشروعك يبدا من هنا
           </motion.h1>
 
        <motion.p
@@ -106,7 +106,8 @@ export const Banner = () => {
             variants={fadeIn}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            اكتشف فرص جديدة، طور مهاراتك، وحقق النجاح في عالم الأعمال العربي
+                      استكشف دراسات جدوي مميزة للمشاريع في السعودية ,اكتشف فرصا جديدة وابدا رحلتك نحو النجاح
+
           </motion.p>
 
           {/* Cards - Responsive Grid */}

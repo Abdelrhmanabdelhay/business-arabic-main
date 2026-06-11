@@ -109,7 +109,7 @@ const Footer = () => {
           className="mt-16 pt-8 border-t border-blue-800 text-center"
         >
           <p className="text-blue-300">
-            &copy; {new Date().getFullYear()} اسم شركتك. جميع الحقوق محفوظة.
+            &copy; {new Date().getFullYear()}بزنس برو. جميع الحقوق محفوظة.
           </p>
         </motion.div>
       </div>
